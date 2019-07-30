@@ -6,6 +6,8 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import indigo from '@material-ui/core/colors/indigo';
 import grey from '@material-ui/core/colors/grey';
 import Typography from '@material-ui/core/Typography';
+import Competition from '../Competition/Competition';
+import ImportWCIF from '../ImportWCIF/ImportWCIF';
 
 
 const theme = createMuiTheme({
@@ -19,11 +21,17 @@ const theme = createMuiTheme({
 });
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+  state = {
+    wcif: null
+  };
+
+  handleWcifUpdate = wcif => {
+    this.setState({ wcif });
+  };
 
   render() {
+    const { wcif } = this.state;
+    const { match } = this.props;
     return (
       <Router>
         <MuiThemeProvider theme={theme}>
@@ -31,7 +39,11 @@ export default class App extends Component {
             <CssBaseline />
             <Grid container justify="center" style={{ flexGrow: 1 }}>
               <Grid item xs={12} md={8} style={{ padding: 16 }}>
-                <Typography variant="h4">Some nice text</Typography>
+                {wcif ? (
+                  <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
+                ) : (
+                  <ImportWCIF handleWcifUpdate={this.handleWcifUpdate} />
+                )}
               </Grid>
             </Grid>
           </div>
