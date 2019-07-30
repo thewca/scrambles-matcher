@@ -1,0 +1,39 @@
+{
+  "name": "scrambles-matcher",
+  "version": "0.0.1",
+  "description": "Matching scrambles to results tool.",
+  "keywords": [
+    "speedcubing",
+    "WCA",
+    "competition",
+    "results",
+    "scrambles"
+  ],
+  "homepage": "TODO",
+  "author": "Philippe Virouleau",
+  "license": "GPLv3",
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.3.0",
+    "core-js": "^3.1.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^3.0.1",
+    "smoothscroll-polyfill": "^0.4.4",
+    "typescript": "^3.5.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
