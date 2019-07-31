@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
+import tmpWcif from '../../wcifresults.json';
+
 const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
@@ -10,7 +12,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const handleFileUploadChange = (updater, event) => {
-  console.log(event.target.files);
 
   let reader = new FileReader();
 
@@ -27,6 +28,8 @@ const handleFileUploadChange = (updater, event) => {
 
 const ImportWCIF = ({ handleWcifJSONLoad }) => {
   const classes = useStyles();
+  // Dirty hack to preload given WCIF
+  handleWcifJSONLoad(tmpWcif);
   return (
     <Grid item xs={12} style={{ padding: 16 }}>
       <input

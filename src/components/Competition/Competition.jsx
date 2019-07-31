@@ -60,9 +60,6 @@ export default class Competition extends Component {
         <Grid item xs={12} style={{ padding: 16 }}>
           <Typography variant="h2" component="h1" align="center">
             {localWcif.name}
-            <SpacedFab aria-label="delete">
-              <GetAppIcon />
-            </SpacedFab>
           </Typography>
         </Grid>
         <Grid item xs={12} md={2} style={{ padding: 16 }}>
