@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Collapse from '@material-ui/core/Collapse';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -24,7 +23,7 @@ const NestedRoundItem = withStyles(theme => ({
   }
 }))(ListItem);
 
-const CompetitionMenu = ({ events }) => {
+const CompetitionMenu = ({ events, setSelectedRound }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   return (
@@ -53,8 +52,7 @@ const CompetitionMenu = ({ events }) => {
                 <NestedRoundItem
                   key={round.id}
                   button
-                  component={Link}
-                  to={`/rounds/${round.id}`}
+                  onClick={() => { console.log(round.id); setSelectedRound(round.id)} }
                 >
                   <ListItemText primary={round.id} />
                 </NestedRoundItem>

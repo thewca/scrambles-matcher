@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -21,8 +19,6 @@ const theme = createMuiTheme({
   }
 });
 
-const history = createBrowserHistory()
-
 export default class App extends Component {
   state = {
     wcif: null,
@@ -31,7 +27,6 @@ export default class App extends Component {
 
   handleWcifJSONLoad = json => {
     this.setState({ wcif: json });
-    history.push("/");
   };
 
   handleWcifUpdate = wcif => {
@@ -42,20 +37,18 @@ export default class App extends Component {
     const { wcif, errors } = this.state;
     const { match } = this.props;
     return (
-      <Router history={history}>
-        <MuiThemeProvider theme={theme}>
-          <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-            <CssBaseline />
-            <Grid container>
-              {wcif ? (
-                <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
-              ) : (
-                <ImportWCIF handleWcifJSONLoad={this.handleWcifJSONLoad} errors={errors} />
-              )}
-            </Grid>
-          </div>
-        </MuiThemeProvider>
-      </Router>
+      <MuiThemeProvider theme={theme}>
+        <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+          <CssBaseline />
+          <Grid container>
+            {wcif ? (
+              <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
+            ) : (
+              <ImportWCIF handleWcifJSONLoad={this.handleWcifJSONLoad} errors={errors} />
+            )}
+          </Grid>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
