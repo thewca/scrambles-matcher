@@ -5,13 +5,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import InfoIcon from '@material-ui/icons/Info';
 
-import CubingIcon from '../CubingIcon/CubingIcon';
+import CubingIcon from '../../CubingIcon/CubingIcon';
 
 const EventListItem = withStyles({
   root: {
     color: 'black',
-    '& .cubing-icon': {
+    '& .cubing-icon, & svg': {
       color: 'black',
     }
   }
@@ -28,6 +29,12 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
 
   return (
     <List dense={true}>
+      <EventListItem button onClick={() => setSelectedRound(null)}>
+        <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon>
+        <ListItemText primary="Information" />
+      </EventListItem>
       {events.map(event => (
         <Fragment key={event.id}>
           <EventListItem

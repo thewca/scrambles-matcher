@@ -6,9 +6,9 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import CompetitionMenu from '../CompetitionMenu/CompetitionMenu';
+import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
-import CompetitionInfo from '../CompetitionInfo/CompetitionInfo';
+import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { withStyles } from '@material-ui/core/styles';
 import { flatMap } from '../../logic/utils';
 
