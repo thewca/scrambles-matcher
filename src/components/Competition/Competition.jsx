@@ -24,16 +24,36 @@ export default class Competition extends Component {
     this.state = {
       localWcif: props.wcif,
       selectedRoundId: null,
+      uploadedScrambles: [],
     };
+  }
+
+  uploadNewScramble = ev => {
+    let reader = new FileReader();
+
+    reader.onload = e => {
+      // TODO: some check we're facing well formatted scrambles
+      this.setState(state => {
+        let newScramble = JSON.parse(e.target.result)
+        return {
+          uploadedScrambles: [...state.uploadedScrambles, newScramble],
+        }
+      });
+    }
+
+    reader.onerror = e => {
+      alert("Couldn't load the JSON scrambles file");
+    }
+
+    reader.readAsText(ev.target.files[0]);
   }
 
   setSelectedRound = id => this.setState({ selectedRoundId: id });
 
   // TODO: disable the download button if not all scrambles are there
   render() {
-    const { localWcif, selectedRoundId } = this.state;
+    const { localWcif, selectedRoundId, uploadedScrambles } = this.state;
     const { handleWcifUpdate } = this.props;
-    console.log(`Selected: ${selectedRoundId}`);
     const rounds = flatMap(localWcif.events, e => e.rounds);
     return (
       <Fragment>
@@ -53,7 +73,9 @@ export default class Competition extends Component {
           { selectedRoundId ? (
             <RoundPanel round={rounds.find(r => r.id === selectedRoundId)} />
           ) : (
-            <CompetitionInfo wcif={localWcif} handleWcifUpdate={handleWcifUpdate} />
+            <CompetitionInfo wcif={localWcif} uploadedScrambles={uploadedScrambles}
+              uploadAction={this.uploadNewScramble}
+            />
           )}
         </Grid>
       </Fragment>
