@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import indigo from '@material-ui/core/colors/indigo';
 import grey from '@material-ui/core/colors/grey';
-import Typography from '@material-ui/core/Typography';
 import Competition from '../Competition/Competition';
 import ImportWCIF from '../ImportWCIF/ImportWCIF';
 import { ensureScramblesMember } from '../../logic/scrambles';
@@ -40,7 +39,6 @@ export default class App extends Component {
 
   render() {
     const { wcif, errors } = this.state;
-    const { match } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
         <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>

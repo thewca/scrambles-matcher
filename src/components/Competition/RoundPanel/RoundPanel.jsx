@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 
 import ScrambleList from '../../Scrambles/ScrambleList';

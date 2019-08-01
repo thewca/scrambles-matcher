@@ -1,12 +1,8 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import Link from '@material-ui/core/Link';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ScrambleFileInfo from '../../Scrambles/ScrambleFileInfo';
 
 const useStyles = makeStyles(theme => ({
