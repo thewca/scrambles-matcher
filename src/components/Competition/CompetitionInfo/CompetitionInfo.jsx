@@ -39,7 +39,7 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
         Uploaded scrambles:
       </Typography>
       {uploadedScrambles.map(s => (
-        <ScrambleFileInfo scramble={s} key={s.id} />
+        <ScrambleFileInfo scramble={s} key={s.competitionName} />
       ))}
     </Paper>
   );

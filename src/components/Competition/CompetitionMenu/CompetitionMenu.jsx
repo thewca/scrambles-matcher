@@ -31,7 +31,6 @@ const NestedRoundItem = withStyles(theme => ({
 
 const CompetitionMenu = ({ events, setSelectedRound }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  console.log(events);
   return (
     <List dense={true}>
       <EventListItem button onClick={() => setSelectedRound(null)}>
@@ -64,7 +63,7 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                 <NestedRoundItem
                   key={round.id}
                   button
-                  onClick={() => { console.log(round.id); setSelectedRound(round.id)} }
+                  onClick={() => setSelectedRound(round.id)}
                 >
                   <ListItemText primary={round.id} />
                   {round.scrambleSets.length === 0 && (

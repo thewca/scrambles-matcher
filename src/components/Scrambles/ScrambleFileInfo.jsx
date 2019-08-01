@@ -60,7 +60,7 @@ const ScrambleFileInfo = ({ scramble }) => {
             color="inherit"
             onClick={handleExpandClick}
           >
-            {scramble.id}: {scramble.competitionName}
+            {scramble.competitionName}
           </Link>
         }
         subheader={
@@ -78,7 +78,7 @@ const ScrambleFileInfo = ({ scramble }) => {
         <CardContent>
           <List dense>
             {scramble.sheets.map(sheet => (
-              <NestedScrambleItem>
+              <NestedScrambleItem key={sheet.scrambleSetId}>
                 {sheet.title}
               </NestedScrambleItem>
             ))}

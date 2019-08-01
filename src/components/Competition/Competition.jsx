@@ -11,7 +11,7 @@ import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { withStyles } from '@material-ui/core/styles';
 import { flatMap, updateIn } from '../../logic/utils';
-import { updateMultiAndFm } from '../../logic/scrambles';
+import { updateMultiAndFm, assignScrambleSheetId, allScramblesForEvent, usedScramblesIdsForEvent } from '../../logic/scrambles';
 
 const SpacedFab = withStyles(theme => ({
   root: {
@@ -40,8 +40,9 @@ export default class Competition extends Component {
         let newScramble = JSON.parse(e.target.result)
         // Manually assign some id, in case someone uses same name for zip
         // but with different scrambles.
-        newScramble.id = scrambleUploadedId++;
+        newScramble.competitionName = `${scrambleUploadedId++}: ${newScramble.competitionName}`;
         newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);
+        newScramble = updateIn(newScramble, ['sheets'], assignScrambleSheetId);
         return {
           uploadedScrambles: [...state.uploadedScrambles, newScramble],
         }
@@ -61,6 +62,14 @@ export default class Competition extends Component {
     const { localWcif, selectedRoundId, uploadedScrambles } = this.state;
     const { handleWcifUpdate } = this.props;
     const rounds = flatMap(localWcif.events, e => e.rounds);
+    let availableScrambles = [];
+    let round = null;
+    if (selectedRoundId) {
+      round = rounds.find(r => r.id === selectedRoundId);
+      let eventId = round.id.split("-")[0];
+      let used = usedScramblesIdsForEvent(localWcif.events, eventId);
+      availableScrambles = allScramblesForEvent(uploadedScrambles, eventId, used);
+    }
     return (
       <Fragment>
         <Grid item xs={12} style={{ padding: 16 }}>
@@ -73,8 +82,8 @@ export default class Competition extends Component {
             setSelectedRound={this.setSelectedRound} />
         </Grid>
         <Grid item xs={12} md={8} style={{ padding: 16 }}>
-          { selectedRoundId ? (
-            <RoundPanel round={rounds.find(r => r.id === selectedRoundId)} />
+          { round ? (
+            <RoundPanel round={round} availableScrambles={availableScrambles} />
           ) : (
             <CompetitionInfo wcif={localWcif} uploadedScrambles={uploadedScrambles}
               uploadAction={this.uploadNewScramble}
