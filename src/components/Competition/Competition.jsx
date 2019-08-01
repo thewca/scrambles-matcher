@@ -10,13 +10,16 @@ import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { withStyles } from '@material-ui/core/styles';
-import { flatMap } from '../../logic/utils';
+import { flatMap, updateIn } from '../../logic/utils';
+import { updateMultiAndFm } from '../../logic/scrambles';
 
 const SpacedFab = withStyles(theme => ({
   root: {
     "margin-left": theme.spacing(3),
   },
 }))(Fab);
+
+let scrambleUploadedId = 1;
 
 export default class Competition extends Component {
   constructor(props) {
@@ -35,6 +38,10 @@ export default class Competition extends Component {
       // TODO: some check we're facing well formatted scrambles
       this.setState(state => {
         let newScramble = JSON.parse(e.target.result)
+        // Manually assign some id, in case someone uses same name for zip
+        // but with different scrambles.
+        newScramble.id = scrambleUploadedId++;
+        newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);
         return {
           uploadedScrambles: [...state.uploadedScrambles, newScramble],
         }

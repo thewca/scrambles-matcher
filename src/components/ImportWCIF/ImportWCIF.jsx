@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
+import { sortWcifEvents } from '../../logic/events';
+import { updateIn } from '../../logic/utils';
+
 import tmpWcif from '../../wcifresults.json';
 
 const useStyles = makeStyles(theme => ({
@@ -16,6 +19,8 @@ const handleFileUploadChange = (updater, event) => {
   let reader = new FileReader();
 
   reader.onload = e => {
+    let rawWcif = JSON.parse(e.target.result);
+    rawWcif = updateIn(rawWcif, ['events'], sortWcifEvents)
     updater(JSON.parse(e.target.result));
   }
 
