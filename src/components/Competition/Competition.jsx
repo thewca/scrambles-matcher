@@ -57,7 +57,6 @@ export default class Competition extends Component {
 
   setSelectedRound = id => this.setState({ selectedRoundId: id });
 
-  // TODO: disable the download button if not all scrambles are there
   render() {
     const { localWcif, selectedRoundId, uploadedScrambles } = this.state;
     const { handleWcifUpdate } = this.props;

@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import { sortWcifEvents } from '../../logic/events';
-import { updateIn } from '../../logic/utils';
 
 import tmpWcif from '../../wcifresults.json';
 
@@ -18,15 +16,9 @@ const handleFileUploadChange = (updater, event) => {
 
   let reader = new FileReader();
 
-  reader.onload = e => {
-    let rawWcif = JSON.parse(e.target.result);
-    rawWcif = updateIn(rawWcif, ['events'], sortWcifEvents)
-    updater(JSON.parse(e.target.result));
-  }
+  reader.onload = e => updater(JSON.parse(e.target.result));
 
-  reader.onerror = e => {
-    alert("Couldn't load the JSON file");
-  }
+  reader.onerror = e => alert("Couldn't load the JSON file");
 
   reader.readAsText(event.target.files[0]);
 };

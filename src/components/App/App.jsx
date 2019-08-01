@@ -7,6 +7,9 @@ import grey from '@material-ui/core/colors/grey';
 import Typography from '@material-ui/core/Typography';
 import Competition from '../Competition/Competition';
 import ImportWCIF from '../ImportWCIF/ImportWCIF';
+import { ensureScramblesMember } from '../../logic/scrambles';
+import { sortWcifEvents } from '../../logic/events';
+import { updateIn } from '../../logic/utils';
 
 
 const theme = createMuiTheme({
@@ -26,7 +29,9 @@ export default class App extends Component {
   };
 
   handleWcifJSONLoad = json => {
-    this.setState({ wcif: json });
+    let wcif = updateIn(json, ['events'], ensureScramblesMember)
+    wcif = updateIn(wcif, ['events'], sortWcifEvents);
+    this.setState({ wcif });
   };
 
   handleWcifUpdate = wcif => {
