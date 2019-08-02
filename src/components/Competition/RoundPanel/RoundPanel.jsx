@@ -6,7 +6,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { withStyles } from '@material-ui/core/styles';
 
 import ScrambleList from '../../Scrambles/ScrambleList';
-import { groupBy, partition, flatMap, reorderArray } from '../../../logic/utils';
+import { groupBy, flatMap } from '../../../logic/utils';
 import { eventIdFromRound } from '../../../logic/wcif';
 import { formatById } from '../../../logic/formats';
 
@@ -68,87 +68,71 @@ export default class RoundPanel extends Component {
     }
   }
 
-  handleReOrdering = (source, destination) => {
+  handleGenericMove = (source, destination) => {
     const { round, attachScramblesToRound } = this.props;
     const { availableScrambles } = this.state;
-    // Simple re-ordering within a list :
-    //   - figure out wich scrambles to re-order
-    //   - then what state to update (wcif or this)
-    let scrambles = [];
-    if (source.droppableId.startsWith("round-")) {
-      // We're in the 333fm or 333mbf case
-      // We want to re-order for a given attempt number
-      let attemptNumber = attemptFromDroppable(destination);
-      let [forAttempt, others] = partition(round.scrambleSets, s => s.attemptNumber === attemptNumber);
-      reorderArray(forAttempt, source.index, destination.index);
-      scrambles = [...forAttempt, ...others];
-    } else {
-      // We're in the simple case, just re-order the relevant scrambles
-      scrambles = source.droppableId === "available"
-        ? [...availableScrambles]
-        : round.scrambleSets;
-      reorderArray(scrambles, source.index, destination.index);
-    }
+    // Whatever we do, we just need to update the parent state
+    let scrambles = source.droppableId === "available"
+      ? availableScrambles
+      : round.scrambleSets;
+    let scramble = scrambles.splice(source.index, 1)[0];
 
-    if (source.droppableId === "available")
-      this.setState({ availableScrambles: scrambles });
+    let destScrambles = destination.droppableId === source.droppableId
+      ? scrambles
+      : destination.droppableId === "round"
+        ? round.scrambleSets
+        : availableScrambles;
+
+    // Insert the scramble to the new array at the correct spot
+    destScrambles.splice(destination.index, 0, scramble);
+
+    if (destination.droppableId === "available" && source.droppableId === "available")
+      this.setState({ availableScrambles: destScrambles });
+    else if (destination.droppableId === "round")
+      attachScramblesToRound(destScrambles, round);
     else
       attachScramblesToRound(scrambles, round);
   }
 
-  handleScrambleMovement = result => {
-    const { source, destination } = result;
+  handleAttemptBasedMove = (source, destination) => {
     const { round, attachScramblesToRound } = this.props;
     const { availableScrambles } = this.state;
+    // Again we just need to update the parent state
+    let scrambles = round.scrambleSets;
+    // Group round's scrambles based on attempt number
+    let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
+    let scramble = null;
+    scramble = source.droppableId === "available"
+      ? availableScrambles[source.index]
+      : scramblesByAttempt[attemptFromDroppable(source)].splice(source.index, 1)[0];
+
+    if (destination.droppableId !== "available") {
+      let destAttempt = attemptFromDroppable(destination);
+      // update the attempt number
+      scramble.attemptNumber = destAttempt;
+      // if that's the first scramble we move there, the entry won't exist yet
+      scramblesByAttempt[destAttempt] = scramblesByAttempt[destAttempt] || [];
+      // actually move the scramble to the appropriate list
+      scramblesByAttempt[destAttempt].splice(destination.index, 0, scramble);
+    }
+
+    // Concatenate everything for the update
+    scrambles = flatMap(Object.keys(scramblesByAttempt), k => scramblesByAttempt[k]);
+    attachScramblesToRound(scrambles, round);
+  }
+
+  handleScrambleMovement = result => {
+    const { source, destination } = result;
 
     // dropped outside the list
     if (!destination) {
       return;
     }
 
-    if (source.droppableId === destination.droppableId) {
-      this.handleReOrdering(source, destination);
-    } else {
-      // Whatever we do, we just need to update the parent state
-      let scrambles = round.scrambleSets;
-      if (destination.droppableId === "round") {
-        scrambles.splice(destination.index, 0, availableScrambles[source.index]);
-      } else if (destination.droppableId === "available") {
-        if (source.droppableId === "round") {
-          // Just delete the scramble moved to round
-          scrambles.splice(source.index, 1);
-        } else {
-          // Get the attempt number from the droppable id
-          let attemptNumber = attemptFromDroppable(source);
-          // Group round's scrambles based on attempt number
-          let scrambleByAttempt = groupBy(scrambles, s => s.attemptNumber);
-          scrambleByAttempt[attemptNumber].splice(source.index, 1);
-          scrambles = flatMap(Object.keys(scrambleByAttempt), k => scrambleByAttempt[k]);
-        }
-      } else {
-        // We're in the 333fm or 333mbf case
-        // We want to keep them in order for a given attempt number
-
-        // Get the attempt number from the droppable id
-        let attemptNumber = attemptFromDroppable(destination);
-        // Group round's scrambles based on attempt number
-        let scrambleByAttempt = groupBy(scrambles, s => s.attemptNumber);
-        if (!scrambleByAttempt[attemptNumber])
-          scrambleByAttempt[attemptNumber] = [];
-        // Update the attempt number for the selected scramble
-        let scramble = null;
-        if (source.droppableId === "available")
-          scramble = availableScrambles[source.index]
-        else {
-          let sourceAttempt = attemptFromDroppable(source);
-          scramble = scrambleByAttempt[sourceAttempt].splice(source.index, 1)[0];
-        }
-        scramble.attemptNumber = attemptNumber;
-        scrambleByAttempt[attemptNumber].splice(destination.index, 0, scramble);
-        scrambles = flatMap(Object.keys(scrambleByAttempt), k => scrambleByAttempt[k]);
-      }
-      attachScramblesToRound(scrambles, round);
-    }
+    if (source.droppableId.includes("-") || destination.droppableId.includes("-"))
+      this.handleAttemptBasedMove(source, destination);
+    else
+      this.handleGenericMove(source, destination);
   };
 
   // TODO: save to main wcif button
