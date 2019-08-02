@@ -6,7 +6,7 @@ import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { flatMap, updateIn } from '../../logic/utils';
-import { updateMultiAndFm, assignScrambleSheetId, allScramblesForEvent, usedScramblesIdsForEvent } from '../../logic/scrambles';
+import { updateMultiAndFm, transformUploadedScrambles, allScramblesForEvent, usedScramblesIdsForEvent } from '../../logic/scrambles';
 
 let scrambleUploadedId = 1;
 
@@ -31,7 +31,7 @@ export default class Competition extends Component {
         // but with different scrambles.
         newScramble.competitionName = `${scrambleUploadedId++}: ${newScramble.competitionName}`;
         newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);
-        newScramble = updateIn(newScramble, ['sheets'], assignScrambleSheetId);
+        newScramble = transformUploadedScrambles(newScramble);
         return {
           uploadedScrambles: [...state.uploadedScrambles, newScramble],
         }

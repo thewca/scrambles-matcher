@@ -78,7 +78,7 @@ const ScrambleFileInfo = ({ scramble }) => {
         <CardContent>
           <List dense>
             {scramble.sheets.map(sheet => (
-              <NestedScrambleItem key={sheet.scrambleSetId}>
+              <NestedScrambleItem key={sheet.id}>
                 {sheet.title}
               </NestedScrambleItem>
             ))}
