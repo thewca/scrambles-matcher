@@ -30,7 +30,8 @@
     "react-dom": "^16.8.6",
     "react-scripts": "^3.0.1",
     "smoothscroll-polyfill": "^0.4.4",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "xlsx": "^0.14.4"
   },
   "browserslist": [
     ">0.2%",

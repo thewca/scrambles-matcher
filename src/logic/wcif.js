@@ -6,8 +6,10 @@ import { groupBy, flatMap, sortBy } from './utils';
 
 export const eventIdFromRound = round => round.id.split("-")[0];
 
+export const registrantIdFromAttributes = (persons, name, country, wcaId) =>
+  persons.find(p => p.name === name && p.country === country && p.wcaId === wcaId).registrantId;
+
 export const internalWcifToWcif = wcif => {
-  console.log(wcif);
   // We only alter the scrambles, so make them right wrt the WCIF.
   return {
     ...wcif,
