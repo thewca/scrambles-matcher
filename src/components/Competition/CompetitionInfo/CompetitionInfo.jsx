@@ -1,36 +1,71 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ScrambleFileInfo from '../../Scrambles/ScrambleFileInfo';
+import { internalWcifToWcif } from '../../../logic/wcif';
+
+
+const downloadWcif = wcif => {
+  let blob = new Blob([JSON.stringify(internalWcifToWcif(wcif), null, 2)], { type: 'application/json' });
+  let blobURL = window.URL.createObjectURL(blob);
+
+  let tmp = document.createElement('a');
+  tmp.href = blobURL;
+  tmp.setAttribute('download', 'wcif.json');
+  document.body.appendChild(tmp);
+  tmp.click();
+};
 
 const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
+  button: {
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
   const classes = useStyles();
+  // FIXME: restore the check ;)
+  //const exportUnavailable = wcif.events.some(e => e.rounds.some(r => r.scrambleSets.length === 0));
+  const exportUnavailable = false;
+  const actionDownloadWcif = () => downloadWcif(wcif);
   return (
-    <Paper>
+    <Paper style={{ padding: 16 }}>
       <Typography paragraph>
         Some extra infos about the competition
       </Typography>
-      <input
-        accept=".json"
-        className={classes.input}
-        id="upload-scramble-json"
-        multiple
-        type="file"
-        onChange={uploadAction}
-      />
-      <label htmlFor="upload-scramble-json">
-        <Button variant="contained" component="span" color="secondary">
-          Upload scrambles json
-        </Button>
-      </label>
+      <Grid container direction="row">
+        <div>
+          <input
+            accept=".json"
+            className={classes.input}
+            id="upload-scramble-json"
+            multiple
+            type="file"
+            onChange={uploadAction}
+          />
+          <label htmlFor="upload-scramble-json">
+            <Button variant="contained" component="span" color="secondary" className={classes.button}>
+              Upload scrambles json
+            </Button>
+          </label>
+        </div>
+        <div>
+          <Button variant="contained" component="span"
+            disabled={exportUnavailable} color="primary"
+            className={classes.button}
+            onClick={actionDownloadWcif}
+          >
+            Get WCIF
+          </Button>
+        </div>
+      </Grid>
       <Typography variant="h4">
         Uploaded scrambles:
       </Typography>
