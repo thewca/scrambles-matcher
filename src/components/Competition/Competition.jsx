@@ -6,6 +6,7 @@ import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { flatMap, updateIn } from '../../logic/utils';
+import { eventIdFromRound } from '../../logic/wcif';
 import { updateMultiAndFm, transformUploadedScrambles, allScramblesForEvent, usedScramblesIdsForEvent } from '../../logic/scrambles';
 
 let scrambleUploadedId = 1;
@@ -46,12 +47,13 @@ export default class Competition extends Component {
       alert("Couldn't load the JSON scrambles file");
     }
 
-    reader.readAsText(ev.target.files[0]);
+    if (ev.target.files.length > 0)
+      reader.readAsText(ev.target.files[0]);
   }
 
-  attachScramblesToRound = (scrambles, roundId) => {
+  attachScramblesToRound = (scrambles, round) => {
     const { wcif } = this.state;
-    let eventId = roundId.split("-")[0];
+    let eventId = eventIdFromRound(round);
     let eventIndex, roundIndex = null;
     let event = wcif.events.find((e, index) => {
       eventIndex = index;
@@ -59,7 +61,7 @@ export default class Competition extends Component {
     });
     event.rounds.find((r, index) => {
       roundIndex = index;
-      return r.id === roundId;
+      return r.id === round.id;
     });
     this.setState({
       wcif: updateIn(wcif, ["events", eventIndex, "rounds", roundIndex], r => {
@@ -81,7 +83,7 @@ export default class Competition extends Component {
     let round = null;
     if (selectedRoundId) {
       round = rounds.find(r => r.id === selectedRoundId);
-      let eventId = round.id.split("-")[0];
+      let eventId = eventIdFromRound(round);
       let used = usedScramblesIdsForEvent(wcif.events, eventId);
       availableScrambles = allScramblesForEvent(uploadedScrambles, eventId, used);
     }

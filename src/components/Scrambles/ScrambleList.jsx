@@ -9,7 +9,7 @@ import { styled } from '@material-ui/styles';
 const prefixForIndex = index => String.fromCharCode(65 + index);
 
 const DNDList = styled(List)({
-  minHeight: "200px",
+  minHeight: "100px",
 });
 
 const getItemStyle = (isDragging, draggableStyle) => ({

@@ -6,7 +6,7 @@ let uniqueScrambleSetId = 1;
 // { id, scrambles: [], extraScrambles: [] }
 // Internally we want to store a couple more information:
 // {
-//   sheetName: String, title: String, attemptNumber: null|Integer,
+//   sheetName: String, title: String, generatedAttemptNumber: null|Integer,
 //   eventId: String, roundNumber: Integer
 // }
 // This will let us easily (automatically) match and display scrambles in the WCIF.
@@ -18,7 +18,7 @@ const tnoodleSheetsToInternal = (filename, sheets) => sheets.map(sheet => {
       extraScrambles: sheet.extraScrambles || [],
       title: sheet.title,
       sheetName: filename,
-      attemptNumber: sheet.attemptNumber,
+      generatedAttemptNumber: sheet.generatedAttemptNumber,
       eventId: sheet.event,
       roundNumber: sheet.round,
     }
@@ -32,7 +32,7 @@ const splitMultiFm = scramble => {
     scrambles: [sequence],
     title: `${scramble.title} Attempt ${attemptNumber}`,
     scrambleSetId: `${scramble.scrambleSetId}-a${attemptNumber}`,
-    attemptNumber: attemptNumber++,
+    generatedAttemptNumber: attemptNumber++,
   }});
 }
 
