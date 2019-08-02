@@ -5,9 +5,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import classnames from 'classnames';
 
 import CubingIcon from '../../CubingIcon/CubingIcon';
 
@@ -16,21 +17,24 @@ const EventListItem = withStyles({
     color: 'black',
     '& .cubing-icon, & svg': {
       color: 'black',
-    }
+    },
   }
 })(ListItem);
 
-const NestedRoundItem = withStyles(theme => ({
-  root: {
+const useStyles = makeStyles(theme => ({
+  item: {
     paddingLeft: theme.spacing(4),
+  },
+  svg: {
     '& svg': {
       color: 'red',
     }
   }
-}))(ListItem);
+}));
 
 const CompetitionMenu = ({ events, setSelectedRound }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const classes = useStyles();
   return (
     <List dense={true}>
       <EventListItem button onClick={() => setSelectedRound(null)}>
@@ -52,6 +56,13 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
               <CubingIcon eventId={event.id} />
             </ListItemIcon>
             <ListItemText primary={event.id} />
+            {event.rounds.some(r => r.scrambleSets.length === 0) && (
+              <ListItemIcon className={classes.svg}>
+                <Tooltip title="Missing scrambles">
+                  <ReportProblemIcon />
+                </Tooltip>
+              </ListItemIcon>
+            )}
           </EventListItem>
           <Collapse
             in={selectedEvent === event.id}
@@ -60,9 +71,10 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
           >
             <List dense={true}>
               {event.rounds.map(round => (
-                <NestedRoundItem
+                <ListItem
                   key={round.id}
                   button
+                  className={classnames(classes.svg, classes.item)}
                   onClick={() => setSelectedRound(round.id)}
                 >
                   <ListItemText primary={round.id} />
@@ -73,7 +85,7 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                       </Tooltip>
                     </ListItemIcon>
                   )}
-                </NestedRoundItem>
+                </ListItem>
               ))}
             </List>
           </Collapse>
