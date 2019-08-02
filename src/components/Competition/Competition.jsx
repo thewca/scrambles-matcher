@@ -14,11 +14,15 @@ export default class Competition extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      localWcif: props.wcif,
+      wcif: props.wcif,
       selectedRoundId: null,
       uploadedScrambles: [],
     };
   }
+
+  // It's worth noting we only handle one competition over the life of the component,
+  // therefore no componentDidUpdate is necessary.
+  // To upload scrambles for another competition the user would just refresh the page.
 
   uploadNewScramble = ev => {
     let reader = new FileReader();
@@ -45,36 +49,60 @@ export default class Competition extends Component {
     reader.readAsText(ev.target.files[0]);
   }
 
+  attachScramblesToRound = (scrambles, roundId) => {
+    const { wcif } = this.state;
+    let eventId = roundId.split("-")[0];
+    let eventIndex, roundIndex = null;
+    let event = wcif.events.find((e, index) => {
+      eventIndex = index;
+      return e.id === eventId;
+    });
+    event.rounds.find((r, index) => {
+      roundIndex = index;
+      return r.id === roundId;
+    });
+    this.setState({
+      wcif: updateIn(wcif, ["events", eventIndex, "rounds", roundIndex], r => {
+        return {
+          ...r,
+          scrambleSets: scrambles,
+        };
+      }),
+    });
+  }
+
   setSelectedRound = id => this.setState({ selectedRoundId: id });
 
   render() {
-    const { localWcif, selectedRoundId, uploadedScrambles } = this.state;
+    const { wcif, selectedRoundId, uploadedScrambles } = this.state;
     // const { handleWcifUpdate } = this.props;
-    const rounds = flatMap(localWcif.events, e => e.rounds);
+    const rounds = flatMap(wcif.events, e => e.rounds);
     let availableScrambles = [];
     let round = null;
     if (selectedRoundId) {
       round = rounds.find(r => r.id === selectedRoundId);
       let eventId = round.id.split("-")[0];
-      let used = usedScramblesIdsForEvent(localWcif.events, eventId);
+      let used = usedScramblesIdsForEvent(wcif.events, eventId);
       availableScrambles = allScramblesForEvent(uploadedScrambles, eventId, used);
     }
     return (
       <Fragment>
         <Grid item xs={12} style={{ padding: 16 }}>
           <Typography variant="h2" component="h1" align="center">
-            {localWcif.name}
+            {wcif.name}
           </Typography>
         </Grid>
         <Grid item xs={12} md={2} style={{ padding: 16 }}>
-          <CompetitionMenu events={localWcif.events}
+          <CompetitionMenu events={wcif.events}
             setSelectedRound={this.setSelectedRound} />
         </Grid>
         <Grid item xs={12} md={8} style={{ padding: 16 }}>
           { round ? (
-            <RoundPanel round={round} availableScrambles={availableScrambles} />
+            <RoundPanel round={round} availableScrambles={availableScrambles}
+              attachScramblesToRound={this.attachScramblesToRound}
+            />
           ) : (
-            <CompetitionInfo wcif={localWcif} uploadedScrambles={uploadedScrambles}
+            <CompetitionInfo wcif={wcif} uploadedScrambles={uploadedScrambles}
               uploadAction={this.uploadNewScramble}
             />
           )}

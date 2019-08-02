@@ -1,3 +1,9 @@
+
+const updateArrayInplace = (arr, index, newElem) => {
+  arr[index] = newElem;
+  return arr;
+}
+
 /**
  * Returns a copy of the object with the value at the specified path transformed by the update function.
  *
@@ -8,8 +14,12 @@
  */
 export const updateIn = (object, [property, ...properyChain], updater) =>
   properyChain.length === 0
-    ? { ...object, [property]: updater(object[property]) }
-    : { ...object, [property]: updateIn(object[property], properyChain, updater) };
+    ?
+      Number.isInteger(property) ? updateArrayInplace(object, property, updater(object[property]))
+      : { ...object, [property]: updater(object[property]) }
+    :
+      Number.isInteger(property) ? updateArrayInplace(object, property, updateIn(object[property], properyChain, updater))
+      : { ...object, [property]: updateIn(object[property], properyChain, updater) };
 
 /**
  * Returns a copy of the object with the value at the specified path set to the given one.
@@ -179,3 +189,8 @@ export const isoTimeDiff = (first, second) =>
 
 export const shortTime = (isoString, timeZone = 'UTC') =>
   new Date(isoString).toLocaleTimeString('en-US', { timeZone, hour: 'numeric', minute: 'numeric' });
+
+export const reorderArray = (arr, from, to) => {
+    const [removed] = arr.splice(from, 1);
+    arr.splice(to, 0, removed);
+}
