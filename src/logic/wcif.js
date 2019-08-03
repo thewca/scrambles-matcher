@@ -43,7 +43,7 @@ export const internalWcifToWcif = wcif => {
   }
 };
 
-export const internalWcifToResultsJson = wcif => {
+export const internalWcifToResultsJson = (wcif, version) => {
   return {
     competitionFormat: "WCA Competition 0.3",
     competitionId: wcif.id,
@@ -81,6 +81,6 @@ export const internalWcifToResultsJson = wcif => {
     }),
     // TODO: make sure that only one tnoodle was used, then add an explicit field for that?
     scrambleProgram: wcif.scrambleProgram,
-    resultsProgram: "Scrambles Matcher",
+    resultsProgram: `Scrambles Matcher ${version}`,
   };
 };

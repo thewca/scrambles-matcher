@@ -30,14 +30,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChange }) => {
+const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChange, version }) => {
   const classes = useStyles();
   // FIXME: restore the check ;)
   //const exportUnavailable = wcif.events.some(e => e.rounds.some(r => r.scrambleSets.length === 0));
   const exportUnavailable = false;
   const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif);
   const actionDownloadResultsJson = () =>
-    downloadFile(wcif, internalWcifToResultsJson, `Results for ${wcif.name}.json`);
+    downloadFile(wcif, wcif => internalWcifToResultsJson(wcif, version), `Results for ${wcif.name}.json`);
   const actionAssignScrambles = () =>
     handleWcifChange(autoAssignScrambles(wcif, uploadedScrambles));
   return (

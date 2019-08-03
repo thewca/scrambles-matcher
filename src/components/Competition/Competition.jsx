@@ -9,6 +9,8 @@ import { flatMap, updateIn } from '../../logic/utils';
 import { eventIdFromRound } from '../../logic/wcif';
 import { updateMultiAndFm, transformUploadedScrambles, allScramblesForEvent, usedScramblesIdsForEvent } from '../../logic/scrambles';
 
+import { version } from '../../../package.json';
+
 let scrambleUploadedId = 1;
 
 export default class Competition extends Component {
@@ -113,6 +115,7 @@ export default class Competition extends Component {
             <CompetitionInfo wcif={wcif} uploadedScrambles={uploadedScrambles}
               uploadAction={this.uploadNewScramble}
               handleWcifChange={this.handleWcifChange}
+              version={version}
             />
           )}
         </Grid>
