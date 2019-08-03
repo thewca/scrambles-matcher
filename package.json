@@ -9,22 +9,25 @@
     "results",
     "scrambles"
   ],
-  "homepage": "TODO",
+  "homepage": "https://viroulep.github.io/scrambles-matcher/",
   "author": "Philippe Virouleau",
   "license": "GPLv3",
   "repository": {
     "type": "git",
-    "url": "TODO"
+    "url": "https://github.com/viroulep/scrambles-matcher"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@material-ui/core": "^4.3.0",
     "@material-ui/icons": "^4.2.1",
     "classnames": "^2.2.6",
     "core-js": "^3.1.4",
+    "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.5",
     "react-dom": "^16.8.6",
