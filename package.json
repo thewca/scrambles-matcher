@@ -1,7 +1,7 @@
 {
   "name": "scrambles-matcher",
-  "version": "0.0.1",
-  "description": "Matching scrambles to results tool.",
+  "version": "0.1.0",
+  "description": "Tool to make matching scrambles to results easier.",
   "keywords": [
     "speedcubing",
     "WCA",
@@ -30,6 +30,7 @@
     "react-dom": "^16.8.6",
     "react-scripts": "^3.0.1",
     "smoothscroll-polyfill": "^0.4.4",
+    "typeface-roboto": "0.0.75",
     "typescript": "^3.5.3",
     "xlsx": "^0.14.4"
   },
