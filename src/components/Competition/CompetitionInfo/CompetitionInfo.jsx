@@ -5,16 +5,16 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ScrambleFileInfo from '../../Scrambles/ScrambleFileInfo';
-import { internalWcifToWcif } from '../../../logic/wcif';
+import { internalWcifToWcif, internalWcifToResultsJson } from '../../../logic/wcif';
 
 
-const downloadWcif = wcif => {
-  let blob = new Blob([JSON.stringify(internalWcifToWcif(wcif), null, 2)], { type: 'application/json' });
+const downloadFile = (wcif, exporter, filename="wcif.json") => {
+  let blob = new Blob([JSON.stringify(exporter(wcif), null, 2)], { type: 'application/json' });
   let blobURL = window.URL.createObjectURL(blob);
 
   let tmp = document.createElement('a');
   tmp.href = blobURL;
-  tmp.setAttribute('download', 'wcif.json');
+  tmp.setAttribute('download', filename);
   document.body.appendChild(tmp);
   tmp.click();
 };
@@ -34,7 +34,9 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
   // FIXME: restore the check ;)
   //const exportUnavailable = wcif.events.some(e => e.rounds.some(r => r.scrambleSets.length === 0));
   const exportUnavailable = false;
-  const actionDownloadWcif = () => downloadWcif(wcif);
+  const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif);
+  const actionDownloadResultsJson = () =>
+    downloadFile(wcif, internalWcifToResultsJson, `Results for ${wcif.name}.json`);
   return (
     <Paper style={{ padding: 16 }}>
       <Typography paragraph>
@@ -63,6 +65,15 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
             onClick={actionDownloadWcif}
           >
             Get WCIF
+          </Button>
+        </div>
+        <div>
+          <Button variant="contained" component="span"
+            disabled={exportUnavailable} color="primary"
+            className={classes.button}
+            onClick={actionDownloadResultsJson}
+          >
+            Get results JSON
           </Button>
         </div>
       </Grid>

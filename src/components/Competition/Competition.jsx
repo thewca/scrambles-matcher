@@ -38,6 +38,10 @@ export default class Competition extends Component {
         newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);
         newScramble = transformUploadedScrambles(newScramble);
         return {
+          wcif: {
+            ...state.wcif,
+            scrambleProgram: newScramble.version,
+          },
           uploadedScrambles: [...state.uploadedScrambles, newScramble],
         }
       });
