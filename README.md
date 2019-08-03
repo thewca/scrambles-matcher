@@ -9,20 +9,13 @@ If you have had to edit manually some scrambles JSON because of Multiple Blindfo
 
 
   - "Better" scrambles matching.
-<br/>
 The WA re-assigns automatically scrambles each time you upload a separate scrambles JSON. Even if you already matched a round to its corresponding set in the already uploaded scrambles. Scrambles Matcher assigns on-demand, and will only try to associate rounds which have no scrambles to scrambles from the uploaded JSON(s).
-
   - Better Drag and Drop for scrambles.
-<br/>
 If you have moved scrambles around in the WA you know what I'm talking about.
-
   - Native support for attempt-based event.
-<br/>
 Namely Multiple Blindfolded and Fewest Moves. When importing scrambles JSON(s) it will split scramble sheets for these events into attempt, so that they can be matched (manually or automatically) to the attempt they have actually been used for.
 Especially useful if you had to generate a couple of extra scrambles for Multiple Blindfolded, or simply if you used several groups for that event.
-<br/>
 Then for the results JSON they are grouped together in a meaningful way for the WCA website.
-
   - No more 100MB database download, no more java, just a html page to load. However this leads to a missing feature (for now), see below.
 
 ### Missing feature
