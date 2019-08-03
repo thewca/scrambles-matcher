@@ -1,4 +1,5 @@
 import { flatMap, updateIn, groupBy, sortBy } from './utils';
+import { idsFromRound } from './wcif';
 
 let uniqueScrambleSetId = 1;
 
@@ -42,6 +43,38 @@ const addScrambleSetsIfMissing = rounds => rounds.map(r => {
     scrambleSets: r.scrambleSets || [],
   }
 });
+
+const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
+  // We don't want to overwrite existing scrambles,
+  // so for all rounds *without* scramble we:
+  //   - for all scramble in uploadedScrambles (in order they were uploaded):
+  //     - look for a set of matching (event, round number)
+  // This way if we ever upload multiple sets of scramble for the same round
+  // we just assign the first one (as the others are likely extra scrambles used
+  // in rounds we can't figure out programatically !).
+  // We also want to return a new WCIF as the wcif passed is most likely taken
+  // from a React state.
+  const [eventId, roundNumber] = idsFromRound(round);
+  let firstMatchingSheets = [];
+  uploadedScrambles.find(up => {
+    firstMatchingSheets = up.sheets.filter(s => !usedScramblesId.includes(s.id) && s.eventId === eventId && s.roundNumber === roundNumber);
+    return firstMatchingSheets.length !== 0;
+  });
+  // We don't actually need to update the usedScramblesId, because we never try to
+  // get the same eventId/roundNumber again, so usedScramblesId only need to
+  // contain the scrambles in use before the autoAssign thing.
+  if (["333fm", "333mbf"].includes(eventId)) {
+    // Assign the attemptNumber from the generated number
+    return firstMatchingSheets.map(s => {
+      return {
+        ...s,
+        attemptNumber: s.generatedAttemptNumber,
+      };
+    });
+  } else {
+    return firstMatchingSheets;
+  }
+};
 
 export const allScramblesForEvent = (scrambles, eventId, usedIds) =>
   flatMap(scrambles, scramble => scramble.sheets.filter(s => (s.eventId === eventId && !usedIds.includes(s.id))));
@@ -98,3 +131,26 @@ export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
     }
   });
 };
+
+export const autoAssignScrambles = (wcif, uploadedScrambles) => {
+  let usedScrambleIdsByEvent = {};
+  wcif.events.forEach(e => {
+    usedScrambleIdsByEvent[e.id] = usedScramblesIdsForEvent(wcif.events, e.id);
+  });
+  return {
+    ...wcif,
+    events: wcif.events.map(e => {
+      return {
+        ...e,
+        rounds: e.rounds.map(r => {
+          return {
+            ...r,
+            scrambleSets: r.scrambleSets.length === 0
+              ? scrambleSetsForRound(usedScrambleIdsByEvent[e.id], r, uploadedScrambles)
+              : r.scrambleSets,
+          };
+        }),
+      };
+    }),
+  };
+}

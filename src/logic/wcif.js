@@ -8,6 +8,12 @@ import { countryById } from './countries';
 export const eventIdFromRound = round => round.id.split("-")[0];
 export const roundNumberFromRound = round => round.id.split("-")[1].substring(1);
 
+export const idsFromRound = round => {
+  let [eventId, roundNumber] = round.id.split("-r");
+  roundNumber = parseInt(roundNumber);
+  return [eventId, roundNumber];
+};
+
 export const registrantIdFromAttributes = (persons, name, country, wcaId) =>
   persons.find(p => p.name === name && p.country === country && p.wcaId === wcaId).registrantId;
 

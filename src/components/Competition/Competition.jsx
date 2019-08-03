@@ -77,6 +77,8 @@ export default class Competition extends Component {
     });
   }
 
+  handleWcifChange = wcif => this.setState({ wcif });
+
   setSelectedRound = id => this.setState({ selectedRoundId: id });
 
   render() {
@@ -110,6 +112,7 @@ export default class Competition extends Component {
           ) : (
             <CompetitionInfo wcif={wcif} uploadedScrambles={uploadedScrambles}
               uploadAction={this.uploadNewScramble}
+              handleWcifChange={this.handleWcifChange}
             />
           )}
         </Grid>

@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ScrambleFileInfo from '../../Scrambles/ScrambleFileInfo';
 import { internalWcifToWcif, internalWcifToResultsJson } from '../../../logic/wcif';
+import { autoAssignScrambles } from '../../../logic/scrambles';
 
 
 const downloadFile = (wcif, exporter, filename="wcif.json") => {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
+const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChange }) => {
   const classes = useStyles();
   // FIXME: restore the check ;)
   //const exportUnavailable = wcif.events.some(e => e.rounds.some(r => r.scrambleSets.length === 0));
@@ -37,6 +38,8 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
   const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif);
   const actionDownloadResultsJson = () =>
     downloadFile(wcif, internalWcifToResultsJson, `Results for ${wcif.name}.json`);
+  const actionAssignScrambles = () =>
+    handleWcifChange(autoAssignScrambles(wcif, uploadedScrambles));
   return (
     <Paper style={{ padding: 16 }}>
       <Typography paragraph>
@@ -57,6 +60,15 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction }) => {
               Upload scrambles json
             </Button>
           </label>
+        </div>
+        <div>
+          <Button variant="contained" component="span"
+            color="primary"
+            className={classes.button}
+            onClick={actionAssignScrambles}
+          >
+            Auto assign scrambles
+          </Button>
         </div>
         <div>
           <Button variant="contained" component="span"
