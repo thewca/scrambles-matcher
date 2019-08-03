@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  card: {
+    marginBottom: theme.spacing(2),
+  }
 }));
 
 const NestedScrambleItem = withStyles(theme => ({
@@ -39,7 +42,7 @@ const ScrambleFileInfo = ({ scramble }) => {
   }
 
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardHeader
         action={
           <IconButton

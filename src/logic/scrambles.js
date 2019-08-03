@@ -154,3 +154,20 @@ export const autoAssignScrambles = (wcif, uploadedScrambles) => {
     }),
   };
 }
+
+export const clearScrambles = wcif => {
+  return {
+    ...wcif,
+    events: wcif.events.map(e => {
+      return {
+        ...e,
+        rounds: e.rounds.map(r => {
+          return {
+            ...r,
+            scrambleSets: [],
+          };
+        }),
+      };
+    }),
+  };
+}

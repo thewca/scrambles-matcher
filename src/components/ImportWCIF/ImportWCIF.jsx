@@ -6,7 +6,7 @@ import XLSX from 'xlsx';
 import { personWcifFromRegistrationXlsx, roundWcifFromXlsx } from '../../logic/xlsx-utils';
 
 
-//import tmpWcif from '../../wcifresults.json';
+import tmpWcif from '../../wcifresults.json';
 
 const useStyles = makeStyles(theme => ({
   input: {
@@ -84,7 +84,7 @@ const handleFileUploadChange = (updater, event) => {
 const ImportWCIF = ({ handleWcifJSONLoad }) => {
   const classes = useStyles();
   // Dirty hack to preload given WCIF
-  //handleWcifJSONLoad(tmpWcif);
+  handleWcifJSONLoad(tmpWcif);
   return (
     <Fragment>
       <Grid item xs={12} style={{ padding: 16 }}>
