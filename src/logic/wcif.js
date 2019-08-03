@@ -84,3 +84,5 @@ export const internalWcifToResultsJson = (wcif, version) => {
     resultsProgram: `Scrambles Matcher ${version}`,
   };
 };
+
+export const competitionLink = id => `https://www.worldcubeassociation.org/competitions/${id}`;

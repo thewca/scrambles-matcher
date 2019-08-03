@@ -60,11 +60,16 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChan
   const actionClearScrambles = () =>
     handleWcifChange(clearScrambles(wcif));
 
+  const uploadCompetitionIdAction = id =>
+    handleWcifChange({ ...wcif, id: id });
+
   return (
     <Fragment>
       <CompetitionDetailsPanel downloadWcifAction={actionDownloadWcif}
         downloadResultsJsonAction={actionDownloadResultsJson}
+        uploadCompetitionIdAction={uploadCompetitionIdAction}
         classes={classes}
+        wcif={wcif}
         exportAvailable={exportAvailable}
       />
       <MatchingScramblesPanel assignAction={actionAssignScrambles}
