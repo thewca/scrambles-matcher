@@ -67,9 +67,17 @@ const attemptsFromResultRow = (eventId, formatId, row) => {
 
 const bestForRow = (eventId, formatId, row) => {
   let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
-  return eventId === "333mbf"
-    ? parseInt(row[4 + maxAttempts*4])
-    : timeToValue(row[4 + maxAttempts]);
+  if (formatId === "1") {
+    // Then there is no "best" column
+    return eventId === "333mbf"
+      ? parseInt(row[7])
+      : timeToValue(row[4]);
+  } else {
+    // Use extra offset for the "best" column
+    return eventId === "333mbf"
+      ? parseInt(row[4 + maxAttempts*4])
+      : timeToValue(row[4 + maxAttempts]);
+  }
 };
 
 const avgForRow = (eventId, formatId, row) => {

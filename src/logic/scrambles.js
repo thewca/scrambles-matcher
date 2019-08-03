@@ -1,4 +1,4 @@
-import { flatMap, updateIn } from './utils';
+import { flatMap, updateIn, groupBy, sortBy } from './utils';
 
 let uniqueScrambleSetId = 1;
 
@@ -56,4 +56,45 @@ export const ensureScramblesMember = events => events.map(e => updateIn(e, ["rou
 export const transformUploadedScrambles = uploadedJson => {
   const updater = sheets => tnoodleSheetsToInternal(uploadedJson.competitionName, sheets);
   return updateIn(uploadedJson, ["sheets"], updater);
+};
+
+// 65 is the char code for 'A'
+export const prefixForIndex = index => String.fromCharCode(65 + index);
+
+export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
+  if (scrambles.length === 0)
+    return scrambles;
+  if (eventId === "333mbf") {
+    // We need to combine all scrambles for each attempt,
+    // in the end there will be one scramble sheet with X scramble sequences,
+    // where X is the number of attempts.
+    let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
+    let sheet = {
+      id: scrambles[0].id,
+      scrambles: [],
+      extraScrambles: [],
+    }
+    Object.keys(scramblesByAttempt).sort().forEach(number =>
+      sheet.scrambles.push(scramblesByAttempt[number].map(s => s.scrambles).join("\n")));
+    return [sheet];
+  } else if (eventId === "333fm") {
+    // We can't track yet in the WCIF which scramble was for witch attempt,
+    // so let's just sort them by attempt id and combine them in one
+    // scramble sheet.
+    // There is usually only one group for FM, the only case where we would
+    // like more scramble than expected is when something terrible happened
+    // and an extra was needed.
+    return [{
+      id: scrambles[0].id,
+      scrambles: flatMap(sortBy(scrambles, s => s.attemptNumber), s => s.scrambles),
+      extraScrambles: [],
+    }];
+  }
+  return scrambles.map(set => {
+    return {
+      id: set.id,
+      scrambles: set.scrambles,
+      extraScrambles: set.extraScrambles,
+    }
+  });
 };

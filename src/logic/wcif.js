@@ -1,4 +1,5 @@
-import { groupBy, flatMap, sortBy } from './utils';
+import { internalScramblesToWcifScrambles, prefixForIndex } from './scrambles';
+import { countryById } from './countries';
 
 // TODO: implement a proper "allScramblePresent" function
 // For attempt-based event (mbf, fm), we should not only check that we have one scramble,
@@ -10,43 +11,13 @@ export const roundNumberFromRound = round => round.id.split("-")[1].substring(1)
 export const registrantIdFromAttributes = (persons, name, country, wcaId) =>
   persons.find(p => p.name === name && p.country === country && p.wcaId === wcaId).registrantId;
 
-export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
-  if (scrambles.length === 0)
-    return scrambles;
-  if (eventId === "333mbf") {
-    // We need to combine all scrambles for each attempt,
-    // in the end there will be one scramble sheet with X scramble sequences,
-    // where X is the number of attempts.
-    let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
-    let sheet = {
-      id: scrambles[0].id,
-      scrambles: [],
-      extraScrambles: [],
-    }
-    Object.keys(scramblesByAttempt).sort().forEach(number =>
-      sheet.scrambles.push(scramblesByAttempt[number].map(s => s.scrambles).join("\n")));
-    return [sheet];
-  } else if (eventId === "333fm") {
-    // We can't track yet in the WCIF which scramble was for witch attempt,
-    // so let's just sort them by attempt id and combine them in one
-    // scramble sheet.
-    // There is usually only one group for FM, the only case where we would
-    // like more scramble than expected is when something terrible happened
-    // and an extra was needed.
-    return [{
-      id: scrambles[0].id,
-      scrambles: flatMap(sortBy(scrambles, s => s.attemptNumber), s => s.scrambles),
-      extraScrambles: [],
-    }];
-  }
-  return scrambles.map(set => {
-    return {
-      id: set.id,
-      scrambles: set.scrambles,
-      extraScrambles: set.extraScrambles,
-    }
-  });
-}
+const WcifScramblesToResultsGroups = scrambles => scrambles.map((sheet, index) => {
+  return {
+    group: prefixForIndex(index),
+    scrambles: sheet.scrambles,
+    extraScrambles: sheet.extraScrambles || [],
+  };
+});
 
 export const internalWcifToWcif = wcif => {
   // We only alter the scrambles, so make them right wrt the WCIF.
@@ -75,8 +46,7 @@ export const internalWcifToResultsJson = wcif => {
         id: p.registrantId,
         name: p.name,
         wcaId: p.wcaId || "",
-        // TODO: name to id
-        countryId: p.country,
+        countryId: countryById(p.country).iso2,
         gender: p.gender,
         dob: p.birthdate,
       };
@@ -88,8 +58,17 @@ export const internalWcifToResultsJson = wcif => {
           return {
             roundId: roundNumberFromRound(r),
             formatId: r.format,
-            results: [],
-            groups: [],
+            results: r.results.map(res => {
+              return {
+                personId: res.personId,
+                position: res.ranking,
+                results: res.attempts.map(a => a.result),
+                best: res.best,
+                average: res.average,
+              };
+            }),
+            groups: WcifScramblesToResultsGroups(internalScramblesToWcifScrambles(e.id,
+              r.scrambleSets)),
           }
         }),
       }

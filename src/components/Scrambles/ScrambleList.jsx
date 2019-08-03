@@ -5,8 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import { styled } from '@material-ui/styles';
 
-// 65 is the char code for 'A'
-const prefixForIndex = index => String.fromCharCode(65 + index);
+import { prefixForIndex } from '../../logic/scrambles';
 
 const DNDList = styled(List)({
   minHeight: "100px",
