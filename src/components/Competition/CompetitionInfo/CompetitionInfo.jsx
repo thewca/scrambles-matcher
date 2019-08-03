@@ -25,14 +25,15 @@ const useStyles = makeStyles(theme => ({
   addJsonButton: {
     width: "100%",
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(3),
   },
   extendedIcon: {
     marginRight: theme.spacing(1),
   },
+  mb3: {
+    marginBottom: theme.spacing(3),
+  },
   button: {
     marginRight: theme.spacing(3),
-    marginBottom: theme.spacing(2),
   },
   paper: {
     padding: 16,

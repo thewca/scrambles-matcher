@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -38,7 +38,7 @@ const CompetitionDetailsPanel = (props) => {
       <Typography variant="h4" className={classes.h}>
         Competition details
       </Typography>
-      <form className={classes.container} noValidate autoComplete="off">
+      <form className={classes.mb3} noValidate autoComplete="off">
         <TextField
           id="outlined-name"
           label="Competition ID"
@@ -50,22 +50,24 @@ const CompetitionDetailsPanel = (props) => {
           variant="outlined"
         />
       </form>
-      <Grid container direction="row">
-        <Button variant="contained" component="span"
+      <Typography paragraph>
+        When you have make sure your competition ID is correct and all your rounds
+        have the correct scrambles, you can get the export you want below.
+      </Typography>
+      <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
+        <Button
           disabled={!exportAvailable} color="primary"
-          className={classes.button}
           onClick={downloadWcifAction}
         >
           Get WCIF
         </Button>
-        <Button variant="contained" component="span"
+        <Button
           disabled={!exportAvailable} color="primary"
-          className={classes.button}
           onClick={downloadResultsJsonAction}
         >
           Get results JSON
         </Button>
-      </Grid>
+      </ButtonGroup>
     </Paper>
   );
 };

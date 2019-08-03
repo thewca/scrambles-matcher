@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { green } from '@material-ui/core/colors';
 import ScrambleFileInfo from '../../Scrambles/ScrambleFileInfo';
 import { withStyles } from '@material-ui/core/styles';
+import classnames from 'classnames';
 
 const GreenButton = withStyles(theme => ({
   root: {
@@ -35,7 +36,7 @@ const UploadedScramblesPanel = ({ uploadAction, uploadedScrambles, classes }) =>
           <GreenButton variant="contained"
             component="span"
             color="primary"
-            className={classes.addJsonButton}
+            className={classnames(classes.addJsonButton, classes.mb3)}
           >
             Upload scrambles json
           </GreenButton>
