@@ -1,5 +1,6 @@
 import { flatMap, updateIn, groupBy, sortBy } from './utils';
 import { idsFromRound } from './wcif';
+import { formatById } from './formats';
 
 let uniqueScrambleSetId = 1;
 
@@ -64,8 +65,10 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
   // get the same eventId/roundNumber again, so usedScramblesId only need to
   // contain the scrambles in use before the autoAssign thing.
   if (["333fm", "333mbf"].includes(eventId)) {
-    // Assign the attemptNumber from the generated number
-    return firstMatchingSheets.map(s => {
+    // Select scrambles which match the attempt number(s) expected,
+    // and assign the attemptNumber from the generated number
+    let numberOfAttempts = formatById(round.format).solveCount;
+    return firstMatchingSheets.filter(s => s.generatedAttemptNumber <= numberOfAttempts).map(s => {
       return {
         ...s,
         attemptNumber: s.generatedAttemptNumber,

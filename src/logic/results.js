@@ -21,7 +21,7 @@ export const encodeMbldResult = ({ solved, attempted, centiseconds }) => {
 };
 
 const timeInSecToValue = resultString =>
-  Math.floor(parseFloat(resultString)*100);
+  Math.round(parseFloat(resultString)*100);
 
 const timeInMinutesToValue = resultString => {
   let [min, rest] = resultString.split(":");
@@ -30,7 +30,7 @@ const timeInMinutesToValue = resultString => {
   return min * 6000 + centisec;
 };
 
-export const timeToValue = resultString => {
+export const timeToValue = (resultString, asMove=false) => {
   switch (resultString) {
     case "DNF":
       return -1;
@@ -39,6 +39,8 @@ export const timeToValue = resultString => {
     default:
       if (!resultString) {
         return 0;
+      } else if (asMove) {
+        return parseInt(resultString);
       } else if (resultString.includes(":")) {
         return timeInMinutesToValue(resultString);
       } else {

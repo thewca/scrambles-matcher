@@ -6,7 +6,7 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-import { competitionLink } from '../../../logic/wcif';
+import { competitionLink, competitionHasValidScrambles } from '../../../logic/wcif';
 
 const LinkToNewPage = props => {
   const { block, ...extraProps } = props;
@@ -29,8 +29,10 @@ const CompetitionDetailsPanel = (props) => {
   const {
     wcif, downloadWcifAction,
     downloadResultsJsonAction, classes,
-    exportAvailable, uploadCompetitionIdAction
+    uploadCompetitionIdAction
   } = props;
+
+  const exportAvailable = wcif.id && competitionHasValidScrambles(wcif);
 
   const handleNameChange = ev => uploadCompetitionIdAction(ev.target.value);
   return (
@@ -43,7 +45,7 @@ const CompetitionDetailsPanel = (props) => {
           id="outlined-name"
           label="Competition ID"
           //className={classes.textField}
-          value={wcif.id}
+          value={wcif.id || ""}
           onChange={handleNameChange}
           helperText={<HelperWithLink id={wcif.id} />}
           margin="normal"
@@ -54,15 +56,16 @@ const CompetitionDetailsPanel = (props) => {
         When you have make sure your competition ID is correct and all your rounds
         have the correct scrambles, you can get the export you want below.
       </Typography>
-      <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
+      <ButtonGroup variant="contained" color="primary"
+        aria-label="outlined primary button group"
+          disabled={!exportAvailable}
+      >
         <Button
-          disabled={!exportAvailable} color="primary"
           onClick={downloadWcifAction}
         >
           Get WCIF
         </Button>
         <Button
-          disabled={!exportAvailable} color="primary"
           onClick={downloadResultsJsonAction}
         >
           Get results JSON

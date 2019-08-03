@@ -89,11 +89,13 @@ export default class Competition extends Component {
     const rounds = flatMap(wcif.events, e => e.rounds);
     let availableScrambles = [];
     let round = null;
+    let event = null;
     if (selectedRoundId) {
       round = rounds.find(r => r.id === selectedRoundId);
       let eventId = eventIdFromRound(round);
-      let used = usedScramblesIdsForEvent(wcif.events, eventId);
-      availableScrambles = allScramblesForEvent(uploadedScrambles, eventId, used);
+      event = wcif.events.find(e => e.id === eventId);
+      let used = usedScramblesIdsForEvent(wcif.events, event.id);
+      availableScrambles = allScramblesForEvent(uploadedScrambles, event.id, used);
     }
     return (
       <Fragment>
@@ -108,7 +110,8 @@ export default class Competition extends Component {
         </Grid>
         <Grid item xs={12} md={8} style={{ padding: 16 }}>
           { round ? (
-            <RoundPanel round={round} availableScrambles={availableScrambles}
+            <RoundPanel event={event} round={round}
+              availableScrambles={availableScrambles}
               attachScramblesToRound={this.attachScramblesToRound}
             />
           ) : (

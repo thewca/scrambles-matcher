@@ -1,5 +1,8 @@
 import { internalScramblesToWcifScrambles, prefixForIndex } from './scrambles';
 import { countryById } from './countries';
+import { formatById } from './formats';
+import { groupBy } from './utils';
+import { roundTypeIdForRound } from './events';
 
 // TODO: implement a proper "allScramblePresent" function
 // For attempt-based event (mbf, fm), we should not only check that we have one scramble,
@@ -45,7 +48,7 @@ export const internalWcifToWcif = wcif => {
 
 export const internalWcifToResultsJson = (wcif, version) => {
   return {
-    competitionFormat: "WCA Competition 0.3",
+    formatVersion: "WCA Competition 0.3",
     competitionId: wcif.id,
     persons: wcif.persons.map(p => {
       return {
@@ -53,7 +56,7 @@ export const internalWcifToResultsJson = (wcif, version) => {
         name: p.name,
         wcaId: p.wcaId || "",
         countryId: countryById(p.country).iso2,
-        gender: p.gender,
+        gender: p.gender || "",
         dob: p.birthdate,
       };
     }),
@@ -62,7 +65,7 @@ export const internalWcifToResultsJson = (wcif, version) => {
         eventId: e.id,
         rounds: e.rounds.map(r => {
           return {
-            roundId: roundNumberFromRound(r),
+            roundId: roundTypeIdForRound(e.rounds.length, r),
             formatId: r.format,
             results: r.results.map(res => {
               return {
@@ -86,3 +89,15 @@ export const internalWcifToResultsJson = (wcif, version) => {
 };
 
 export const competitionLink = id => `https://www.worldcubeassociation.org/competitions/${id}`;
+
+export const competitionHasValidScrambles = wcif =>
+  wcif.events.every(e => eventHasValidScrambles(e));
+
+export const eventHasValidScrambles = event =>
+  event.rounds.every(r => roundHasValidScrambles(event.id, r));
+
+export const roundHasValidScrambles = (eventId, round) =>
+  // Just taking eventId to avoid some splitting of round.id
+  ["333mbf", "333fm"].includes(eventId)
+    ? Object.keys(groupBy(round.scrambleSets, s => s.attemptNumber)).length === formatById(round.format).solveCount
+    : round.scrambleSets.length !== 0;

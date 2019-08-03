@@ -1,4 +1,6 @@
 import { sortBy } from './utils';
+import { idsFromRound } from './wcif';
+import { roundTypeById } from './roundtypes';
 
 const events = [
   { id: '333',    name: '3x3x3 Cube',         shortName: '3x3'   },
@@ -32,3 +34,29 @@ const propertyById = (property, eventId) =>
 
 export const sortWcifEvents = wcifEvents =>
   sortBy(wcifEvents, wcifEvent => events.findIndex(event => event.id === wcifEvent.id));
+
+export const roundTypeIdForRound = (numberOfRounds, round) => {
+  // This is the case if we loaded a XLSX!
+  if (round.roundTypeId)
+    return round.roundTypeId;
+
+  let [, roundNumber] = idsFromRound(round);
+  if (roundNumber === numberOfRounds) {
+    return round.cutoff ? 'c' : 'f';
+  }
+  if (roundNumber === 1) {
+    return round.cutoff ? 'd' : '1';
+  }
+  if (roundNumber === 2) {
+    return round.cutoff ? 'e' : '2';
+  }
+  if (roundNumber === 3) {
+    return round.cutoff ? 'g' : '3'
+  }
+  return "<oops>";
+};
+
+export const roundName = (numberOfRounds, round) => {
+  let [eventId, ] = idsFromRound(round);
+  return `${eventNameById(eventId)} - ${roundTypeById(roundTypeIdForRound(numberOfRounds, round)).name}`;
+};

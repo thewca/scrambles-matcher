@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import ScrambleList from '../../Scrambles/ScrambleList';
 import { groupBy, flatMap } from '../../../logic/utils';
-import { eventIdFromRound } from '../../../logic/wcif';
+import { roundName } from '../../../logic/events';
 import { formatById } from '../../../logic/formats';
 
 const SpacedPaper = withStyles(theme => ({
@@ -138,17 +138,16 @@ export default class RoundPanel extends Component {
   // TODO: save to main wcif button
 
   render() {
-    const { round } = this.props;
-    const eventId = eventIdFromRound(round);
+    const { event, round } = this.props;
     const { availableScrambles } = this.state;
     return (
       <DragDropContext onDragEnd={this.handleScrambleMovement}>
         <Typography variant="h3" align="center">
-          {round.id}
+          {roundName(event.rounds.length, round)}
         </Typography>
         <Grid container justify="center">
           <Grid item xs={6} md={4} style={{ padding: 16 }} align="center">
-            {["333mbf", "333fm"].includes(eventId) ? (
+            {["333mbf", "333fm"].includes(event.id) ? (
               <ListForAttemptBasedRound round={round} />
             ) : (
               <ListForGenericRound round={round} />

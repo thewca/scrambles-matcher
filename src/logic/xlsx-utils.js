@@ -1,5 +1,6 @@
 import { registrantIdFromAttributes } from './wcif';
 import { timeToValue } from './results';
+import { roundTypeFromCellName } from './roundtypes';
 
 const formatStringToId = {
   "Format: best of 1": "1",
@@ -54,7 +55,7 @@ const attemptsFromResultRow = (eventId, formatId, row) => {
   } else {
     let attempts = row.slice(4, 4 + maxAttempts).filter(a => a).map(a => {
       return {
-        result: timeToValue(a),
+        result: timeToValue(a, eventId === "333fm"),
       };
     });
     // Fillup to expected number of attempts.
@@ -71,12 +72,12 @@ const bestForRow = (eventId, formatId, row) => {
     // Then there is no "best" column
     return eventId === "333mbf"
       ? parseInt(row[7])
-      : timeToValue(row[4]);
+      : timeToValue(row[4], eventId === "333fm");
   } else {
     // Use extra offset for the "best" column
     return eventId === "333mbf"
       ? parseInt(row[4 + maxAttempts*4])
-      : timeToValue(row[4 + maxAttempts]);
+      : timeToValue(row[4 + maxAttempts], eventId === "333fm");
   }
 };
 
@@ -93,6 +94,7 @@ const avgForRow = (eventId, formatId, row) => {
       // 6 would return the worst.
       return timeToValue(row[7 + maxAttempts]);
     } else {
+      // For FM mo3, the value doesn't need to be taken as moves!
       // 5 would return the WR marker for the best.
       return timeToValue(row[6 + maxAttempts]);
     }
@@ -111,10 +113,12 @@ const avgForRow = (eventId, formatId, row) => {
 //   ["Position", "Name", "Country", "WCA id", "tried", "solved", "seconds", "score 1", "WR"]
 export const roundWcifFromXlsx = (persons, eventId, roundNumber, sheet) => {
   let roundFormat = formatStringToId[sheet[1][0]];
+  let roundType = roundTypeFromCellName(sheet[0][0]);
   sheet.splice(0, 4);
   return {
     advancementCondition: null,
     id: `${eventId}-r${roundNumber}`,
+    roundTypeId: roundType.id,
     cutoff: null,
     format: roundFormat,
     results: sheet.map(row => {

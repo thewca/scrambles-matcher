@@ -8,7 +8,7 @@ import UploadedScramblesPanel from './UploadedScramblesPanel';
 
 
 const downloadFile = (wcif, exporter, filename="wcif.json") => {
-  let blob = new Blob([JSON.stringify(exporter(wcif), null, 2)], { type: 'application/json' });
+  let blob = new Blob([JSON.stringify(exporter(wcif))], { type: 'application/json' });
   let blobURL = window.URL.createObjectURL(blob);
 
   let tmp = document.createElement('a');
@@ -46,9 +46,6 @@ const useStyles = makeStyles(theme => ({
 
 const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChange, version }) => {
   const classes = useStyles();
-  // FIXME: restore the check ;)
-  //const exportUnavailable = wcif.events.some(e => e.rounds.some(r => r.scrambleSets.length === 0));
-  const exportAvailable = true;
 
   const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif);
 
@@ -71,7 +68,6 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChan
         uploadCompetitionIdAction={uploadCompetitionIdAction}
         classes={classes}
         wcif={wcif}
-        exportAvailable={exportAvailable}
       />
       <MatchingScramblesPanel assignAction={actionAssignScrambles}
         clearAction={actionClearScrambles}
