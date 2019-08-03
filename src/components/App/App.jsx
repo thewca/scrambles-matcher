@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import Competition from '../Competition/Competition';
 import ImportWCIF from '../ImportWCIF/ImportWCIF';
 import { ensureScramblesMember } from '../../logic/scrambles';
@@ -29,13 +28,11 @@ export default class App extends Component {
     return (
       <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
         <CssBaseline />
-        <Grid container>
-          {wcif ? (
-            <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
-          ) : (
-            <ImportWCIF handleWcifJSONLoad={this.handleWcifJSONLoad} errors={errors} />
-          )}
-        </Grid>
+        {wcif ? (
+          <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
+        ) : (
+          <ImportWCIF handleWcifJSONLoad={this.handleWcifJSONLoad} errors={errors} />
+        )}
       </div>
     );
   }

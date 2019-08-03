@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -98,13 +98,13 @@ export default class Competition extends Component {
       availableScrambles = allScramblesForEvent(uploadedScrambles, event.id, used);
     }
     return (
-      <Fragment>
+      <Grid container>
         <Grid item xs={12} style={{ padding: 16 }}>
           <Typography variant="h2" component="h1" align="center">
             {wcif.name}
           </Typography>
         </Grid>
-        <Grid item xs={12} md={2} style={{ padding: 16 }}>
+        <Grid item xs={12} md={4} lg={3} xl={2} style={{ padding: 16 }}>
           <CompetitionMenu events={wcif.events}
             setSelectedRound={this.setSelectedRound} />
         </Grid>
@@ -122,7 +122,7 @@ export default class Competition extends Component {
             />
           )}
         </Grid>
-      </Fragment>
+      </Grid>
     );
   }
 };
