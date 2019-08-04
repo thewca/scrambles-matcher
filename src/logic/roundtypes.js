@@ -5,18 +5,6 @@ const roundTypes = [{
   cellName: 'Qualification',
   isFinal: 0,
 }, {
-  id: '1',
-  rank: 29,
-  name: 'First round',
-  cellName: 'First Round',
-  isFinal:  0,
-}, {
-  id: '2',
-  rank: 50,
-  name: 'Second round',
-  cellName: 'Second Round',
-  isFinal: 0,
-}, {
   id: '3',
   rank: 79,
   name: 'Semi Final',
@@ -57,6 +45,18 @@ const roundTypes = [{
   rank: 70,
   name: 'Combined Third round',
   cellName: 'Combined Third',
+  isFinal: 0,
+}, {
+  id: '1',
+  rank: 29,
+  name: 'First round',
+  cellName: 'First',
+  isFinal:  0,
+}, {
+  id: '2',
+  rank: 50,
+  name: 'Second round',
+  cellName: 'Second',
   isFinal: 0,
 }, {
   id: 'h',
