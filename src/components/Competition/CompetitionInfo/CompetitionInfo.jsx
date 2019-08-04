@@ -70,10 +70,11 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChan
         wcif={wcif}
       />
       <MatchingScramblesPanel assignAction={actionAssignScrambles}
+        uploadAction={uploadAction}
         clearAction={actionClearScrambles}
         classes={classes}
       />
-      <UploadedScramblesPanel uploadAction={uploadAction}
+      <UploadedScramblesPanel
         uploadedScrambles={uploadedScrambles}
         classes={classes}
       />

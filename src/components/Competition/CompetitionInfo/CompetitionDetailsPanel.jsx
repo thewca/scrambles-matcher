@@ -6,7 +6,7 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-import { competitionLink, competitionHasValidScrambles } from '../../../logic/wcif';
+import { competitionLink } from '../../../logic/wcif';
 
 const LinkToNewPage = props => {
   const { block, ...extraProps } = props;
@@ -32,7 +32,9 @@ const CompetitionDetailsPanel = (props) => {
     uploadCompetitionIdAction
   } = props;
 
-  const exportAvailable = wcif.id && competitionHasValidScrambles(wcif);
+  const exportAvailable = wcif.id;
+  // For now allow export even if missing scrambles.
+  // && competitionHasValidScrambles(wcif);
 
   const handleNameChange = ev => uploadCompetitionIdAction(ev.target.value);
   return (

@@ -1,11 +1,25 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import DeleteIcon from '@material-ui/icons/Delete';
+import classnames from 'classnames';
+import { green } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core/styles';
 
-const MatchingScramblesPanel = ({ assignAction, clearAction, classes }) => {
+const GreenButton = withStyles(theme => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+  },
+}))(Button);
+
+const MatchingScramblesPanel = ({ assignAction, clearAction, uploadAction, classes }) => {
   return (
     <Paper className={classes.paper}>
       <Typography variant="h4" className={classes.h}>
@@ -29,21 +43,48 @@ const MatchingScramblesPanel = ({ assignAction, clearAction, classes }) => {
         <br/>
         Don't forget to set the competition ID if it's not detected!
       </Typography>
-      <Button variant="contained" component="span"
-        color="primary"
-        className={classes.button}
-        onClick={assignAction}
-      >
-        <FreeBreakfastIcon className={classes.extendedIcon} />
-        Automatically assign scrambles
-      </Button>
-      <Button variant="contained" color="secondary"
-        className={classes.button}
-        onClick={clearAction}
-      >
-        <DeleteIcon className={classes.extendedIcon} />
-        Clear scrambles assignments
-      </Button>
+      <Grid container direction="row">
+        <Grid item xs={12}>
+          <input
+            accept=".json"
+            className={classes.input}
+            id="add-scramble-json"
+            multiple
+            type="file"
+            onChange={uploadAction}
+          />
+          <label htmlFor="add-scramble-json">
+            <GreenButton variant="contained"
+              component="span"
+              color="primary"
+              className={classnames(classes.addJsonButton, classes.mb3)}
+            >
+              Upload scrambles json
+            </GreenButton>
+          </label>
+        </Grid>
+        <Grid item xs={6} style={{ paddingRight: 8 }}>
+          <Button variant="contained" component="span"
+            color="primary"
+            fullWidth
+            className={classes.button}
+            onClick={assignAction}
+          >
+            <FreeBreakfastIcon className={classes.extendedIcon} />
+            Automatically assign scrambles
+          </Button>
+        </Grid>
+        <Grid item xs={6} style={{ paddingLeft: 8 }}>
+          <Button variant="contained" color="secondary"
+            fullWidth
+            className={classes.button}
+            onClick={clearAction}
+          >
+            <DeleteIcon className={classes.extendedIcon} />
+            Clear scrambles assignments
+          </Button>
+        </Grid>
+      </Grid>
     </Paper>
   );
 };
