@@ -29,7 +29,9 @@ const loadSheetIntoWcif = (wcif, name, jsonSheet) => {
     wcif.shortName = wcif.name;
     wcif.persons = personWcifFromRegistrationXlsx(jsonSheet);
   } else {
-    let [eventId, roundNumber] = name.split("-");
+    // Cubecomps export numbers for round identification, CubingChina exports
+    // the roundTypeId.
+    let eventId = name.split("-")[0];
     let event = wcif.events.find(e => e.id === eventId);
     if (!event) {
       event = {
@@ -40,6 +42,7 @@ const loadSheetIntoWcif = (wcif, name, jsonSheet) => {
       };
       wcif.events.push(event);
     }
+    let roundNumber = event.rounds.length + 1;
     event.rounds.push(roundWcifFromXlsx(wcif.persons, eventId, roundNumber, jsonSheet));
   }
 };

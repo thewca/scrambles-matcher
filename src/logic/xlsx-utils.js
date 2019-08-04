@@ -8,6 +8,7 @@ const formatStringToId = {
   "Format: best of 3": "3",
   "Format: mean of 3": "m",
   "Format: average of 5": "a",
+  "Format: average of 5 (removing best and worst)": "a",
 };
 
 const expectedNumberOfAttemptsByFormat = {
@@ -43,7 +44,6 @@ export const personWcifFromRegistrationXlsx = sheet =>
 
 const attemptsFromResultRow = (eventId, formatId, row) => {
   let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
-  // TODO: for FMC parse move
   if (eventId === "333mbf") {
     return [...Array(maxAttempts).keys()].map(index => {
       return {
@@ -114,6 +114,10 @@ const avgForRow = (eventId, formatId, row) => {
 export const roundWcifFromXlsx = (persons, eventId, roundNumber, sheet) => {
   let roundFormat = formatStringToId[sheet[1][0]];
   let roundType = roundTypeFromCellName(sheet[0][0]);
+  if (!roundFormat)
+    throw new Error(`Couldn't get format from string "${sheet[1][0]}"`);
+  if (!roundType)
+    throw new Error(`Couldn't get roundTypeId from string "${sheet[0][0]}"`);
   sheet.splice(0, 4);
   return {
     advancementCondition: null,
@@ -121,7 +125,7 @@ export const roundWcifFromXlsx = (persons, eventId, roundNumber, sheet) => {
     roundTypeId: roundType.id,
     cutoff: null,
     format: roundFormat,
-    results: sheet.map(row => {
+    results: sheet.filter(row => row[1]).map(row => {
       return {
         ranking: parseInt(row[0]),
         personId: registrantIdFromAttributes(persons, row[1], row[2], row[3] || null),
