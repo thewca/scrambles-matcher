@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChange, version }) => {
   const classes = useStyles();
 
-  const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif);
+  const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif, `WCIF for ${wcif.name}.json`);
 
   const actionDownloadResultsJson = () =>
     downloadFile(wcif, wcif => internalWcifToResultsJson(wcif, version), `Results for ${wcif.name}.json`);
