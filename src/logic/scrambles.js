@@ -13,37 +13,33 @@ let uniqueScrambleSetId = 1;
 // }
 // This will let us easily (automatically) match and display scrambles in the WCIF.
 // Keeping in mind we'll need to support loading scrambles from the uploaded WCIF!
-const tnoodleSheetsToInternal = (filename, sheets) => sheets.map(sheet => {
-    return {
-      id: uniqueScrambleSetId++,
-      scrambles: sheet.scrambles || [],
-      extraScrambles: sheet.extraScrambles || [],
-      title: sheet.title,
-      sheetName: filename,
-      generatedAttemptNumber: sheet.generatedAttemptNumber,
-      eventId: sheet.event,
-      roundNumber: sheet.round,
-    }
-});
+const tnoodleSheetsToInternal = (filename, sheets) => sheets.map(sheet => ({
+  id: uniqueScrambleSetId++,
+  scrambles: sheet.scrambles || [],
+  extraScrambles: sheet.extraScrambles || [],
+  title: sheet.title,
+  sheetName: filename,
+  generatedAttemptNumber: sheet.generatedAttemptNumber,
+  eventId: sheet.event,
+  roundNumber: sheet.round,
+}));
 
 const splitMultiFm = scramble => {
   let attemptNumber = 1;
   // Split the scramble to have one object per attempt (will be useful later ;))
-  return scramble.scrambles.map(sequence => { return {
+  return scramble.scrambles.map(sequence => ({
     ...scramble,
     scrambles: [sequence],
     title: `${scramble.title} Attempt ${attemptNumber}`,
     scrambleSetId: `${scramble.scrambleSetId}-a${attemptNumber}`,
     generatedAttemptNumber: attemptNumber++,
-  }});
+  }));
 }
 
-const addScrambleSetsIfMissing = rounds => rounds.map(r => {
-  return {
-    ...r,
-    scrambleSets: r.scrambleSets || [],
-  }
-});
+const addScrambleSetsIfMissing = rounds => rounds.map(r => ({
+  ...r,
+  scrambleSets: r.scrambleSets || [],
+}));
 
 const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
   // We don't want to overwrite existing scrambles,
@@ -68,12 +64,10 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
     // Select scrambles which match the attempt number(s) expected,
     // and assign the attemptNumber from the generated number
     let numberOfAttempts = formatById(round.format).solveCount;
-    return firstMatchingSheets.filter(s => s.generatedAttemptNumber <= numberOfAttempts).map(s => {
-      return {
-        ...s,
-        attemptNumber: s.generatedAttemptNumber,
-      };
-    });
+    return firstMatchingSheets.filter(s => s.generatedAttemptNumber <= numberOfAttempts).map(s => ({
+      ...s,
+      attemptNumber: s.generatedAttemptNumber,
+    }));
   } else {
     return firstMatchingSheets;
   }
@@ -126,13 +120,11 @@ export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
       extraScrambles: [],
     }];
   }
-  return scrambles.map(set => {
-    return {
-      id: set.id,
-      scrambles: set.scrambles,
-      extraScrambles: set.extraScrambles,
-    }
-  });
+  return scrambles.map(set => ({
+    id: set.id,
+    scrambles: set.scrambles,
+    extraScrambles: set.extraScrambles,
+  }));
 };
 
 export const autoAssignScrambles = (wcif, uploadedScrambles) => {
@@ -142,35 +134,25 @@ export const autoAssignScrambles = (wcif, uploadedScrambles) => {
   });
   return {
     ...wcif,
-    events: wcif.events.map(e => {
-      return {
-        ...e,
-        rounds: e.rounds.map(r => {
-          return {
-            ...r,
-            scrambleSets: r.scrambleSets.length === 0
-              ? scrambleSetsForRound(usedScrambleIdsByEvent[e.id], r, uploadedScrambles)
-              : r.scrambleSets,
-          };
-        }),
-      };
-    }),
+    events: wcif.events.map(e => ({
+      ...e,
+      rounds: e.rounds.map(r => ({
+        ...r,
+        scrambleSets: r.scrambleSets.length === 0
+        ? scrambleSetsForRound(usedScrambleIdsByEvent[e.id], r, uploadedScrambles)
+        : r.scrambleSets,
+      })),
+    })),
   };
 }
 
-export const clearScrambles = wcif => {
-  return {
-    ...wcif,
-    events: wcif.events.map(e => {
-      return {
-        ...e,
-        rounds: e.rounds.map(r => {
-          return {
-            ...r,
-            scrambleSets: [],
-          };
-        }),
-      };
-    }),
-  };
-}
+export const clearScrambles = wcif => ({
+  ...wcif,
+  events: wcif.events.map(e => ({
+    ...e,
+    rounds: e.rounds.map(r => ({
+      ...r,
+      scrambleSets: [],
+    })),
+  })),
+});

@@ -23,41 +23,35 @@ const expectedNumberOfAttemptsByFormat = {
 // Third row is these headers
 //["#", "Name", "Country", "WCA id", "Gender", "Date of birth", ...]
 export const personWcifFromRegistrationXlsx = sheet =>
-  sheet.splice(0, 3) && sheet.map(person => {
-    return {
-      registrantId: parseInt(person[0]),
-      name: person[1],
-      wcaUserId: null,
-      country: person[2],
-      wcaId: person[3] || null,
-      gender: person[4],
-      birthdate: person[5],
-      // We actually don't need to fill this to post results.
-      registration: {},
-      email: null,
-      avatar: null,
-      roles: [],
-      assignments: [],
-      personalBests: [],
-    };
-  });
+  sheet.splice(0, 3) && sheet.map(person => ({
+    registrantId: parseInt(person[0]),
+    name: person[1],
+    wcaUserId: null,
+    country: person[2],
+    wcaId: person[3] || null,
+    gender: person[4],
+    birthdate: person[5],
+    // We actually don't need to fill this to post results.
+    registration: {},
+    email: null,
+    avatar: null,
+    roles: [],
+    assignments: [],
+    personalBests: [],
+  }));
 
 const attemptsFromResultRow = (eventId, formatId, row) => {
   let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
   if (eventId === "333mbf") {
-    return [...Array(maxAttempts).keys()].map(index => {
-      return {
-        // For MBF there is a 4 column offset for the person,
-        // then each result takes 4 columns.
-        result: parseInt(row[7 + index*4]),
-      }
-    });
+    return [...Array(maxAttempts).keys()].map(index => ({
+      // For MBF there is a 4 column offset for the person,
+      // then each result takes 4 columns.
+      result: parseInt(row[7 + index*4]),
+    }));
   } else {
-    let attempts = row.slice(4, 4 + maxAttempts).filter(a => a).map(a => {
-      return {
-        result: timeToValue(a, eventId === "333fm"),
-      };
-    });
+    let attempts = row.slice(4, 4 + maxAttempts).filter(a => a).map(a => ({
+      result: timeToValue(a, eventId === "333fm"),
+    }));
     // Fillup to expected number of attempts.
     // Not necessary but useful to export to results JSON.
     while (attempts.length !== maxAttempts)
@@ -125,17 +119,15 @@ export const roundWcifFromXlsx = (persons, eventId, roundNumber, sheet) => {
     roundTypeId: roundType.id,
     cutoff: null,
     format: roundFormat,
-    results: sheet.filter(row => row[1]).map(row => {
-      return {
-        ranking: parseInt(row[0]),
-        personId: registrantIdFromAttributes(persons, row[1], row[2], row[3] || null),
-        attempts: attemptsFromResultRow(eventId, roundFormat, row),
-        // these are *not* in the WCIF, but will make our life easier to export
-        // to results json!
-        best: bestForRow(eventId, roundFormat, row),
-        average: avgForRow(eventId, roundFormat, row),
-      };
-    }),
+    results: sheet.filter(row => row[1]).map(row => ({
+      ranking: parseInt(row[0]),
+      personId: registrantIdFromAttributes(persons, row[1], row[2], row[3] || null),
+      attempts: attemptsFromResultRow(eventId, roundFormat, row),
+      // these are *not* in the WCIF, but will make our life easier to export
+      // to results json!
+      best: bestForRow(eventId, roundFormat, row),
+      average: avgForRow(eventId, roundFormat, row),
+    })),
     scrambleSetCount: 0,
     scrambleSets: [],
     timeLimit: null,

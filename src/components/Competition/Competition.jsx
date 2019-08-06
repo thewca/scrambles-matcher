@@ -83,12 +83,10 @@ export default class Competition extends Component {
       return r.id === round.id;
     });
     this.setState({
-      wcif: updateIn(wcif, ["events", eventIndex, "rounds", roundIndex], r => {
-        return {
-          ...r,
-          scrambleSets: scrambles,
-        };
-      }),
+      wcif: updateIn(wcif, ["events", eventIndex, "rounds", roundIndex], r => ({
+        ...r,
+        scrambleSets: scrambles,
+      })),
     });
   }
 
