@@ -23,6 +23,19 @@ export default class Competition extends Component {
     };
   }
 
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.handleOnBeforeUnload);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.handleOnBeforeUnload);
+  }
+
+  handleOnBeforeUnload = ev => {
+    ev.preventDefault();
+    ev.returnValue = "";
+  }
+
   // It's worth noting we only handle one competition over the life of the component,
   // therefore no componentDidUpdate is necessary.
   // To upload scrambles for another competition the user would just refresh the page.
