@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "63ccd0ac76b1c74fff132f5613e6d5f8",
+    "revision": "d39e989483ce45e237b9025033cfdb55",
     "url": "/scrambles-matcher/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/scrambles-matcher/static/css/2.1446c61e.chunk.css"
   },
   {
-    "revision": "06076e2987437f04cbe2",
+    "revision": "e1184ebb39f53021c509",
     "url": "/scrambles-matcher/static/css/main.864517e2.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/scrambles-matcher/static/js/2.5412c7b7.chunk.js"
   },
   {
-    "revision": "06076e2987437f04cbe2",
-    "url": "/scrambles-matcher/static/js/main.25f96cbf.chunk.js"
+    "revision": "e1184ebb39f53021c509",
+    "url": "/scrambles-matcher/static/js/main.7a7b295b.chunk.js"
   },
   {
     "revision": "69084567127671ada7f5",
