@@ -19,7 +19,12 @@ const GreenButton = withStyles(theme => ({
   },
 }))(Button);
 
-const MatchingScramblesPanel = ({ assignAction, clearAction, uploadAction, classes }) => {
+const MatchingScramblesPanel = ({
+  assignAction,
+  clearAction,
+  uploadAction,
+  classes,
+}) => {
   return (
     <Paper className={classes.paper}>
       <Typography variant="h4" className={classes.h}>
@@ -27,20 +32,19 @@ const MatchingScramblesPanel = ({ assignAction, clearAction, uploadAction, class
       </Typography>
       <Typography paragraph align="justify">
         Clicking "Automatically assign scrambles" will attempt to automatically
-        detect which scrambles sets belongs to which round.
-        Unlike the workbook assistant, this will attempt to assign unused scrambles
-        only to rounds <b>without</b> scrambles! Which means that clicking several
-        times the button with the same uploaded scrambles will have no effect.
-        <br/>
+        detect which scrambles sets belongs to which round. Unlike the workbook
+        assistant, this will attempt to assign unused scrambles only to rounds{' '}
+        <b>without</b> scrambles! Which means that clicking several times the
+        button with the same uploaded scrambles will have no effect.
+        <br />
         You can check scrambles assignments by browsing through the rounds in
-        the menu.
-        For each round (or each attempt for Multiple Blindfolded and Fewest Moves)
-        you can assign scrambles manually from the unused scrambles in the
-        uploaded scrambles.
-        <br/>
+        the menu. For each round (or each attempt for Multiple Blindfolded and
+        Fewest Moves) you can assign scrambles manually from the unused
+        scrambles in the uploaded scrambles.
+        <br />
         When everything looks good, get the Results JSON to import the results
         on the WCA website.
-        <br/>
+        <br />
         Don't forget to set the competition ID if it's not detected!
       </Typography>
       <Grid container direction="row">
@@ -54,7 +58,8 @@ const MatchingScramblesPanel = ({ assignAction, clearAction, uploadAction, class
             onChange={uploadAction}
           />
           <label htmlFor="add-scramble-json">
-            <GreenButton variant="contained"
+            <GreenButton
+              variant="contained"
               component="span"
               color="primary"
               className={classnames(classes.addJsonButton, classes.mb3)}
@@ -64,7 +69,9 @@ const MatchingScramblesPanel = ({ assignAction, clearAction, uploadAction, class
           </label>
         </Grid>
         <Grid item xs={6} style={{ paddingRight: 8 }}>
-          <Button variant="contained" component="span"
+          <Button
+            variant="contained"
+            component="span"
             color="primary"
             fullWidth
             className={classes.button}
@@ -75,7 +82,9 @@ const MatchingScramblesPanel = ({ assignAction, clearAction, uploadAction, class
           </Button>
         </Grid>
         <Grid item xs={6} style={{ paddingLeft: 8 }}>
-          <Button variant="contained" color="secondary"
+          <Button
+            variant="contained"
+            color="secondary"
             fullWidth
             className={classes.button}
             onClick={clearAction}

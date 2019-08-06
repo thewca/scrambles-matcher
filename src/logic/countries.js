@@ -6,5 +6,4 @@ const countries = flatMap(wca_states.states_lists, list => list.states);
 export const countryByIso2 = iso2 =>
   countries.find(country => country.iso2 === iso2);
 
-export const countryById = id =>
-  countries.find(country => country.id === id);
+export const countryById = id => countries.find(country => country.id === id);

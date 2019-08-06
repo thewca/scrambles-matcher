@@ -6,15 +6,14 @@ import { ensureScramblesMember } from '../../logic/scrambles';
 import { sortWcifEvents } from '../../logic/events';
 import { updateIn } from '../../logic/utils';
 
-
 export default class App extends Component {
   state = {
     wcif: null,
-    errors: []
+    errors: [],
   };
 
   handleWcifJSONLoad = json => {
-    let wcif = updateIn(json, ['events'], ensureScramblesMember)
+    let wcif = updateIn(json, ['events'], ensureScramblesMember);
     wcif = updateIn(wcif, ['events'], sortWcifEvents);
     this.setState({ wcif });
   };
@@ -26,12 +25,17 @@ export default class App extends Component {
   render() {
     const { wcif, errors } = this.state;
     return (
-      <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+      <div
+        style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}
+      >
         <CssBaseline />
         {wcif ? (
           <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
         ) : (
-          <ImportWCIF handleWcifJSONLoad={this.handleWcifJSONLoad} errors={errors} />
+          <ImportWCIF
+            handleWcifJSONLoad={this.handleWcifJSONLoad}
+            errors={errors}
+          />
         )}
       </div>
     );

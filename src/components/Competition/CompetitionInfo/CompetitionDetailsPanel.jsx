@@ -12,24 +12,26 @@ const LinkToNewPage = props => {
   const { block, ...extraProps } = props;
   return (
     <Link {...extraProps} target="_blank" rel="noreferrer">
-      { block }
+      {block}
     </Link>
   );
 };
 
 const HelperWithLink = ({ id }) => (
   <span>
-    The ID is correct if and only
-    if <LinkToNewPage href={`${competitionLink(id)}`} block="this link" /> opens
+    The ID is correct if and only if{' '}
+    <LinkToNewPage href={`${competitionLink(id)}`} block="this link" /> opens
     your competition's page.
   </span>
 );
 
-const CompetitionDetailsPanel = (props) => {
+const CompetitionDetailsPanel = props => {
   const {
-    wcif, downloadWcifAction,
-    downloadResultsJsonAction, classes,
-    uploadCompetitionIdAction
+    wcif,
+    downloadWcifAction,
+    downloadResultsJsonAction,
+    classes,
+    uploadCompetitionIdAction,
   } = props;
 
   const exportAvailable = wcif.id;
@@ -47,7 +49,7 @@ const CompetitionDetailsPanel = (props) => {
           id="outlined-name"
           label="Competition ID"
           //className={classes.textField}
-          value={wcif.id || ""}
+          value={wcif.id || ''}
           onChange={handleNameChange}
           helperText={<HelperWithLink id={wcif.id} />}
           margin="normal"
@@ -55,23 +57,18 @@ const CompetitionDetailsPanel = (props) => {
         />
       </form>
       <Typography paragraph>
-        When you have make sure your competition ID is correct and all your rounds
-        have the correct scrambles, you can get the export you want below.
+        When you have make sure your competition ID is correct and all your
+        rounds have the correct scrambles, you can get the export you want
+        below.
       </Typography>
-      <ButtonGroup variant="contained" color="primary"
+      <ButtonGroup
+        variant="contained"
+        color="primary"
         aria-label="outlined primary button group"
-          disabled={!exportAvailable}
+        disabled={!exportAvailable}
       >
-        <Button
-          onClick={downloadWcifAction}
-        >
-          Get WCIF
-        </Button>
-        <Button
-          onClick={downloadResultsJsonAction}
-        >
-          Get results JSON
-        </Button>
+        <Button onClick={downloadWcifAction}>Get WCIF</Button>
+        <Button onClick={downloadResultsJsonAction}>Get results JSON</Button>
       </ButtonGroup>
     </Paper>
   );

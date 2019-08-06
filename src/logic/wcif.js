@@ -8,23 +8,27 @@ import { roundTypeIdForRound } from './events';
 // For attempt-based event (mbf, fm), we should not only check that we have one scramble,
 // but one scramble for each attempt.
 
-export const eventIdFromRound = round => round.id.split("-")[0];
-export const roundNumberFromRound = round => round.id.split("-")[1].substring(1);
+export const eventIdFromRound = round => round.id.split('-')[0];
+export const roundNumberFromRound = round =>
+  round.id.split('-')[1].substring(1);
 
 export const idsFromRound = round => {
-  let [eventId, roundNumber] = round.id.split("-r");
+  let [eventId, roundNumber] = round.id.split('-r');
   roundNumber = parseInt(roundNumber);
   return [eventId, roundNumber];
 };
 
 export const registrantIdFromAttributes = (persons, name, country, wcaId) =>
-  persons.find(p => p.name === name && p.country === country && p.wcaId === wcaId).registrantId;
+  persons.find(
+    p => p.name === name && p.country === country && p.wcaId === wcaId
+  ).registrantId;
 
-const WcifScramblesToResultsGroups = scrambles => scrambles.map((sheet, index) => ({
-  group: prefixForIndex(index),
-  scrambles: sheet.scrambles,
-  extraScrambles: sheet.extraScrambles || [],
-}));
+const WcifScramblesToResultsGroups = scrambles =>
+  scrambles.map((sheet, index) => ({
+    group: prefixForIndex(index),
+    scrambles: sheet.scrambles,
+    extraScrambles: sheet.extraScrambles || [],
+  }));
 
 export const internalWcifToWcif = wcif => ({
   // We only alter the scrambles, so make them right wrt the WCIF.
@@ -39,14 +43,14 @@ export const internalWcifToWcif = wcif => ({
 });
 
 export const internalWcifToResultsJson = (wcif, version) => ({
-  formatVersion: "WCA Competition 0.3",
+  formatVersion: 'WCA Competition 0.3',
   competitionId: wcif.id,
   persons: wcif.persons.map(p => ({
     id: p.registrantId,
     name: p.name,
-    wcaId: p.wcaId || "",
+    wcaId: p.wcaId || '',
     countryId: countryById(p.country).iso2,
-    gender: p.gender || "",
+    gender: p.gender || '',
     dob: p.birthdate,
   })),
   events: wcif.events.map(e => ({
@@ -61,8 +65,9 @@ export const internalWcifToResultsJson = (wcif, version) => ({
         best: res.best,
         average: res.average,
       })),
-      groups: WcifScramblesToResultsGroups(internalScramblesToWcifScrambles(e.id,
-        r.scrambleSets)),
+      groups: WcifScramblesToResultsGroups(
+        internalScramblesToWcifScrambles(e.id, r.scrambleSets)
+      ),
     })),
   })),
   // TODO: make sure that only one tnoodle was used, then add an explicit field for that?
@@ -70,7 +75,8 @@ export const internalWcifToResultsJson = (wcif, version) => ({
   resultsProgram: `Scrambles Matcher ${version}`,
 });
 
-export const competitionLink = id => `https://www.worldcubeassociation.org/competitions/${id}`;
+export const competitionLink = id =>
+  `https://www.worldcubeassociation.org/competitions/${id}`;
 
 export const competitionHasValidScrambles = wcif =>
   wcif.events.every(e => eventHasValidScrambles(e));
@@ -80,6 +86,7 @@ export const eventHasValidScrambles = event =>
 
 export const roundHasValidScrambles = (eventId, round) =>
   // Just taking eventId to avoid some splitting of round.id
-  ["333mbf", "333fm"].includes(eventId)
-    ? Object.keys(groupBy(round.scrambleSets, s => s.attemptNumber)).length === formatById(round.format).solveCount
+  ['333mbf', '333fm'].includes(eventId)
+    ? Object.keys(groupBy(round.scrambleSets, s => s.attemptNumber)).length ===
+      formatById(round.format).solveCount
     : round.scrambleSets.length !== 0;

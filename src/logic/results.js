@@ -1,4 +1,3 @@
-
 export const decodeMbldResult = value => {
   if (value <= 0) return { solved: 0, attempted: 0, centiseconds: value };
   const missed = value % 100;
@@ -21,31 +20,30 @@ export const encodeMbldResult = ({ solved, attempted, centiseconds }) => {
 };
 
 const timeInSecToValue = resultString =>
-  Math.round(parseFloat(resultString)*100);
+  Math.round(parseFloat(resultString) * 100);
 
 const timeInMinutesToValue = resultString => {
-  let [min, rest] = resultString.split(":");
+  let [min, rest] = resultString.split(':');
   min = parseInt(min);
   const centisec = timeInSecToValue(rest);
   return min * 6000 + centisec;
 };
 
-export const timeToValue = (resultString, asMove=false) => {
+export const timeToValue = (resultString, asMove = false) => {
   switch (resultString) {
-    case "DNF":
+    case 'DNF':
       return -1;
-    case "DNS":
+    case 'DNS':
       return -2;
     default:
       if (!resultString) {
         return 0;
       } else if (asMove) {
         return parseInt(resultString);
-      } else if (resultString.includes(":")) {
+      } else if (resultString.includes(':')) {
         return timeInMinutesToValue(resultString);
       } else {
         return timeInSecToValue(resultString);
       }
   }
 };
-

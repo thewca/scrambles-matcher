@@ -7,7 +7,12 @@ import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { flatMap, updateIn } from '../../logic/utils';
 import { eventIdFromRound } from '../../logic/wcif';
-import { updateMultiAndFm, transformUploadedScrambles, allScramblesForEvent, usedScramblesIdsForEvent } from '../../logic/scrambles';
+import {
+  updateMultiAndFm,
+  transformUploadedScrambles,
+  allScramblesForEvent,
+  usedScramblesIdsForEvent,
+} from '../../logic/scrambles';
 
 import { version } from '../../../package.json';
 
@@ -33,8 +38,8 @@ export default class Competition extends Component {
 
   handleOnBeforeUnload = ev => {
     ev.preventDefault();
-    ev.returnValue = "";
-  }
+    ev.returnValue = '';
+  };
 
   // It's worth noting we only handle one competition over the life of the component,
   // therefore no componentDidUpdate is necessary.
@@ -46,10 +51,12 @@ export default class Competition extends Component {
     reader.onload = e => {
       // TODO: some check we're facing well formatted scrambles
       this.setState(state => {
-        let newScramble = JSON.parse(e.target.result)
+        let newScramble = JSON.parse(e.target.result);
         // Manually assign some id, in case someone uses same name for zip
         // but with different scrambles.
-        newScramble.competitionName = `${scrambleUploadedId++}: ${newScramble.competitionName}`;
+        newScramble.competitionName = `${scrambleUploadedId++}: ${
+          newScramble.competitionName
+        }`;
         newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);
         newScramble = transformUploadedScrambles(newScramble);
         return {
@@ -58,22 +65,22 @@ export default class Competition extends Component {
             scrambleProgram: newScramble.version,
           },
           uploadedScrambles: [...state.uploadedScrambles, newScramble],
-        }
+        };
       });
-    }
+    };
 
     reader.onerror = e => {
       alert("Couldn't load the JSON scrambles file");
-    }
+    };
 
-    if (ev.target.files.length > 0)
-      reader.readAsText(ev.target.files[0]);
-  }
+    if (ev.target.files.length > 0) reader.readAsText(ev.target.files[0]);
+  };
 
   attachScramblesToRound = (scrambles, round) => {
     const { wcif } = this.state;
     let eventId = eventIdFromRound(round);
-    let eventIndex, roundIndex = null;
+    let eventIndex,
+      roundIndex = null;
     let event = wcif.events.find((e, index) => {
       eventIndex = index;
       return e.id === eventId;
@@ -83,12 +90,12 @@ export default class Competition extends Component {
       return r.id === round.id;
     });
     this.setState({
-      wcif: updateIn(wcif, ["events", eventIndex, "rounds", roundIndex], r => ({
+      wcif: updateIn(wcif, ['events', eventIndex, 'rounds', roundIndex], r => ({
         ...r,
         scrambleSets: scrambles,
       })),
     });
-  }
+  };
 
   handleWcifChange = wcif => this.setState({ wcif });
 
@@ -106,7 +113,11 @@ export default class Competition extends Component {
       let eventId = eventIdFromRound(round);
       event = wcif.events.find(e => e.id === eventId);
       let used = usedScramblesIdsForEvent(wcif.events, event.id);
-      availableScrambles = allScramblesForEvent(uploadedScrambles, event.id, used);
+      availableScrambles = allScramblesForEvent(
+        uploadedScrambles,
+        event.id,
+        used
+      );
     }
     return (
       <Grid container>
@@ -116,17 +127,23 @@ export default class Competition extends Component {
           </Typography>
         </Grid>
         <Grid item xs={12} md={4} lg={3} xl={2} style={{ padding: 16 }}>
-          <CompetitionMenu events={wcif.events}
-            setSelectedRound={this.setSelectedRound} />
+          <CompetitionMenu
+            events={wcif.events}
+            setSelectedRound={this.setSelectedRound}
+          />
         </Grid>
         <Grid item xs={12} md={8} style={{ padding: 16 }}>
-          { round ? (
-            <RoundPanel event={event} round={round}
+          {round ? (
+            <RoundPanel
+              event={event}
+              round={round}
               availableScrambles={availableScrambles}
               attachScramblesToRound={this.attachScramblesToRound}
             />
           ) : (
-            <CompetitionInfo wcif={wcif} uploadedScrambles={uploadedScrambles}
+            <CompetitionInfo
+              wcif={wcif}
+              uploadedScrambles={uploadedScrambles}
               uploadAction={this.uploadNewScramble}
               handleWcifChange={this.handleWcifChange}
               version={version}
@@ -136,4 +153,4 @@ export default class Competition extends Component {
       </Grid>
     );
   }
-};
+}

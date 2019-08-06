@@ -24,13 +24,13 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     marginBottom: theme.spacing(2),
-  }
+  },
 }));
 
 const NestedScrambleItem = withStyles(theme => ({
   root: {
     paddingLeft: theme.spacing(4),
-  }
+  },
 }))(ListItem);
 
 const ScrambleFileInfo = ({ scramble }) => {
@@ -90,6 +90,6 @@ const ScrambleFileInfo = ({ scramble }) => {
       </Collapse>
     </Card>
   );
-}
+};
 
 export default ScrambleFileInfo;

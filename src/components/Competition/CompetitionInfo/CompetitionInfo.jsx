@@ -1,14 +1,18 @@
 import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { internalWcifToWcif, internalWcifToResultsJson } from '../../../logic/wcif';
+import {
+  internalWcifToWcif,
+  internalWcifToResultsJson,
+} from '../../../logic/wcif';
 import { autoAssignScrambles, clearScrambles } from '../../../logic/scrambles';
 import CompetitionDetailsPanel from './CompetitionDetailsPanel';
 import MatchingScramblesPanel from './MatchingScramblesPanel';
 import UploadedScramblesPanel from './UploadedScramblesPanel';
 
-
-const downloadFile = (wcif, exporter, filename="wcif.json") => {
-  let blob = new Blob([JSON.stringify(exporter(wcif))], { type: 'application/json' });
+const downloadFile = (wcif, exporter, filename = 'wcif.json') => {
+  let blob = new Blob([JSON.stringify(exporter(wcif))], {
+    type: 'application/json',
+  });
   let blobURL = window.URL.createObjectURL(blob);
 
   let tmp = document.createElement('a');
@@ -23,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
   },
   addJsonButton: {
-    width: "100%",
+    width: '100%',
     marginTop: theme.spacing(2),
   },
   extendedIcon: {
@@ -41,35 +45,46 @@ const useStyles = makeStyles(theme => ({
   },
   h: {
     marginBottom: theme.spacing(1),
-  }
+  },
 }));
 
-const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChange, version }) => {
+const CompetitionInfo = ({
+  wcif,
+  uploadedScrambles,
+  uploadAction,
+  handleWcifChange,
+  version,
+}) => {
   const classes = useStyles();
 
-  const actionDownloadWcif = () => downloadFile(wcif, internalWcifToWcif, `WCIF for ${wcif.name}.json`);
+  const actionDownloadWcif = () =>
+    downloadFile(wcif, internalWcifToWcif, `WCIF for ${wcif.name}.json`);
 
   const actionDownloadResultsJson = () =>
-    downloadFile(wcif, wcif => internalWcifToResultsJson(wcif, version), `Results for ${wcif.name}.json`);
+    downloadFile(
+      wcif,
+      wcif => internalWcifToResultsJson(wcif, version),
+      `Results for ${wcif.name}.json`
+    );
 
   const actionAssignScrambles = () =>
     handleWcifChange(autoAssignScrambles(wcif, uploadedScrambles));
 
-  const actionClearScrambles = () =>
-    handleWcifChange(clearScrambles(wcif));
+  const actionClearScrambles = () => handleWcifChange(clearScrambles(wcif));
 
-  const uploadCompetitionIdAction = id =>
-    handleWcifChange({ ...wcif, id: id });
+  const uploadCompetitionIdAction = id => handleWcifChange({ ...wcif, id: id });
 
   return (
     <Fragment>
-      <CompetitionDetailsPanel downloadWcifAction={actionDownloadWcif}
+      <CompetitionDetailsPanel
+        downloadWcifAction={actionDownloadWcif}
         downloadResultsJsonAction={actionDownloadResultsJson}
         uploadCompetitionIdAction={uploadCompetitionIdAction}
         classes={classes}
         wcif={wcif}
       />
-      <MatchingScramblesPanel assignAction={actionAssignScrambles}
+      <MatchingScramblesPanel
+        assignAction={actionAssignScrambles}
         uploadAction={uploadAction}
         clearAction={actionClearScrambles}
         classes={classes}
@@ -80,6 +95,6 @@ const CompetitionInfo = ({ wcif, uploadedScrambles, uploadAction, handleWcifChan
       />
     </Fragment>
   );
-}
+};
 
 export default CompetitionInfo;

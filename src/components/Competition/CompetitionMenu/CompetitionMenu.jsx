@@ -11,7 +11,10 @@ import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import classnames from 'classnames';
 
 import CubingIcon from '../../CubingIcon/CubingIcon';
-import { eventHasValidScrambles, roundHasValidScrambles } from '../../../logic/wcif';
+import {
+  eventHasValidScrambles,
+  roundHasValidScrambles,
+} from '../../../logic/wcif';
 import { eventNameById, roundTypeIdForRound } from '../../../logic/events';
 import { roundTypeById } from '../../../logic/roundtypes';
 
@@ -21,7 +24,7 @@ const EventListItem = withStyles({
     '& .cubing-icon, & svg': {
       color: 'black',
     },
-  }
+  },
 })(ListItem);
 
 const useStyles = makeStyles(theme => ({
@@ -31,8 +34,8 @@ const useStyles = makeStyles(theme => ({
   svg: {
     '& svg': {
       color: 'red',
-    }
-  }
+    },
+  },
 }));
 
 const CompetitionMenu = ({ events, setSelectedRound }) => {
@@ -80,7 +83,13 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                   className={classnames(classes.svg, classes.item)}
                   onClick={() => setSelectedRound(round.id)}
                 >
-                  <ListItemText primary={roundTypeById(roundTypeIdForRound(event.rounds.length, round)).name} />
+                  <ListItemText
+                    primary={
+                      roundTypeById(
+                        roundTypeIdForRound(event.rounds.length, round)
+                      ).name
+                    }
+                  />
                   {!roundHasValidScrambles(event.id, round) && (
                     <ListItemIcon>
                       <Tooltip title="Missing scrambles">

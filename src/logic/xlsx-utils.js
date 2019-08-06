@@ -3,27 +3,28 @@ import { timeToValue } from './results';
 import { roundTypeFromCellName } from './roundtypes';
 
 const formatStringToId = {
-  "Format: best of 1": "1",
-  "Format: best of 2": "2",
-  "Format: best of 3": "3",
-  "Format: mean of 3": "m",
-  "Format: average of 5": "a",
-  "Format: average of 5 (removing best and worst)": "a",
+  'Format: best of 1': '1',
+  'Format: best of 2': '2',
+  'Format: best of 3': '3',
+  'Format: mean of 3': 'm',
+  'Format: average of 5': 'a',
+  'Format: average of 5 (removing best and worst)': 'a',
 };
 
 const expectedNumberOfAttemptsByFormat = {
-  "1": 1,
-  "2": 2,
-  "3": 3,
-  "m": 3,
-  "a": 5,
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  m: 3,
+  a: 5,
 };
 
 // First two rows contain the competition name and irrelevant information.
 // Third row is these headers
 //["#", "Name", "Country", "WCA id", "Gender", "Date of birth", ...]
 export const personWcifFromRegistrationXlsx = sheet =>
-  sheet.splice(0, 3) && sheet.map(person => ({
+  sheet.splice(0, 3) &&
+  sheet.map(person => ({
     registrantId: parseInt(person[0]),
     name: person[1],
     wcaUserId: null,
@@ -42,48 +43,49 @@ export const personWcifFromRegistrationXlsx = sheet =>
 
 const attemptsFromResultRow = (eventId, formatId, row) => {
   let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
-  if (eventId === "333mbf") {
+  if (eventId === '333mbf') {
     return [...Array(maxAttempts).keys()].map(index => ({
       // For MBF there is a 4 column offset for the person,
       // then each result takes 4 columns.
-      result: parseInt(row[7 + index*4]),
+      result: parseInt(row[7 + index * 4]),
     }));
   } else {
-    let attempts = row.slice(4, 4 + maxAttempts).filter(a => a).map(a => ({
-      result: timeToValue(a, eventId === "333fm"),
-    }));
+    let attempts = row
+      .slice(4, 4 + maxAttempts)
+      .filter(a => a)
+      .map(a => ({
+        result: timeToValue(a, eventId === '333fm'),
+      }));
     // Fillup to expected number of attempts.
     // Not necessary but useful to export to results JSON.
-    while (attempts.length !== maxAttempts)
-      attempts.push({ result: 0 });
+    while (attempts.length !== maxAttempts) attempts.push({ result: 0 });
     return attempts;
   }
 };
 
 const bestForRow = (eventId, formatId, row) => {
   let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
-  if (formatId === "1") {
+  if (formatId === '1') {
     // Then there is no "best" column
-    return eventId === "333mbf"
+    return eventId === '333mbf'
       ? parseInt(row[7])
-      : timeToValue(row[4], eventId === "333fm");
+      : timeToValue(row[4], eventId === '333fm');
   } else {
     // Use extra offset for the "best" column
-    return eventId === "333mbf"
-      ? parseInt(row[4 + maxAttempts*4])
-      : timeToValue(row[4 + maxAttempts], eventId === "333fm");
+    return eventId === '333mbf'
+      ? parseInt(row[4 + maxAttempts * 4])
+      : timeToValue(row[4 + maxAttempts], eventId === '333fm');
   }
 };
 
 const avgForRow = (eventId, formatId, row) => {
-  if (eventId === "333mbf")
-    return 0;
+  if (eventId === '333mbf') return 0;
   // also get the average for the best of 3 format:
   // the only events which can use it are 3bf, 4bf, 5bf, and 3mbf.
   // Except for 3mbf, we recognize the average.
-  if (["3", "m", "a"].includes(formatId)) {
+  if (['3', 'm', 'a'].includes(formatId)) {
     let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
-    if (formatId === "a") {
+    if (formatId === 'a') {
       // 5 would return the WR marker for the best.
       // 6 would return the worst.
       return timeToValue(row[7 + maxAttempts]);
@@ -96,7 +98,6 @@ const avgForRow = (eventId, formatId, row) => {
 
   return 0;
 };
-
 
 // First row: round name
 // Second row: format name
@@ -119,15 +120,22 @@ export const roundWcifFromXlsx = (persons, eventId, roundNumber, sheet) => {
     roundTypeId: roundType.id,
     cutoff: null,
     format: roundFormat,
-    results: sheet.filter(row => row[1]).map(row => ({
-      ranking: parseInt(row[0]),
-      personId: registrantIdFromAttributes(persons, row[1], row[2], row[3] || null),
-      attempts: attemptsFromResultRow(eventId, roundFormat, row),
-      // these are *not* in the WCIF, but will make our life easier to export
-      // to results json!
-      best: bestForRow(eventId, roundFormat, row),
-      average: avgForRow(eventId, roundFormat, row),
-    })),
+    results: sheet
+      .filter(row => row[1])
+      .map(row => ({
+        ranking: parseInt(row[0]),
+        personId: registrantIdFromAttributes(
+          persons,
+          row[1],
+          row[2],
+          row[3] || null
+        ),
+        attempts: attemptsFromResultRow(eventId, roundFormat, row),
+        // these are *not* in the WCIF, but will make our life easier to export
+        // to results json!
+        best: bestForRow(eventId, roundFormat, row),
+        average: avgForRow(eventId, roundFormat, row),
+      })),
     scrambleSetCount: 0,
     scrambleSets: [],
     timeLimit: null,
