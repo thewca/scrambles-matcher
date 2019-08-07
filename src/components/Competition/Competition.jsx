@@ -7,6 +7,7 @@ import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { flatMap, updateIn } from '../../logic/utils';
 import { parseActivityCode } from '../../logic/wcif';
+import { getUniqueScrambleUploadedId } from '../../logic/import-export-wcif';
 import {
   updateMultiAndFm,
   transformUploadedScrambles,
@@ -15,8 +16,6 @@ import {
 } from '../../logic/scrambles';
 
 import { version } from '../../../package.json';
-
-let scrambleUploadedId = 1;
 
 export default class Competition extends Component {
   constructor(props) {
@@ -54,7 +53,7 @@ export default class Competition extends Component {
         let newScramble = JSON.parse(e.target.result);
         // Manually assign some id, in case someone uses same name for zip
         // but with different scrambles.
-        newScramble.competitionName = `${scrambleUploadedId++}: ${
+        newScramble.competitionName = `${getUniqueScrambleUploadedId()}: ${
           newScramble.competitionName
         }`;
         newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);

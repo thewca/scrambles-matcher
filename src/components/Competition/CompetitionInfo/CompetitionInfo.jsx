@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   internalWcifToWcif,
   internalWcifToResultsJson,
-} from '../../../logic/wcif';
+} from '../../../logic/import-export-wcif';
 import { autoAssignScrambles, clearScrambles } from '../../../logic/scrambles';
 import CompetitionDetailsPanel from './CompetitionDetailsPanel';
 import MatchingScramblesPanel from './MatchingScramblesPanel';

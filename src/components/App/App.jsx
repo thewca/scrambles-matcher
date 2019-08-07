@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Competition from '../Competition/Competition';
 import ImportWCIF from '../ImportWCIF/ImportWCIF';
-import { processImportedWcif } from '../../logic/scrambles';
+import { importWcif } from '../../logic/import-export-wcif';
 
 export default class App extends Component {
   state = {
@@ -12,8 +12,8 @@ export default class App extends Component {
   };
 
   handleWcifJSONLoad = json => {
-    const [wcif, uploadedScrambles] = processImportedWcif(json);
-    this.setState({ wcif, uploadedScrambles: [uploadedScrambles] });
+    const [wcif, extractedScrambles] = importWcif(json);
+    this.setState({ wcif, uploadedScrambles: extractedScrambles });
   };
 
   handleWcifUpdate = wcif => {
