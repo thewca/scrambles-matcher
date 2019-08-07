@@ -1,5 +1,5 @@
 import { flatMap, updateIn, groupBy, sortBy } from './utils';
-import { idsFromRound } from './wcif';
+import { parseActivityCode } from './wcif';
 import { formatById } from './formats';
 
 let uniqueScrambleSetId = 1;
@@ -53,7 +53,7 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
   // in rounds we can't figure out programatically !).
   // We also want to return a new WCIF as the wcif passed is most likely taken
   // from a React state.
-  const [eventId, roundNumber] = idsFromRound(round);
+  const { eventId, roundNumber } = parseActivityCode(round.id);
   let firstMatchingSheets = [];
   uploadedScrambles.find(up => {
     firstMatchingSheets = up.sheets.filter(

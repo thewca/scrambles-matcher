@@ -4,18 +4,16 @@ import { formatById } from './formats';
 import { groupBy } from './utils';
 import { roundTypeIdForRound } from './events';
 
-// TODO: implement a proper "allScramblePresent" function
-// For attempt-based event (mbf, fm), we should not only check that we have one scramble,
-// but one scramble for each attempt.
-
-export const eventIdFromRound = round => round.id.split('-')[0];
-export const roundNumberFromRound = round =>
-  round.id.split('-')[1].substring(1);
-
-export const idsFromRound = round => {
-  let [eventId, roundNumber] = round.id.split('-r');
-  roundNumber = parseInt(roundNumber);
-  return [eventId, roundNumber];
+export const parseActivityCode = activityCode => {
+  const [, e, r, g, a] = activityCode.match(
+    /(\w+)(?:-r(\d+))?(?:-g(\d+))?(?:-a(\d+))?/
+  );
+  return {
+    eventId: e,
+    roundNumber: r && parseInt(r, 10),
+    groupNumber: g && parseInt(g, 10),
+    attemptNumber: a && parseInt(a, 10),
+  };
 };
 
 export const registrantIdFromAttributes = (persons, name, country, wcaId) =>

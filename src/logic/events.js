@@ -1,5 +1,5 @@
 import { sortBy } from './utils';
-import { idsFromRound } from './wcif';
+import { parseActivityCode } from './wcif';
 import { roundTypeById } from './roundtypes';
 
 const events = [
@@ -39,7 +39,7 @@ export const roundTypeIdForRound = (numberOfRounds, round) => {
   // This is the case if we loaded a XLSX!
   if (round.roundTypeId) return round.roundTypeId;
 
-  let [, roundNumber] = idsFromRound(round);
+  let { roundNumber } = parseActivityCode(round);
   if (roundNumber === numberOfRounds) {
     return round.cutoff ? 'c' : 'f';
   }
@@ -56,7 +56,7 @@ export const roundTypeIdForRound = (numberOfRounds, round) => {
 };
 
 export const roundName = (numberOfRounds, round) => {
-  let [eventId] = idsFromRound(round);
+  let { eventId } = parseActivityCode(round);
   return `${eventNameById(eventId)} - ${
     roundTypeById(roundTypeIdForRound(numberOfRounds, round)).name
   }`;

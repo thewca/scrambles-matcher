@@ -6,7 +6,7 @@ import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';
 import { flatMap, updateIn } from '../../logic/utils';
-import { eventIdFromRound } from '../../logic/wcif';
+import { parseActivityCode } from '../../logic/wcif';
 import {
   updateMultiAndFm,
   transformUploadedScrambles,
@@ -78,7 +78,7 @@ export default class Competition extends Component {
 
   attachScramblesToRound = (scrambles, round) => {
     const { wcif } = this.state;
-    let eventId = eventIdFromRound(round);
+    let { eventId } = parseActivityCode(round);
     let eventIndex,
       roundIndex = null;
     let event = wcif.events.find((e, index) => {
@@ -110,7 +110,7 @@ export default class Competition extends Component {
     let event = null;
     if (selectedRoundId) {
       round = rounds.find(r => r.id === selectedRoundId);
-      let eventId = eventIdFromRound(round);
+      let { eventId } = parseActivityCode(round);
       event = wcif.events.find(e => e.id === eventId);
       let used = usedScramblesIdsForEvent(wcif.events, event.id);
       availableScrambles = allScramblesForEvent(
