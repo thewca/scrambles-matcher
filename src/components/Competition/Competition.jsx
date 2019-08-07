@@ -24,7 +24,7 @@ export default class Competition extends Component {
     this.state = {
       wcif: props.wcif,
       selectedRoundId: null,
-      uploadedScrambles: [],
+      uploadedScrambles: props.uploadedScrambles,
     };
   }
 
@@ -78,7 +78,7 @@ export default class Competition extends Component {
 
   attachScramblesToRound = (scrambles, round) => {
     const { wcif } = this.state;
-    let { eventId } = parseActivityCode(round);
+    let { eventId } = parseActivityCode(round.id);
     let eventIndex,
       roundIndex = null;
     let event = wcif.events.find((e, index) => {
@@ -110,7 +110,7 @@ export default class Competition extends Component {
     let event = null;
     if (selectedRoundId) {
       round = rounds.find(r => r.id === selectedRoundId);
-      let { eventId } = parseActivityCode(round);
+      let { eventId } = parseActivityCode(round.id);
       event = wcif.events.find(e => e.id === eventId);
       let used = usedScramblesIdsForEvent(wcif.events, event.id);
       availableScrambles = allScramblesForEvent(

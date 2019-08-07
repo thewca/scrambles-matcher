@@ -1,8 +1,10 @@
 import { flatMap, updateIn, groupBy, sortBy } from './utils';
 import { parseActivityCode } from './wcif';
 import { formatById } from './formats';
+import { eventNameById, sortWcifEvents } from './events';
 
 let uniqueScrambleSetId = 1;
+let uniqueScrambleUploadedId = 1;
 
 // The WCIF defines the following fields:
 // { id, scrambles: [], extraScrambles: [] }
@@ -25,6 +27,93 @@ const tnoodleSheetsToInternal = (filename, sheets) =>
     roundNumber: sheet.round,
   }));
 
+const wcifScrambleToInternal = (
+  eventId,
+  roundNumber,
+  sheetName,
+  set,
+  index
+) => ({
+  id: set.id,
+  scrambles: set.scrambles || [],
+  extraScrambles: set.extraScrambles || [],
+  title: `${eventNameById(
+    eventId
+  )} - Round ${roundNumber} - Set ${prefixForIndex(index)}`,
+  sheetName: sheetName,
+  eventId: eventId,
+  roundNumber: roundNumber,
+});
+
+const splitMultiFmWcif = set => {
+  let attemptNumber = 1;
+  // Split the scramble to have one object per attempt (will be useful later ;))
+  return set.scrambles.map(sequence => ({
+    ...set,
+    id: uniqueScrambleSetId++,
+    scrambles: [sequence],
+    title: `${set.title} Attempt ${attemptNumber}`,
+    attemptNumber: attemptNumber,
+    generatedAttemptNumber: attemptNumber++,
+  }));
+};
+
+export const processImportedWcif = wcif => {
+  wcif = updateIn(wcif, ['events'], sortWcifEvents);
+  let all = flatMap(
+    flatMap(wcif.events, e => e.rounds),
+    r => r.scrambleSets || []
+  );
+  uniqueScrambleSetId = all.length === 0 ? 1 : Math.max(...all.map(s => s.id));
+
+  let scrambleSheet = {
+    id: uniqueScrambleUploadedId++,
+    competitionName: `Scrambles for ${wcif.name}`,
+    generationUrl: 'unknown',
+    generationDate: 'unknown',
+    version: 'unknown',
+    sheets: [],
+  };
+
+  wcif = {
+    ...wcif,
+    events: wcif.events.map(e => ({
+      ...e,
+      rounds: e.rounds.map(r => {
+        let sheets = (r.scrambleSets || []).map((set, index) => {
+          let internalSet = wcifScrambleToInternal(
+            e.id,
+            parseActivityCode(r.id).roundNumber,
+            scrambleSheet.competitionName,
+            set,
+            index
+          );
+          if (['333fm', '333mbf'].includes(e.id)) {
+            internalSet = splitMultiFmWcif(internalSet);
+            scrambleSheet.sheets.push(...internalSet);
+          } else {
+            scrambleSheet.sheets.push(internalSet);
+          }
+          return internalSet;
+        });
+        return {
+          ...r,
+          scrambleSets: flatMap(sheets, s => s),
+        };
+      }),
+    })),
+  };
+
+  // Return an element to add to "uploadedscrambles", and the processed wcif.
+  return [wcif, scrambleSheet];
+};
+
+const addScrambleSetsIfMissing = rounds =>
+  rounds.map(r => ({
+    ...r,
+    scrambleSets: r.scrambleSets || [],
+  }));
+
 const splitMultiFm = scramble => {
   let attemptNumber = 1;
   // Split the scramble to have one object per attempt (will be useful later ;))
@@ -36,12 +125,6 @@ const splitMultiFm = scramble => {
     generatedAttemptNumber: attemptNumber++,
   }));
 };
-
-const addScrambleSetsIfMissing = rounds =>
-  rounds.map(r => ({
-    ...r,
-    scrambleSets: r.scrambleSets || [],
-  }));
 
 const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
   // We don't want to overwrite existing scrambles,

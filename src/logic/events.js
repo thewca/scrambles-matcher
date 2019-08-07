@@ -39,7 +39,7 @@ export const roundTypeIdForRound = (numberOfRounds, round) => {
   // This is the case if we loaded a XLSX!
   if (round.roundTypeId) return round.roundTypeId;
 
-  let { roundNumber } = parseActivityCode(round);
+  let { roundNumber } = parseActivityCode(round.id);
   if (roundNumber === numberOfRounds) {
     return round.cutoff ? 'c' : 'f';
   }
@@ -56,7 +56,7 @@ export const roundTypeIdForRound = (numberOfRounds, round) => {
 };
 
 export const roundName = (numberOfRounds, round) => {
-  let { eventId } = parseActivityCode(round);
+  let { eventId } = parseActivityCode(round.id);
   return `${eventNameById(eventId)} - ${
     roundTypeById(roundTypeIdForRound(numberOfRounds, round)).name
   }`;

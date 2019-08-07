@@ -2,20 +2,18 @@ import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Competition from '../Competition/Competition';
 import ImportWCIF from '../ImportWCIF/ImportWCIF';
-import { ensureScramblesMember } from '../../logic/scrambles';
-import { sortWcifEvents } from '../../logic/events';
-import { updateIn } from '../../logic/utils';
+import { processImportedWcif } from '../../logic/scrambles';
 
 export default class App extends Component {
   state = {
     wcif: null,
+    uploadedScrambles: [],
     errors: [],
   };
 
   handleWcifJSONLoad = json => {
-    let wcif = updateIn(json, ['events'], ensureScramblesMember);
-    wcif = updateIn(wcif, ['events'], sortWcifEvents);
-    this.setState({ wcif });
+    const [wcif, uploadedScrambles] = processImportedWcif(json);
+    this.setState({ wcif, uploadedScrambles: [uploadedScrambles] });
   };
 
   handleWcifUpdate = wcif => {
@@ -23,14 +21,18 @@ export default class App extends Component {
   };
 
   render() {
-    const { wcif, errors } = this.state;
+    const { wcif, uploadedScrambles, errors } = this.state;
     return (
       <div
         style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}
       >
         <CssBaseline />
         {wcif ? (
-          <Competition handleWcifUpdate={this.handleWcifUpdate} wcif={wcif} />
+          <Competition
+            handleWcifUpdate={this.handleWcifUpdate}
+            wcif={wcif}
+            uploadedScrambles={uploadedScrambles}
+          />
         ) : (
           <ImportWCIF
             handleWcifJSONLoad={this.handleWcifJSONLoad}
