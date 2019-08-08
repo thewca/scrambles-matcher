@@ -74,9 +74,7 @@ export const importWcif = wcif => {
 
   let scrambleSheet = {
     id: uniqueScrambleUploadedId,
-    competitionName: `${uniqueScrambleUploadedId++}: Scrambles for ${
-      wcif.name
-    }`,
+    competitionName: `${uniqueScrambleUploadedId}: Scrambles for ${wcif.name}`,
     generationUrl: 'unknown',
     generationDate: 'unknown',
     version: 'unknown',
@@ -111,7 +109,12 @@ export const importWcif = wcif => {
       }),
     })),
   };
+  let extractedSheets = [];
+  if (scrambleSheet.sheets.length !== 0) {
+    uniqueScrambleUploadedId++;
+    extractedSheets.push(scrambleSheet);
+  }
 
   // Return an element to add to "uploadedscrambles", and the processed wcif.
-  return [wcif, scrambleSheet.sheets.length === 0 ? [] : [scrambleSheet]];
+  return [wcif, extractedSheets];
 };
