@@ -1,5 +1,5 @@
 import { registrantIdFromAttributes } from './wcif';
-import { timeToValue } from './results';
+import { timeToValue, meanFromAttempts } from './results';
 import { roundTypeFromCellName } from './roundtypes';
 
 const formatStringToId = {
@@ -92,7 +92,17 @@ const avgForRow = (eventId, formatId, row) => {
     } else {
       // For FM mo3, the value doesn't need to be taken as moves!
       // 5 would return the WR marker for the best.
-      return timeToValue(row[6 + maxAttempts]);
+      let avgDetected = timeToValue(row[6 + maxAttempts]);
+      if (!avgDetected && eventId === '333bf') {
+        // Let's compute the mean
+        let attempts = attemptsFromResultRow(eventId, formatId, row);
+        if (attempts.length !== 3)
+          throw new Error(
+            `Can't compute mean, detected only ${attempts.length} attempts`
+          );
+        avgDetected = meanFromAttempts(attempts.map(a => a.result));
+      }
+      return avgDetected;
     }
   }
 
