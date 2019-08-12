@@ -48,7 +48,7 @@ const ScrambleList = ({ scrambles, holds }) => (
             key={s.id}
             s={s}
             index={index}
-            showPrefix={holds === 'round'}
+            showPrefix={holds.startsWith('round') && s.eventId !== '333fm'}
           />
         ))}
         {false && scrambles.length === 0 && (

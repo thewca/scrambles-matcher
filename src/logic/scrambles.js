@@ -139,23 +139,28 @@ export const prefixForIndex = index => String.fromCharCode(65 + index);
 export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
   if (scrambles.length === 0) return scrambles;
   if (eventId === '333mbf') {
-    // We need to combine all scrambles for each attempt,
-    // in the end there will be one scramble sheet with X scramble sequences,
-    // where X is the number of attempts.
+    // For all attempts, we want to push each of the scramble sequences to
+    // their corresponding groups.
     let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
-    let sheet = {
-      id: scrambles[0].id,
-      scrambles: [],
-      extraScrambles: [],
-    };
+    let sheets = [];
     Object.keys(scramblesByAttempt)
       .sort()
       .forEach(number =>
-        sheet.scrambles.push(
-          scramblesByAttempt[number].map(s => s.scrambles).join('\n')
-        )
+        scramblesByAttempt[number].forEach((sheet, groupIndex) => {
+          if (groupIndex >= sheets.length) {
+            // Create a sheet for group
+            sheets.push({
+              id: sheet.id,
+              scrambles: [...sheet.scrambles],
+              extraScrambles: [],
+            });
+          } else {
+            // Push the attempt to the group
+            sheets[groupIndex].scrambles.push(...sheet.scrambles);
+          }
+        })
       );
-    return [sheet];
+    return sheets;
   } else if (eventId === '333fm') {
     // We can't track yet in the WCIF which scramble was for witch attempt,
     // so let's just sort them by attempt id and combine them in one
