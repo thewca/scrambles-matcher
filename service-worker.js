@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/scrambles-matcher/precache-manifest.595052f51af84674db96bb624ca361d1.js"
+  "/scrambles-matcher/precache-manifest.972d61d0798f78bcc0786eb33e088d99.js"
 );
 
 self.addEventListener('message', (event) => {
