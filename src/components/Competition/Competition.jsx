@@ -125,13 +125,13 @@ export default class Competition extends Component {
             {wcif.name}
           </Typography>
         </Grid>
-        <Grid item xs={12} md={4} lg={3} xl={2} style={{ padding: 16 }}>
+        <Grid item xs={12} md={3} lg={2} style={{ padding: 16 }}>
           <CompetitionMenu
             events={wcif.events}
             setSelectedRound={this.setSelectedRound}
           />
         </Grid>
-        <Grid item xs={12} md={8} style={{ padding: 16 }}>
+        <Grid item xs={12} md={9} style={{ padding: 16 }}>
           {round ? (
             <RoundPanel
               event={event}

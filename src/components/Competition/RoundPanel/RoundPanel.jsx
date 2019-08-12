@@ -21,7 +21,7 @@ const attemptFromDroppable = elem => parseInt(elem.droppableId.split('-')[1]);
 const ListForGenericRound = ({ round }) => (
   <Paper>
     <Typography variant="h4">Used for round</Typography>
-    <ScrambleList scrambles={round.scrambleSets} holds="round" />
+    <ScrambleList scrambles={round.scrambleSets} holds="round" round={round} />
   </Paper>
 );
 
@@ -38,6 +38,7 @@ const ListForAttemptBasedRound = ({ round }) => {
               s => s.attemptNumber === index
             )}
             holds={`round-${index}`}
+            round={round}
           />
         </SpacedPaper>
       ))}
@@ -144,8 +145,6 @@ export default class RoundPanel extends Component {
     else this.handleGenericMove(source, destination);
   };
 
-  // TODO: save to main wcif button
-
   render() {
     const { event, round } = this.props;
     const { availableScrambles } = this.state;
@@ -155,17 +154,21 @@ export default class RoundPanel extends Component {
           {roundName(event.rounds.length, round)}
         </Typography>
         <Grid container justify="center">
-          <Grid item xs={6} md={4} style={{ padding: 16 }} align="center">
+          <Grid item xs={6} style={{ padding: 16 }} align="center">
             {['333mbf', '333fm'].includes(event.id) ? (
               <ListForAttemptBasedRound round={round} />
             ) : (
               <ListForGenericRound round={round} />
             )}
           </Grid>
-          <Grid item xs={6} md={4} style={{ padding: 16 }} align="center">
+          <Grid item xs={6} style={{ padding: 16 }} align="center">
             <Paper>
               <Typography variant="h4">Available</Typography>
-              <ScrambleList scrambles={availableScrambles} holds="available" />
+              <ScrambleList
+                scrambles={availableScrambles}
+                holds="available"
+                round={round}
+              />
             </Paper>
           </Grid>
         </Grid>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -20,6 +21,34 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   }),
 });
 
+const ScrambleListHeader = () => (
+  <ListItem>
+    <Grid item xs={6} md={4} lg={2} align="center">
+      Group
+    </Grid>
+    <Grid item xs={6} md={8} lg={10} align="right">
+      Scramble sheet
+    </Grid>
+  </ListItem>
+);
+
+const ScrambleWithPrefix = ({ prefix, title, subtitle }) => (
+  <Fragment>
+    <Grid item xs={6} md={4} lg={2}>
+      <ListItemText primary={prefix} align="center" />
+    </Grid>
+    <Grid item xs={6} md={8} lg={10} align="right">
+      <ListItemText primary={title} secondary={subtitle} />
+    </Grid>
+  </Fragment>
+);
+
+const ScrambleItem = ({ title, subtitle }) => (
+  <Grid item xs={12}>
+    <ListItemText primary={title} secondary={subtitle} />
+  </Grid>
+);
+
 const DraggableScramble = ({ s, index, showPrefix }) => (
   <Draggable draggableId={s.id} index={index}>
     {(provided, snapshot) => (
@@ -30,34 +59,43 @@ const DraggableScramble = ({ s, index, showPrefix }) => (
         {...provided.dragHandleProps}
         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
       >
-        {showPrefix && !snapshot.isDragging && (
-          <ListItemText primary={prefixForIndex(index)} />
+        {showPrefix && !snapshot.isDragging ? (
+          <ScrambleWithPrefix
+            prefix={prefixForIndex(index)}
+            title={s.title}
+            subtitle={`From ${s.sheetName}`}
+          />
+        ) : (
+          <ScrambleItem title={s.title} subtitle={`From ${s.sheetName}`} />
         )}
-        <ListItemText primary={s.title} secondary={`From ${s.sheetName}`} />
       </ListItem>
     )}
   </Draggable>
 );
 
-const ScrambleList = ({ scrambles, holds }) => (
-  <Droppable droppableId={holds}>
-    {(provided, snapshot) => (
-      <DNDList {...provided.droppableProps} ref={provided.innerRef}>
-        {scrambles.map((s, index) => (
-          <DraggableScramble
-            key={s.id}
-            s={s}
-            index={index}
-            showPrefix={holds.startsWith('round') && s.eventId !== '333fm'}
-          />
-        ))}
-        {false && scrambles.length === 0 && (
-          <ListItem key={0}>No scrambles</ListItem>
-        )}
-        {provided.placeholder}
-      </DNDList>
-    )}
-  </Droppable>
-);
+const ScrambleList = ({ scrambles, holds, round }) => {
+  let showPrefix = holds.startsWith('round') && !round.id.startsWith('333fm');
+  return (
+    <Droppable droppableId={holds}>
+      {(provided, snapshot) => (
+        <DNDList {...provided.droppableProps} ref={provided.innerRef}>
+          {showPrefix && <ScrambleListHeader />}
+          {scrambles.map((s, index) => (
+            <DraggableScramble
+              key={s.id}
+              s={s}
+              index={index}
+              showPrefix={showPrefix}
+            />
+          ))}
+          {false && scrambles.length === 0 && (
+            <ListItem key={0}>No scrambles</ListItem>
+          )}
+          {provided.placeholder}
+        </DNDList>
+      )}
+    </Droppable>
+  );
+};
 
 export default ScrambleList;
