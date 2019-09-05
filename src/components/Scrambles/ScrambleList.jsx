@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { styled } from '@material-ui/styles';
 
@@ -24,10 +25,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 const ScrambleListHeader = () => (
   <ListItem>
     <Grid item xs={6} md={4} lg={2} align="center">
-      Group
+      <Typography variant="h5">Group</Typography>
     </Grid>
     <Grid item xs={6} md={8} lg={10} align="right">
-      Scramble sheet
+      <Typography variant="h5">Scramble sheet</Typography>
     </Grid>
   </ListItem>
 );

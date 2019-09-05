@@ -57,7 +57,7 @@ const CompetitionDetailsPanel = props => {
         />
       </form>
       <Typography paragraph>
-        When you have make sure your competition ID is correct and all your
+        When you have made sure your competition ID is correct and all your
         rounds have the correct scrambles, you can get the export you want
         below.
       </Typography>
