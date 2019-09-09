@@ -4,7 +4,6 @@ import {
   wcifScrambleToInternal,
   splitMultiFmAsWcif,
 } from './scrambles';
-import { countryById } from './countries';
 import { flatMap, updateIn } from './utils';
 import { sortWcifEvents, roundTypeIdForRound } from './events';
 import { parseActivityCode } from './wcif';
@@ -15,38 +14,51 @@ let uniqueScrambleUploadedId = 1;
 export const getUniqueScrambleSetId = () => uniqueScrambleSetId++;
 export const getUniqueScrambleUploadedId = () => uniqueScrambleUploadedId++;
 
-export const internalWcifToResultsJson = (wcif, version) => ({
-  formatVersion: 'WCA Competition 0.3',
-  competitionId: wcif.id,
-  persons: wcif.persons.map(p => ({
-    id: p.registrantId,
-    name: p.name,
-    wcaId: p.wcaId || '',
-    countryId: countryById(p.country).iso2,
-    gender: p.gender || '',
-    dob: p.birthdate,
-  })),
-  events: wcif.events.map(e => ({
-    eventId: e.id,
-    rounds: e.rounds.map(r => ({
-      roundId: roundTypeIdForRound(e.rounds.length, r),
-      formatId: r.format,
-      results: r.results.map(res => ({
-        personId: res.personId,
-        position: res.ranking,
-        results: res.attempts.map(a => a.result),
-        best: res.best,
-        average: res.average,
+const personIdsWithResults = events => [
+  ...new Set(
+    flatMap(events, e =>
+      flatMap(e.rounds, r => r.results.map(res => res.personId))
+    )
+  ),
+];
+
+export const internalWcifToResultsJson = (wcif, version) => {
+  let personsToExport = personIdsWithResults(wcif.events);
+  return {
+    formatVersion: 'WCA Competition 0.3',
+    competitionId: wcif.id,
+    persons: wcif.persons
+      .filter(p => personsToExport.includes(p.registrantId))
+      .map(p => ({
+        id: p.registrantId,
+        name: p.name,
+        wcaId: p.wcaId || '',
+        countryId: p.countryIso2,
+        gender: p.gender || '',
+        dob: p.birthdate,
       })),
-      groups: scramblesToResultsGroups(
-        internalScramblesToWcifScrambles(e.id, r.scrambleSets)
-      ),
+    events: wcif.events.map(e => ({
+      eventId: e.id,
+      rounds: e.rounds.map(r => ({
+        roundId: roundTypeIdForRound(e.rounds.length, r),
+        formatId: r.format,
+        results: r.results.map(res => ({
+          personId: res.personId,
+          position: res.ranking,
+          results: res.attempts.map(a => a.result),
+          best: res.best,
+          average: res.average,
+        })),
+        groups: scramblesToResultsGroups(
+          internalScramblesToWcifScrambles(e.id, r.scrambleSets)
+        ),
+      })),
     })),
-  })),
-  // TODO: make sure that only one tnoodle was used, then add an explicit field for that?
-  scrambleProgram: wcif.scrambleProgram,
-  resultsProgram: `Scrambles Matcher ${version}`,
-});
+    // TODO: make sure that only one tnoodle was used, then add an explicit field for that?
+    scrambleProgram: wcif.scrambleProgram,
+    resultsProgram: `Scrambles Matcher ${version}`,
+  };
+};
 
 export const internalWcifToWcif = wcif => ({
   // We only alter the scrambles, so make them right wrt the WCIF.

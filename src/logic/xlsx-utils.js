@@ -1,6 +1,7 @@
 import { registrantIdFromAttributes } from './wcif';
 import { timeToValue, meanFromAttempts } from './results';
 import { roundTypeFromCellName } from './roundtypes';
+import { countryById } from './countries';
 
 const formatStringToId = {
   'Format: best of 1': '1',
@@ -28,7 +29,7 @@ export const personWcifFromRegistrationXlsx = sheet =>
     registrantId: parseInt(person[0]),
     name: person[1],
     wcaUserId: null,
-    country: person[2],
+    countryIso2: countryById(person[2]).iso2,
     wcaId: person[3] || null,
     gender: person[4],
     birthdate: person[5],

@@ -1,5 +1,6 @@
 import { formatById } from './formats';
 import { groupBy } from './utils';
+import { countryById } from './countries';
 
 export const parseActivityCode = activityCode => {
   const [, e, r, g, a] = activityCode.match(
@@ -13,9 +14,12 @@ export const parseActivityCode = activityCode => {
   };
 };
 
-export const registrantIdFromAttributes = (persons, name, country, wcaId) =>
+export const registrantIdFromAttributes = (persons, name, countryId, wcaId) =>
   persons.find(
-    p => p.name === name && p.country === country && p.wcaId === wcaId
+    p =>
+      p.name === name &&
+      p.countryIso2 === countryById(countryId).iso2 &&
+      p.wcaId === wcaId
   ).registrantId;
 
 export const competitionLink = id =>
