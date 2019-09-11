@@ -9,6 +9,8 @@ import {
   personWcifFromRegistrationXlsx,
   roundWcifFromXlsx,
 } from '../../logic/xlsx-utils';
+import CompetitionsList from '../Auth/CompetitionsList';
+import { getOauthTokenIfAny } from '../../logic/auth';
 
 //import tmpWcif from '../../wcifresults.json';
 
@@ -18,6 +20,12 @@ const useStyles = makeStyles(theme => ({
   },
   h: {
     marginBottom: theme.spacing(3),
+  },
+  h6: {
+    marginBottom: theme.spacing(1),
+  },
+  mt3: {
+    marginTop: theme.spacing(3),
   },
   button: {
     marginLeft: theme.spacing(3),
@@ -101,6 +109,8 @@ const handleFileUploadChange = (updater, event) => {
 
 const ImportWCIF = ({ handleWcifJSONLoad }) => {
   const classes = useStyles();
+  const userToken = getOauthTokenIfAny();
+
   // Dirty hack to preload given WCIF
   //handleWcifJSONLoad(tmpWcif);
   return (
@@ -129,48 +139,68 @@ const ImportWCIF = ({ handleWcifJSONLoad }) => {
             <br />
             If you refresh the page, you will have to start over.
           </Typography>
-          <Grid container direction="row" justify="center">
-            <Typography variant="h6" className={classes.h}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.h6}
+          >
+            <Typography variant="h6" className={classes.h6}>
               Get started:
             </Typography>
-            <input
-              accept=".json"
-              className={classes.input}
-              id="raised-button-file"
-              multiple
-              type="file"
-              onChange={ev => handleFileUploadChange(handleWcifJSONLoad, ev)}
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              className={classes.h6}
+            >
+              <input
+                accept=".json"
+                className={classes.input}
+                id="raised-button-file"
+                multiple
+                type="file"
+                onChange={ev => handleFileUploadChange(handleWcifJSONLoad, ev)}
+              />
+              <label htmlFor="raised-button-file">
+                <Button
+                  component="span"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Upload WCIF
+                </Button>
+              </label>
+              <input
+                accept=".xlsx"
+                className={classes.input}
+                id="raised-button-xlsx"
+                multiple
+                type="file"
+                onChange={ev => handleXlsxUploadChange(handleWcifJSONLoad, ev)}
+              />
+              <label htmlFor="raised-button-xlsx">
+                <Button
+                  component="span"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Upload XLSX
+                </Button>
+              </label>
+            </Grid>
+            <Typography variant="h6" className={classes.h6}>
+              Or select a competition you manage on the WCA website:
+            </Typography>
+            <CompetitionsList
+              userToken={userToken}
+              setCompetitionWcif={() => alert('coucou')}
             />
-            <label htmlFor="raised-button-file">
-              <Button
-                component="span"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Upload WCIF
-              </Button>
-            </label>
-            <input
-              accept=".xlsx"
-              className={classes.input}
-              id="raised-button-xlsx"
-              multiple
-              type="file"
-              onChange={ev => handleXlsxUploadChange(handleWcifJSONLoad, ev)}
-            />
-            <label htmlFor="raised-button-xlsx">
-              <Button
-                component="span"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Upload XLSX
-              </Button>
-            </label>
           </Grid>
-          <Typography paragraph>
+          <Typography paragraph className={classes.mt3}>
             You are most likely used to using the Workbook Assistant (WA). For
             competition where everything went well and you just have one single
             and comprehensive JSON scrambles file, then using this should be
