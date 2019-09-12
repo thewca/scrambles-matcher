@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import XLSX from 'xlsx';
@@ -9,8 +10,7 @@ import {
   personWcifFromRegistrationXlsx,
   roundWcifFromXlsx,
 } from '../../logic/xlsx-utils';
-import CompetitionsList from '../Auth/CompetitionsList';
-import { getOauthTokenIfAny } from '../../logic/auth';
+import { CompetitionsSection } from './CompetitionsList';
 
 //import tmpWcif from '../../wcifresults.json';
 
@@ -107,9 +107,15 @@ const handleFileUploadChange = (updater, event) => {
   reader.readAsText(event.target.files[0]);
 };
 
-const ImportWCIF = ({ handleWcifJSONLoad }) => {
+const Loading = () => <CircularProgress color="secondary" />;
+
+const ImportWCIF = ({
+  handleWcifJSONLoad,
+  importFromCompetition,
+  competitions,
+  loading,
+}) => {
   const classes = useStyles();
-  const userToken = getOauthTokenIfAny();
 
   // Dirty hack to preload given WCIF
   //handleWcifJSONLoad(tmpWcif);
@@ -195,10 +201,14 @@ const ImportWCIF = ({ handleWcifJSONLoad }) => {
             <Typography variant="h6" className={classes.h6}>
               Or select a competition you manage on the WCA website:
             </Typography>
-            <CompetitionsList
-              userToken={userToken}
-              setCompetitionWcif={() => alert('coucou')}
-            />
+            {loading ? (
+              <Loading />
+            ) : (
+              <CompetitionsSection
+                competitions={competitions}
+                importFromCompetition={importFromCompetition}
+              />
+            )}
           </Grid>
           <Typography paragraph className={classes.mt3}>
             You are most likely used to using the Workbook Assistant (WA). For

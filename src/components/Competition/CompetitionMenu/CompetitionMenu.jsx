@@ -10,7 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import classnames from 'classnames';
 
-import CubingIcon from '../../CubingIcon/CubingIcon';
+import { CubingIcon } from '../../CubingIcon/CubingIcon';
 import {
   eventHasValidScrambles,
   roundHasValidScrambles,

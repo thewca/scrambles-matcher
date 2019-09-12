@@ -20,7 +20,7 @@ export const signIn = () => {
     client_id: WCA_OAUTH_CLIENT_ID,
     response_type: 'token',
     redirect_uri: oauthRedirectUri(),
-    scope: 'manage_competitions',
+    scope: 'public manage_competitions',
   });
   window.location = `${WCA_ORIGIN}/oauth/authorize?${params.toString()}`;
 };

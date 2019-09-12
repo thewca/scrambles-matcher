@@ -1,6 +1,7 @@
 import React from 'react';
+import classnames from 'classnames';
 
-const CubingIcon = ({ eventId, ...props }) => (
+export const CubingIcon = ({ eventId, ...props }) => (
   <span
     style={{ fontSize: 24 }}
     className={`cubing-icon event-${eventId}`}
@@ -8,4 +9,10 @@ const CubingIcon = ({ eventId, ...props }) => (
   />
 );
 
-export default CubingIcon;
+export const CubingIconUnofficial = ({ eventId, className, ...props }) => (
+  <span
+    style={{ fontSize: 24 }}
+    className={classnames('cubing-icon', `unofficial-${eventId}`, className)}
+    {...props}
+  />
+);
