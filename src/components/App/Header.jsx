@@ -32,7 +32,7 @@ const Header = ({ user }) => {
           <Typography>{user.name}</Typography>
         ) : (
           <Button color="inherit" onClick={signIn}>
-            Sign in
+            Sign in with the WCA
           </Button>
         )}
       </Toolbar>
