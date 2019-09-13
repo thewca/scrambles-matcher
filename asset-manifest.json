@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/scrambles-matcher/static/css/main.05428ff7.chunk.css",
-    "main.js": "/scrambles-matcher/static/js/main.00180a3d.chunk.js",
-    "main.js.map": "/scrambles-matcher/static/js/main.00180a3d.chunk.js.map",
+    "main.js": "/scrambles-matcher/static/js/main.ae4bd802.chunk.js",
+    "main.js.map": "/scrambles-matcher/static/js/main.ae4bd802.chunk.js.map",
     "runtime~main.js": "/scrambles-matcher/static/js/runtime~main.56288f6a.js",
     "runtime~main.js.map": "/scrambles-matcher/static/js/runtime~main.56288f6a.js.map",
     "static/css/2.1446c61e.chunk.css": "/scrambles-matcher/static/css/2.1446c61e.chunk.css",
     "static/js/2.6f396a3a.chunk.js": "/scrambles-matcher/static/js/2.6f396a3a.chunk.js",
     "static/js/2.6f396a3a.chunk.js.map": "/scrambles-matcher/static/js/2.6f396a3a.chunk.js.map",
     "index.html": "/scrambles-matcher/index.html",
-    "precache-manifest.55b5efe51d1d7bb9381b9f435830b897.js": "/scrambles-matcher/precache-manifest.55b5efe51d1d7bb9381b9f435830b897.js",
+    "precache-manifest.6bfc8b5c5811c055769457b5cc94b460.js": "/scrambles-matcher/precache-manifest.6bfc8b5c5811c055769457b5cc94b460.js",
     "service-worker.js": "/scrambles-matcher/service-worker.js",
     "static/css/2.1446c61e.chunk.css.map": "/scrambles-matcher/static/css/2.1446c61e.chunk.css.map",
     "static/css/main.05428ff7.chunk.css.map": "/scrambles-matcher/static/css/main.05428ff7.chunk.css.map",
