@@ -26,8 +26,9 @@ export const signIn = () => {
 };
 
 const oauthRedirectUri = () => {
-  const appUri = window.location.href;
-  const searchParams = new URLSearchParams(window.location.search);
-  const stagingParam = searchParams.has('staging');
-  return stagingParam ? `${appUri}?staging=true` : appUri;
+  const { origin, pathname, search } = window.location;
+  const searchParams = new URLSearchParams(search);
+  const staging = searchParams.get('staging');
+  const appUri = `${origin}${pathname}`.replace(/\/$/, '');
+  return staging ? `${appUri}?staging=true` : appUri;
 };
