@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/scrambles-matcher/static/css/main.05428ff7.chunk.css",
-    "main.js": "/scrambles-matcher/static/js/main.ae4bd802.chunk.js",
-    "main.js.map": "/scrambles-matcher/static/js/main.ae4bd802.chunk.js.map",
-    "runtime~main.js": "/scrambles-matcher/static/js/runtime~main.56288f6a.js",
-    "runtime~main.js.map": "/scrambles-matcher/static/js/runtime~main.56288f6a.js.map",
-    "static/css/2.1446c61e.chunk.css": "/scrambles-matcher/static/css/2.1446c61e.chunk.css",
-    "static/js/2.6f396a3a.chunk.js": "/scrambles-matcher/static/js/2.6f396a3a.chunk.js",
-    "static/js/2.6f396a3a.chunk.js.map": "/scrambles-matcher/static/js/2.6f396a3a.chunk.js.map",
-    "index.html": "/scrambles-matcher/index.html",
-    "precache-manifest.6bfc8b5c5811c055769457b5cc94b460.js": "/scrambles-matcher/precache-manifest.6bfc8b5c5811c055769457b5cc94b460.js",
-    "service-worker.js": "/scrambles-matcher/service-worker.js",
-    "static/css/2.1446c61e.chunk.css.map": "/scrambles-matcher/static/css/2.1446c61e.chunk.css.map",
-    "static/css/main.05428ff7.chunk.css.map": "/scrambles-matcher/static/css/main.05428ff7.chunk.css.map",
-    "static/media/index.css": "/scrambles-matcher/static/media/roboto-latin-900italic.ebf6d164.woff2"
+    "main.css": "./static/css/main.05428ff7.chunk.css",
+    "main.js": "./static/js/main.4dff4542.chunk.js",
+    "main.js.map": "./static/js/main.4dff4542.chunk.js.map",
+    "runtime~main.js": "./static/js/runtime~main.d653cc00.js",
+    "runtime~main.js.map": "./static/js/runtime~main.d653cc00.js.map",
+    "static/css/2.335e4b44.chunk.css": "./static/css/2.335e4b44.chunk.css",
+    "static/js/2.6f396a3a.chunk.js": "./static/js/2.6f396a3a.chunk.js",
+    "static/js/2.6f396a3a.chunk.js.map": "./static/js/2.6f396a3a.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.be07a36bb7106d64f725cdc66445b2c6.js": "./precache-manifest.be07a36bb7106d64f725cdc66445b2c6.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/2.335e4b44.chunk.css.map": "./static/css/2.335e4b44.chunk.css.map",
+    "static/css/main.05428ff7.chunk.css.map": "./static/css/main.05428ff7.chunk.css.map",
+    "static/media/index.css": "./static/media/roboto-latin-900italic.ebf6d164.woff2"
   }
 }
