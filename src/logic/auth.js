@@ -26,7 +26,7 @@ export const signIn = () => {
 };
 
 const oauthRedirectUri = () => {
-  const appUri = window.location.origin;
+  const appUri = window.location.href;
   const searchParams = new URLSearchParams(window.location.search);
   const stagingParam = searchParams.has('staging');
   return stagingParam ? `${appUri}?staging=true` : appUri;
