@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
 import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
@@ -119,37 +120,48 @@ export default class Competition extends Component {
       );
     }
     return (
-      <Grid container>
-        <Grid item xs={12} style={{ padding: 16 }}>
-          <Typography variant="h2" component="h1" align="center">
-            {wcif.name}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={3} lg={2} style={{ padding: 16 }}>
-          <CompetitionMenu
-            events={wcif.events}
-            setSelectedRound={this.setSelectedRound}
-          />
-        </Grid>
-        <Grid item xs={12} md={9} style={{ padding: 16 }}>
-          {round ? (
-            <RoundPanel
-              event={event}
-              round={round}
-              availableScrambles={availableScrambles}
-              attachScramblesToRound={this.attachScramblesToRound}
+      <div style={{ display: 'flex' }}>
+        <Drawer
+          variant="permanent"
+          style={{ width: 250, zIndex: 1 }}
+          PaperProps={{ style: { width: 250 } }}
+        >
+          <div style={{ minHeight: 64 }} />
+          <div style={{ overflowY: 'auto' }}>
+            <CompetitionMenu
+              events={wcif.events}
+              setSelectedRound={this.setSelectedRound}
             />
-          ) : (
-            <CompetitionInfo
-              wcif={wcif}
-              uploadedScrambles={uploadedScrambles}
-              uploadAction={this.uploadNewScramble}
-              handleWcifChange={this.handleWcifChange}
-              version={version}
-            />
-          )}
-        </Grid>
-      </Grid>
+          </div>
+        </Drawer>
+        <div style={{ padding: 16, flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h4" align="center">
+                {wcif.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              {round ? (
+                <RoundPanel
+                  event={event}
+                  round={round}
+                  availableScrambles={availableScrambles}
+                  attachScramblesToRound={this.attachScramblesToRound}
+                />
+              ) : (
+                <CompetitionInfo
+                  wcif={wcif}
+                  uploadedScrambles={uploadedScrambles}
+                  uploadAction={this.uploadNewScramble}
+                  handleWcifChange={this.handleWcifChange}
+                  version={version}
+                />
+              )}
+            </Grid>
+          </Grid>
+        </div>
+      </div>
     );
   }
 }

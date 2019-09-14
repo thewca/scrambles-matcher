@@ -37,7 +37,7 @@ export const CompetitionsSection = ({
       />
     ) : (
       <Button
-        variant="contained"
+        variant="outlined"
         component="span"
         color="secondary"
         onClick={signIn}

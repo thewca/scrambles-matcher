@@ -1,26 +1,19 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { withStyles } from '@material-ui/core/styles';
 
 import ScrambleList from '../../Scrambles/ScrambleList';
 import { groupBy, flatMap } from '../../../logic/utils';
 import { roundName } from '../../../logic/events';
 import { formatById } from '../../../logic/formats';
 
-const SpacedPaper = withStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(4),
-  },
-}))(Paper);
-
 const attemptFromDroppable = elem => parseInt(elem.droppableId.split('-')[1]);
 
 const ListForGenericRound = ({ round }) => (
-  <Paper>
-    <Typography variant="h4">Used for round</Typography>
+  <Paper style={{ padding: 16 }}>
+    <Typography variant="h5">Used for round</Typography>
     <ScrambleList scrambles={round.scrambleSets} holds="round" round={round} />
   </Paper>
 );
@@ -29,20 +22,22 @@ const ListForAttemptBasedRound = ({ round }) => {
   const nAttempts = formatById(round.format).solveCount;
   let attempts = [...Array(nAttempts).keys()].map(i => ++i);
   return (
-    <Fragment>
+    <Grid container spacing={3}>
       {attempts.map(index => (
-        <SpacedPaper key={index}>
-          <Typography variant="h4">Used for attempt {index}</Typography>
-          <ScrambleList
-            scrambles={round.scrambleSets.filter(
-              s => s.attemptNumber === index
-            )}
-            holds={`round-${index}`}
-            round={round}
-          />
-        </SpacedPaper>
+        <Grid item xs={12} key={index}>
+          <Paper style={{ padding: 16 }}>
+            <Typography variant="h5">Used for attempt {index}</Typography>
+            <ScrambleList
+              scrambles={round.scrambleSets.filter(
+                s => s.attemptNumber === index
+              )}
+              holds={`round-${index}`}
+              round={round}
+            />
+          </Paper>
+        </Grid>
       ))}
-    </Fragment>
+    </Grid>
   );
 };
 
@@ -150,28 +145,30 @@ export default class RoundPanel extends Component {
     const { availableScrambles } = this.state;
     return (
       <DragDropContext onDragEnd={this.handleScrambleMovement}>
-        <Typography variant="h3" align="center">
+        <Typography variant="h5" align="center" color="textSecondary">
           {roundName(event.rounds.length, round)}
         </Typography>
-        <Grid container justify="center">
-          <Grid item xs={6} style={{ padding: 16 }} align="center">
-            {['333mbf', '333fm'].includes(event.id) ? (
-              <ListForAttemptBasedRound round={round} />
-            ) : (
-              <ListForGenericRound round={round} />
-            )}
+        <div style={{ padding: 16 }}>
+          <Grid container spacing={2} justify="center">
+            <Grid item xs={6} align="center">
+              {['333mbf', '333fm'].includes(event.id) ? (
+                <ListForAttemptBasedRound round={round} />
+              ) : (
+                <ListForGenericRound round={round} />
+              )}
+            </Grid>
+            <Grid item xs={6} align="center">
+              <Paper style={{ padding: 16 }}>
+                <Typography variant="h5">Available</Typography>
+                <ScrambleList
+                  scrambles={availableScrambles}
+                  holds="available"
+                  round={round}
+                />
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={6} style={{ padding: 16 }} align="center">
-            <Paper>
-              <Typography variant="h4">Available</Typography>
-              <ScrambleList
-                scrambles={availableScrambles}
-                holds="available"
-                round={round}
-              />
-            </Paper>
-          </Grid>
-        </Grid>
+        </div>
       </DragDropContext>
     );
   }

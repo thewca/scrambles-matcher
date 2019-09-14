@@ -41,14 +41,13 @@ const CompetitionDetailsPanel = props => {
   const handleNameChange = ev => uploadCompetitionIdAction(ev.target.value);
   return (
     <Paper className={classes.paper}>
-      <Typography variant="h4" className={classes.h}>
+      <Typography variant="h5" gutterBottom>
         Competition details
       </Typography>
       <form className={classes.mb3} noValidate autoComplete="off">
         <TextField
           id="outlined-name"
           label="Competition ID"
-          //className={classes.textField}
           value={wcif.id || ''}
           onChange={handleNameChange}
           helperText={<HelperWithLink id={wcif.id} />}
@@ -62,7 +61,6 @@ const CompetitionDetailsPanel = props => {
         below.
       </Typography>
       <ButtonGroup
-        variant="contained"
         color="primary"
         aria-label="outlined primary button group"
         disabled={!exportAvailable}

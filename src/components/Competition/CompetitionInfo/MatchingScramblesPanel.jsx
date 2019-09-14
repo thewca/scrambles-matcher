@@ -6,18 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import DeleteIcon from '@material-ui/icons/Delete';
 import classnames from 'classnames';
-import { green } from '@material-ui/core/colors';
-import { withStyles } from '@material-ui/core/styles';
-
-const GreenButton = withStyles(theme => ({
-  root: {
-    color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[700],
-    },
-  },
-}))(Button);
 
 const MatchingScramblesPanel = ({
   assignAction,
@@ -27,7 +15,7 @@ const MatchingScramblesPanel = ({
 }) => {
   return (
     <Paper className={classes.paper}>
-      <Typography variant="h4" className={classes.h}>
+      <Typography variant="h5" gutterBottom>
         Matching scrambles to rounds
       </Typography>
       <Typography paragraph align="justify">
@@ -47,7 +35,7 @@ const MatchingScramblesPanel = ({
         <br />
         Don't forget to set the competition ID if it's not detected!
       </Typography>
-      <Grid container direction="row">
+      <Grid container direction="row" spacing={2}>
         <Grid item xs={12}>
           <input
             accept=".json"
@@ -58,20 +46,20 @@ const MatchingScramblesPanel = ({
             onChange={uploadAction}
           />
           <label htmlFor="add-scramble-json">
-            <GreenButton
+            <Button
               variant="contained"
               component="span"
               color="primary"
-              className={classnames(classes.addJsonButton, classes.mb3)}
+              fullWidth
+              className={classnames(classes.addJsonButton)}
             >
               Upload scrambles json
-            </GreenButton>
+            </Button>
           </label>
         </Grid>
-        <Grid item xs={6} style={{ paddingRight: 8 }}>
+        <Grid item xs={6}>
           <Button
-            variant="contained"
-            component="span"
+            variant="outlined"
             color="primary"
             fullWidth
             className={classes.button}
@@ -81,9 +69,9 @@ const MatchingScramblesPanel = ({
             Automatically assign scrambles
           </Button>
         </Grid>
-        <Grid item xs={6} style={{ paddingLeft: 8 }}>
+        <Grid item xs={6}>
           <Button
-            variant="contained"
+            variant="outlined"
             color="secondary"
             fullWidth
             className={classes.button}
