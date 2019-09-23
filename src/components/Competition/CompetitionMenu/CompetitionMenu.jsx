@@ -5,10 +5,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
-import classnames from 'classnames';
 
 import { CubingIcon } from '../../CubingIcon/CubingIcon';
 import {
@@ -18,23 +17,9 @@ import {
 import { eventNameById, roundTypeIdForRound } from '../../../logic/events';
 import { roundTypeById } from '../../../logic/roundtypes';
 
-const EventListItem = withStyles({
-  root: {
-    color: 'black',
-    '& .cubing-icon, & svg': {
-      color: 'black',
-    },
-  },
-})(ListItem);
-
 const useStyles = makeStyles(theme => ({
-  item: {
+  nestedItem: {
     paddingLeft: theme.spacing(4),
-  },
-  svg: {
-    '& svg': {
-      color: 'red',
-    },
   },
 }));
 
@@ -43,15 +28,21 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
   const classes = useStyles();
   return (
     <List dense={true}>
-      <EventListItem button onClick={() => setSelectedRound(null)}>
+      <ListItem
+        button
+        onClick={() => {
+          setSelectedEvent(null);
+          setSelectedRound(null);
+        }}
+      >
         <ListItemIcon>
           <InfoIcon />
         </ListItemIcon>
         <ListItemText primary="Information" />
-      </EventListItem>
+      </ListItem>
       {events.map(event => (
         <Fragment key={event.id}>
-          <EventListItem
+          <ListItem
             button
             onClick={e => {
               setSelectedEvent(selectedEvent === event.id ? null : event.id);
@@ -63,13 +54,11 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
             </ListItemIcon>
             <ListItemText primary={eventNameById(event.id)} />
             {!eventHasValidScrambles(event) && (
-              <ListItemIcon className={classes.svg}>
-                <Tooltip title="Missing scrambles">
-                  <ReportProblemIcon />
-                </Tooltip>
-              </ListItemIcon>
+              <Tooltip title="Missing scrambles">
+                <ReportProblemIcon color="error" />
+              </Tooltip>
             )}
-          </EventListItem>
+          </ListItem>
           <Collapse
             in={selectedEvent === event.id}
             timeout="auto"
@@ -80,7 +69,7 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                 <ListItem
                   key={round.id}
                   button
-                  className={classnames(classes.svg, classes.item)}
+                  className={classes.nestedItem}
                   onClick={() => setSelectedRound(round.id)}
                 >
                   <ListItemText
@@ -91,11 +80,9 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                     }
                   />
                   {!roundHasValidScrambles(event.id, round) && (
-                    <ListItemIcon>
-                      <Tooltip title="Missing scrambles">
-                        <ReportProblemIcon />
-                      </Tooltip>
-                    </ListItemIcon>
+                    <Tooltip title="Missing scrambles">
+                      <ReportProblemIcon color="error" />
+                    </Tooltip>
                   )}
                 </ListItem>
               ))}

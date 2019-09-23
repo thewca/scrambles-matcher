@@ -25,10 +25,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 const ScrambleListHeader = () => (
   <ListItem>
     <Grid item xs={6} md={4} lg={2} align="center">
-      <Typography variant="h5">Group</Typography>
+      <Typography variant="subtitle1">Group</Typography>
     </Grid>
     <Grid item xs={6} md={8} lg={10} align="right">
-      <Typography variant="h5">Scramble sheet</Typography>
+      <Typography variant="subtitle1">Scramble sheet</Typography>
     </Grid>
   </ListItem>
 );

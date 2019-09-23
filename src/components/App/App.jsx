@@ -98,6 +98,7 @@ export default class App extends Component {
             importFromCompetition={this.importFromCompetition}
             competitions={competitions}
             loading={loading}
+            signedIn={!!this.state.userToken}
           />
         )}
       </div>

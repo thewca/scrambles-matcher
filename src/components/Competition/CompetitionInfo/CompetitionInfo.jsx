@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import {
   internalWcifToWcif,
   internalWcifToResultsJson,
@@ -27,7 +28,6 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
   },
   addJsonButton: {
-    width: '100%',
     marginTop: theme.spacing(2),
   },
   extendedIcon: {
@@ -40,11 +40,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(3),
   },
   paper: {
-    padding: 16,
-    marginBottom: theme.spacing(2),
-  },
-  h: {
-    marginBottom: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -75,25 +71,31 @@ const CompetitionInfo = ({
   const uploadCompetitionIdAction = id => handleWcifChange({ ...wcif, id: id });
 
   return (
-    <Fragment>
-      <CompetitionDetailsPanel
-        downloadWcifAction={actionDownloadWcif}
-        downloadResultsJsonAction={actionDownloadResultsJson}
-        uploadCompetitionIdAction={uploadCompetitionIdAction}
-        classes={classes}
-        wcif={wcif}
-      />
-      <MatchingScramblesPanel
-        assignAction={actionAssignScrambles}
-        uploadAction={uploadAction}
-        clearAction={actionClearScrambles}
-        classes={classes}
-      />
-      <UploadedScramblesPanel
-        uploadedScrambles={uploadedScrambles}
-        classes={classes}
-      />
-    </Fragment>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <CompetitionDetailsPanel
+          downloadWcifAction={actionDownloadWcif}
+          downloadResultsJsonAction={actionDownloadResultsJson}
+          uploadCompetitionIdAction={uploadCompetitionIdAction}
+          classes={classes}
+          wcif={wcif}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <MatchingScramblesPanel
+          assignAction={actionAssignScrambles}
+          uploadAction={uploadAction}
+          clearAction={actionClearScrambles}
+          classes={classes}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <UploadedScramblesPanel
+          uploadedScrambles={uploadedScrambles}
+          classes={classes}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
