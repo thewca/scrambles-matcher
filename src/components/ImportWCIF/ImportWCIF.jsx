@@ -113,9 +113,10 @@ const ImportWCIF = ({
   importFromCompetition,
   competitions,
   loading,
+  signedIn,
 }) => {
   const classes = useStyles();
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(signedIn ? 'wca' : 'xlsx');
 
   // Dirty hack to preload given WCIF
   //handleWcifJSONLoad(tmpWcif);
@@ -144,12 +145,12 @@ const ImportWCIF = ({
                 value={tabValue}
                 onChange={(event, value) => setTabValue(value)}
               >
-                <Tab label="WCA import" />
-                <Tab label="WCIF file" />
-                <Tab label="XLSX file" />
+                <Tab label="XLSX file" value="xlsx" />
+                <Tab label="WCA import" value="wca" />
+                <Tab label="WCIF file" value="wcif" />
               </Tabs>
               <div className={classes.tabContent}>
-                {tabValue === 0 && (
+                {tabValue === 'wca' && (
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
                       <Typography>
@@ -174,7 +175,7 @@ const ImportWCIF = ({
                     </Grid>
                   </Grid>
                 )}
-                {tabValue === 1 && (
+                {tabValue === 'wcif' && (
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
                       <Typography>
@@ -205,7 +206,7 @@ const ImportWCIF = ({
                     </Grid>
                   </Grid>
                 )}
-                {tabValue === 2 && (
+                {tabValue === 'xlsx' && (
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
                       <Typography>
