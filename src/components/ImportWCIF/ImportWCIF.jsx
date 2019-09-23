@@ -179,7 +179,7 @@ const ImportWCIF = ({
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
                       <Typography>
-                        {`Start by import a JSON file with an existing WCIF.`}
+                        {`Start by importing a JSON file with an existing WCIF.`}
                       </Typography>
                     </Grid>
                     <Grid item align="center">
