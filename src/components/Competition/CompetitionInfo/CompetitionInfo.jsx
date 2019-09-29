@@ -54,13 +54,13 @@ const CompetitionInfo = ({
   const classes = useStyles();
 
   const actionDownloadWcif = () =>
-    downloadFile(wcif, internalWcifToWcif, `WCIF for ${wcif.name}.json`);
+    downloadFile(wcif, internalWcifToWcif, `WCIF for ${wcif.id}.json`);
 
   const actionDownloadResultsJson = () =>
     downloadFile(
       wcif,
       wcif => internalWcifToResultsJson(wcif, version),
-      `Results for ${wcif.name}.json`
+      `Results for ${wcif.id}.json`
     );
 
   const actionAssignScrambles = () =>
