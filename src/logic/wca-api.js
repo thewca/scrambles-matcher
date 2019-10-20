@@ -1,10 +1,10 @@
 import { WCA_ORIGIN } from './wca-env';
 
 export const getUpcomingManageableCompetitions = userToken => {
-  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const oneMonthAgo = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000);
   const params = new URLSearchParams({
     managed_by_me: true,
-    start: oneWeekAgo.toISOString(),
+    start: oneMonthAgo.toISOString(),
   });
   return wcaApiFetch(userToken, `/competitions?${params.toString()}`);
 };
