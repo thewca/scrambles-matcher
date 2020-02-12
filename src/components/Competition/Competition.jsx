@@ -10,7 +10,6 @@ import { flatMap, updateIn } from '../../logic/utils';
 import { parseActivityCode } from '../../logic/wcif';
 import { getUniqueScrambleUploadedId } from '../../logic/import-export-wcif';
 import {
-  updateMultiAndFm,
   transformUploadedScrambles,
   allScramblesForEvent,
   usedScramblesIdsForEvent,
@@ -57,7 +56,6 @@ export default class Competition extends Component {
         newScramble.competitionName = `${getUniqueScrambleUploadedId()}: ${
           newScramble.competitionName
         }`;
-        newScramble = updateIn(newScramble, ['sheets'], updateMultiAndFm);
         newScramble = transformUploadedScrambles(newScramble);
         return {
           wcif: {

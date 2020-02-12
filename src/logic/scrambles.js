@@ -1,6 +1,6 @@
 import { flatMap, updateIn, groupBy, sortBy } from './utils';
 import { parseActivityCode } from './wcif';
-import { getUniqueScrambleSetId } from './import-export-wcif';
+import { getUniqueScrambleSetId, importWcif } from './import-export-wcif';
 import { formatById } from './formats';
 import { eventNameById } from './events';
 
@@ -116,8 +116,9 @@ export const allScramblesForEvent = (scrambles, eventId, usedIds) =>
 
 export const usedScramblesIdsForEvent = (events, eventId) =>
   flatMap(
-    flatMap(events.filter(e => e.id === eventId), e =>
-      flatMap(e.rounds, r => r.scrambleSets)
+    flatMap(
+      events.filter(e => e.id === eventId),
+      e => flatMap(e.rounds, r => r.scrambleSets)
     ),
     s => s.id
   );
@@ -128,8 +129,22 @@ export const updateMultiAndFm = scrambles =>
   );
 
 export const transformUploadedScrambles = uploadedJson => {
+  // Newer versions of TNoodle provide a pre-compiled WCIF that we can read here.
+  // Retain old version (below `if`) as well to have a "grace period" in transitioning
+  if ('wcif' in uploadedJson) {
+    const tnoodleWcif = uploadedJson['wcif'];
+    const [, extractedScrambles] = importWcif(tnoodleWcif);
+    delete uploadedJson['wcif']; // avoid confusion with the other WCIF that gets merged in
+    uploadedJson['sheets'] = extractedScrambles.flatMap(
+      sheetExt => sheetExt['sheets']
+    );
+    return uploadedJson;
+  }
   const updater = sheets =>
-    tnoodleSheetsToInternal(uploadedJson.competitionName, sheets);
+    tnoodleSheetsToInternal(
+      uploadedJson.competitionName,
+      updateMultiAndFm(sheets)
+    );
   return updateIn(uploadedJson, ['sheets'], updater);
 };
 
