@@ -130,7 +130,7 @@ export const updateMultiAndFm = scrambles =>
 
 export const transformUploadedScrambles = uploadedJson => {
   // Newer versions of TNoodle provide a pre-compiled WCIF that we can read here.
-  // Retain old version (below `if`) as well to have a "grace period" in transitioning
+  // Retain old version (`else` branch) as well to have a "grace period" in transitioning
   if ('wcif' in uploadedJson) {
     const tnoodleWcif = uploadedJson['wcif'];
     const [, extractedScrambles] = importWcif(tnoodleWcif);
@@ -139,13 +139,14 @@ export const transformUploadedScrambles = uploadedJson => {
       sheetExt => sheetExt['sheets']
     );
     return uploadedJson;
+  } else {
+    const updater = sheets =>
+      tnoodleSheetsToInternal(
+        uploadedJson.competitionName,
+        updateMultiAndFm(sheets)
+      );
+    return updateIn(uploadedJson, ['sheets'], updater);
   }
-  const updater = sheets =>
-    tnoodleSheetsToInternal(
-      uploadedJson.competitionName,
-      updateMultiAndFm(sheets)
-    );
-  return updateIn(uploadedJson, ['sheets'], updater);
 };
 
 // 65 is the char code for 'A'

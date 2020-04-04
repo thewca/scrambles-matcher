@@ -116,7 +116,7 @@ const ImportWCIF = ({
   signedIn,
 }) => {
   const classes = useStyles();
-  const [tabValue, setTabValue] = useState(signedIn ? 'wca' : 'xlsx');
+  const [tabValue, setTabValue] = useState('wca');
 
   // Dirty hack to preload given WCIF
   //handleWcifJSONLoad(tmpWcif);
@@ -145,9 +145,9 @@ const ImportWCIF = ({
                 value={tabValue}
                 onChange={(event, value) => setTabValue(value)}
               >
-                <Tab label="XLSX file" value="xlsx" />
                 <Tab label="WCA import" value="wca" />
                 <Tab label="WCIF file" value="wcif" />
+                <Tab label="XLSX file" value="xlsx" />
               </Tabs>
               <div className={classes.tabContent}>
                 {tabValue === 'wca' && (
