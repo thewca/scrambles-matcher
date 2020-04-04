@@ -53,7 +53,7 @@ const MatchingScramblesPanel = ({
               fullWidth
               className={classnames(classes.addJsonButton)}
             >
-              Upload scrambles json
+              Upload scrambles json from TNoodle
             </Button>
           </label>
         </Grid>
