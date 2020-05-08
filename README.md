@@ -22,3 +22,20 @@ Then for the results JSON they are grouped together in a meaningful way for the 
 
 
   - No more newcomers check. It does mean you will have to upload the results to the WCA website first, as it will validate the list of competitors. Since you can download the Results JSON even if you don't have assigned scrambles, you should be able to check newcomers even before going through scrambles assignment.
+
+## Developer documentation
+
+This is a somewhat standard "create react app", therefore you can:
+
+  - install dependencies by running `npm install`
+  - start the development server by running `npm start`
+
+The "production" website is actually hosted through github pages.
+You have to checkout locally the version you want to put online, and run `npm run deploy`.
+This will create a production build and force-push it to the `gh-pages` branch.
+
+**Make sure your `origin` remote points to `thewca` repository!**
+Otherwise it will publish it to your fork's `gh-pages` branch.
+
+The canonical url for the application is `https://scrambles-matcher.worldcubeassociation.org`.
+We have a `CNAME` record in our WCA DNS provider, and this domain must appear in the `CNAME` file at the public root of the application (in `public`).
