@@ -1,6 +1,6 @@
 {
   "name": "scrambles-matcher",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Tool to make matching scrambles to results easier.",
   "keywords": [
     "speedcubing",
@@ -14,7 +14,7 @@
   "license": "GPLv3",
   "repository": {
     "type": "git",
-    "url": "https://github.com/viroulep/scrambles-matcher"
+    "url": "https://github.com/thewca/scrambles-matcher"
   },
   "husky": {
     "hooks": {
