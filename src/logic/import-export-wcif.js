@@ -47,7 +47,7 @@ export const internalWcifToResultsJson = (wcif, version) => {
           position: res.ranking,
           results: res.attempts.map(a => a.result),
           best: res.best,
-          average: ['444bf', '555bf'].includes(e.id) ? 0 : res.average,
+          average: res.average,
         })),
         groups: scramblesToResultsGroups(
           internalScramblesToWcifScrambles(e.id, r.scrambleSets)
