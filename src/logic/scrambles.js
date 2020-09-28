@@ -32,7 +32,7 @@ export const wcifScrambleToInternal = (
   set,
   index
 ) => ({
-  id: set.id,
+  id: getUniqueScrambleSetId(),
   scrambles: set.scrambles || [],
   extraScrambles: set.extraScrambles || [],
   title: `${eventNameById(
