@@ -75,7 +75,7 @@ const DraggableScramble = ({ s, index, showPrefix }) => (
 );
 
 const ScrambleList = ({ scrambles, holds, round }) => {
-  let showPrefix = holds.startsWith('round') && !round.id.startsWith('333fm');
+  let showPrefix = holds.startsWith('round');
   return (
     <Droppable droppableId={holds}>
       {(provided, snapshot) => (
