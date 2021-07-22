@@ -49,7 +49,7 @@
     "smoothscroll-polyfill": "^0.4.4",
     "typeface-roboto": "0.0.75",
     "typescript": "^3.7.4",
-    "xlsx": "^0.14.5"
+    "xlsx": "^0.17.0"
   },
   "browserslist": [
     ">0.2%",
