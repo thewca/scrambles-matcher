@@ -77,12 +77,6 @@ export const importWcif = wcif => {
   // sheets.
 
   wcif = updateIn(wcif, ['events'], sortWcifEvents);
-  let all = flatMap(
-    flatMap(wcif.events, e => e.rounds),
-    r => r.scrambleSets || []
-  );
-  uniqueScrambleSetId =
-    all.length === 0 ? 1 : Math.max(...all.map(s => s.id)) + 1;
 
   let scrambleSheet = {
     id: uniqueScrambleUploadedId,
