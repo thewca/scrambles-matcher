@@ -15,7 +15,7 @@ import {
   usedScramblesIdsForEvent,
 } from '../../logic/scrambles';
 
-import { version } from '../../../package.json';
+import packageInfo from '../../../package.json';
 
 export default class Competition extends Component {
   constructor(props) {
@@ -153,7 +153,7 @@ export default class Competition extends Component {
                   uploadedScrambles={uploadedScrambles}
                   uploadAction={this.uploadNewScramble}
                   handleWcifChange={this.handleWcifChange}
-                  version={version}
+                  version={packageInfo.version}
                 />
               )}
             </Grid>
