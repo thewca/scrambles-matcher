@@ -13,9 +13,9 @@ const formatStringToId = {
 };
 
 const expectedNumberOfAttemptsByFormat = {
-  '1': 1,
-  '2': 2,
-  '3': 3,
+  1: 1,
+  2: 2,
+  3: 3,
   m: 3,
   a: 5,
 };
@@ -23,9 +23,9 @@ const expectedNumberOfAttemptsByFormat = {
 // First two rows contain the competition name and irrelevant information.
 // Third row is these headers
 //["#", "Name", "Country", "WCA id", "Gender", "Date of birth", ...]
-export const personWcifFromRegistrationXlsx = sheet =>
+export const personWcifFromRegistrationXlsx = (sheet) =>
   sheet.splice(0, 3) &&
-  sheet.map(person => ({
+  sheet.map((person) => ({
     registrantId: parseInt(person[0]),
     name: person[1],
     wcaUserId: null,
@@ -45,7 +45,7 @@ export const personWcifFromRegistrationXlsx = sheet =>
 const attemptsFromResultRow = (eventId, formatId, row) => {
   let maxAttempts = expectedNumberOfAttemptsByFormat[formatId];
   if (eventId === '333mbf') {
-    return [...Array(maxAttempts).keys()].map(index => ({
+    return [...Array(maxAttempts).keys()].map((index) => ({
       // For MBF there is a 4 column offset for the person,
       // then each result takes 4 columns.
       result: parseInt(row[7 + index * 4]),
@@ -53,8 +53,8 @@ const attemptsFromResultRow = (eventId, formatId, row) => {
   } else {
     let attempts = row
       .slice(4, 4 + maxAttempts)
-      .filter(a => a)
-      .map(a => ({
+      .filter((a) => a)
+      .map((a) => ({
         result: timeToValue(a, eventId === '333fm'),
       }));
     // Fillup to expected number of attempts.
@@ -101,7 +101,7 @@ const avgForRow = (eventId, formatId, row) => {
           throw new Error(
             `Can't compute mean, detected only ${attempts.length} attempts`
           );
-        avgDetected = meanFromAttempts(attempts.map(a => a.result));
+        avgDetected = meanFromAttempts(attempts.map((a) => a.result));
       }
       return avgDetected;
     }
@@ -132,8 +132,8 @@ export const roundWcifFromXlsx = (persons, eventId, roundNumber, sheet) => {
     cutoff: null,
     format: roundFormat,
     results: sheet
-      .filter(row => row[1])
-      .map(row => ({
+      .filter((row) => row[1])
+      .map((row) => ({
         ranking: parseInt(row[0]),
         personId: registrantIdFromAttributes(
           persons,

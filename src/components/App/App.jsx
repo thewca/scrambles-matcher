@@ -25,7 +25,7 @@ export default class App extends Component {
     };
   }
 
-  handleWcifJSONLoad = json => {
+  handleWcifJSONLoad = (json) => {
     const [wcif, extractedScrambles] = importWcif(json);
     this.setState({
       wcif,
@@ -34,46 +34,42 @@ export default class App extends Component {
     });
   };
 
-  handleWcifUpdate = wcif => {
+  handleWcifUpdate = (wcif) => {
     this.setState({ wcif });
   };
 
-  importFromCompetition = id => {
+  importFromCompetition = (id) => {
     this.setState({ loading: true });
     getWcif(this.state.userToken, id)
-      .then(wcif => this.handleWcifJSONLoad(wcif))
-      .catch(error => this.setState({ error: error.message, loading: false }));
+      .then((wcif) => this.handleWcifJSONLoad(wcif))
+      .catch((error) =>
+        this.setState({ error: error.message, loading: false })
+      );
   };
 
   componentDidMount() {
     const { userToken } = this.state;
     if (userToken) {
       getMe(userToken)
-        .then(user => {
+        .then((user) => {
           this.setState({
             user: user.me,
             loading: this.state.competitions === null,
           });
         })
-        .catch(error => this.setState({ error: error.message }));
+        .catch((error) => this.setState({ error: error.message }));
       getUpcomingManageableCompetitions(userToken)
-        .then(competitions => {
+        .then((competitions) => {
           console.log(competitions);
           this.setState({ competitions, loading: false });
         })
-        .catch(error => this.setState({ error: error.message }));
+        .catch((error) => this.setState({ error: error.message }));
     }
   }
 
   render() {
-    const {
-      wcif,
-      uploadedScrambles,
-      error,
-      user,
-      competitions,
-      loading,
-    } = this.state;
+    const { wcif, uploadedScrambles, error, user, competitions, loading } =
+      this.state;
     return (
       <div
         style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}

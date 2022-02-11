@@ -35,7 +35,7 @@ export default class Competition extends Component {
     window.removeEventListener('beforeunload', this.handleOnBeforeUnload);
   }
 
-  handleOnBeforeUnload = ev => {
+  handleOnBeforeUnload = (ev) => {
     ev.preventDefault();
     ev.returnValue = '';
   };
@@ -44,12 +44,12 @@ export default class Competition extends Component {
   // therefore no componentDidUpdate is necessary.
   // To upload scrambles for another competition the user would just refresh the page.
 
-  uploadNewScramble = ev => {
+  uploadNewScramble = (ev) => {
     let reader = new FileReader();
 
-    reader.onload = e => {
+    reader.onload = (e) => {
       // TODO: some check we're facing well formatted scrambles
-      this.setState(state => {
+      this.setState((state) => {
         let newScramble = JSON.parse(e.target.result);
         // Manually assign some id, in case someone uses same name for zip
         // but with different scrambles.
@@ -67,7 +67,7 @@ export default class Competition extends Component {
       });
     };
 
-    reader.onerror = e => {
+    reader.onerror = (e) => {
       alert("Couldn't load the JSON scrambles file");
     };
 
@@ -88,28 +88,32 @@ export default class Competition extends Component {
       return r.id === round.id;
     });
     this.setState({
-      wcif: updateIn(wcif, ['events', eventIndex, 'rounds', roundIndex], r => ({
-        ...r,
-        scrambleSets: scrambles,
-      })),
+      wcif: updateIn(
+        wcif,
+        ['events', eventIndex, 'rounds', roundIndex],
+        (r) => ({
+          ...r,
+          scrambleSets: scrambles,
+        })
+      ),
     });
   };
 
-  handleWcifChange = wcif => this.setState({ wcif });
+  handleWcifChange = (wcif) => this.setState({ wcif });
 
-  setSelectedRound = id => this.setState({ selectedRoundId: id });
+  setSelectedRound = (id) => this.setState({ selectedRoundId: id });
 
   render() {
     const { wcif, selectedRoundId, uploadedScrambles } = this.state;
     // const { handleWcifUpdate } = this.props;
-    const rounds = flatMap(wcif.events, e => e.rounds);
+    const rounds = flatMap(wcif.events, (e) => e.rounds);
     let availableScrambles = [];
     let round = null;
     let event = null;
     if (selectedRoundId) {
-      round = rounds.find(r => r.id === selectedRoundId);
+      round = rounds.find((r) => r.id === selectedRoundId);
       let { eventId } = parseActivityCode(round.id);
-      event = wcif.events.find(e => e.id === eventId);
+      event = wcif.events.find((e) => e.id === eventId);
       let used = usedScramblesIdsForEvent(wcif.events, event.id);
       availableScrambles = allScramblesForEvent(
         uploadedScrambles,

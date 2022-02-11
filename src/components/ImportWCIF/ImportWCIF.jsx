@@ -19,7 +19,7 @@ import { CompetitionsSection } from './CompetitionsList';
 
 //import tmpWcif from '../../wcifresults.json';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(4),
   },
@@ -41,7 +41,7 @@ const loadSheetIntoWcif = (wcif, name, jsonSheet) => {
     // Cubecomps export numbers for round identification, CubingChina exports
     // the roundTypeId.
     let eventId = name.split('-')[0];
-    let event = wcif.events.find(e => e.id === eventId);
+    let event = wcif.events.find((e) => e.id === eventId);
     if (!event) {
       event = {
         id: eventId,
@@ -68,7 +68,7 @@ const handleXlsxUploadChange = (updater, event) => {
   const reader = new FileReader();
   const rABS = !!reader.readAsBinaryString;
 
-  reader.onload = e => {
+  reader.onload = (e) => {
     const wb = XLSX.read(e.target.result, { type: rABS ? 'binary' : 'array' });
     const sheetNames = wb.SheetNames;
     const wcif = {
@@ -80,7 +80,7 @@ const handleXlsxUploadChange = (updater, event) => {
       events: [],
       persons: [],
     };
-    sheetNames.forEach(name =>
+    sheetNames.forEach((name) =>
       loadSheetIntoWcif(
         wcif,
         name,
@@ -90,7 +90,7 @@ const handleXlsxUploadChange = (updater, event) => {
     updater(wcif);
   };
 
-  reader.onerror = e => alert("Couldn't load the JSON file");
+  reader.onerror = (e) => alert("Couldn't load the JSON file");
 
   if (rABS) reader.readAsBinaryString(event.target.files[0]);
   else reader.readAsArrayBuffer(event.target.files[0]);
@@ -99,9 +99,9 @@ const handleXlsxUploadChange = (updater, event) => {
 const handleFileUploadChange = (updater, event) => {
   let reader = new FileReader();
 
-  reader.onload = e => updater(JSON.parse(e.target.result));
+  reader.onload = (e) => updater(JSON.parse(e.target.result));
 
-  reader.onerror = e => alert("Couldn't load the JSON file");
+  reader.onerror = (e) => alert("Couldn't load the JSON file");
 
   reader.readAsText(event.target.files[0]);
 };
@@ -189,7 +189,7 @@ const ImportWCIF = ({
                         id="button-wcif"
                         multiple
                         type="file"
-                        onChange={ev =>
+                        onChange={(ev) =>
                           handleFileUploadChange(handleWcifJSONLoad, ev)
                         }
                       />
@@ -221,7 +221,7 @@ const ImportWCIF = ({
                         id="button-xlsx"
                         multiple
                         type="file"
-                        onChange={ev =>
+                        onChange={(ev) =>
                           handleXlsxUploadChange(handleWcifJSONLoad, ev)
                         }
                       />

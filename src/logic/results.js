@@ -1,6 +1,6 @@
 import { sum } from './utils';
 
-export const decodeMbldResult = value => {
+export const decodeMbldResult = (value) => {
   if (value <= 0) return { solved: 0, attempted: 0, centiseconds: value };
   const missed = value % 100;
   const seconds = Math.floor(value / 100) % 1e5;
@@ -21,18 +21,18 @@ export const encodeMbldResult = ({ solved, attempted, centiseconds }) => {
   return dd * 1e7 + seconds * 1e2 + missed;
 };
 
-const timeInSecToValue = resultString =>
+const timeInSecToValue = (resultString) =>
   Math.round(parseFloat(resultString) * 100);
 
-const timeInMinutesToValue = resultString => {
+const timeInMinutesToValue = (resultString) => {
   let [min, rest] = resultString.split(':');
   min = parseInt(min);
   const centisec = timeInSecToValue(rest);
   return min * 6000 + centisec;
 };
 
-export const meanFromAttempts = attempts => {
-  return attempts.some(a => a < 0)
+export const meanFromAttempts = (attempts) => {
+  return attempts.some((a) => a < 0)
     ? -1
     : Math.round(sum(attempts) / attempts.length);
 };

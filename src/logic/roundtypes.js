@@ -78,7 +78,7 @@ const roundTypes = [
   },
 ];
 
-export const roundTypeById = id => roundTypes.find(t => t.id === id);
+export const roundTypeById = (id) => roundTypes.find((t) => t.id === id);
 
-export const roundTypeFromCellName = cellName =>
-  roundTypes.find(t => cellName.includes(t.cellName));
+export const roundTypeFromCellName = (cellName) =>
+  roundTypes.find((t) => cellName.includes(t.cellName));

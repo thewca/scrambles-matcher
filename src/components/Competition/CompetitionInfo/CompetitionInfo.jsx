@@ -23,7 +23,7 @@ const downloadFile = (wcif, exporter, filename = 'wcif.json') => {
   tmp.click();
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     display: 'none',
   },
@@ -59,7 +59,7 @@ const CompetitionInfo = ({
   const actionDownloadResultsJson = () =>
     downloadFile(
       wcif,
-      wcif => internalWcifToResultsJson(wcif, version),
+      (wcif) => internalWcifToResultsJson(wcif, version),
       `Results for ${wcif.id}.json`
     );
 
@@ -68,7 +68,8 @@ const CompetitionInfo = ({
 
   const actionClearScrambles = () => handleWcifChange(clearScrambles(wcif));
 
-  const uploadCompetitionIdAction = id => handleWcifChange({ ...wcif, id: id });
+  const uploadCompetitionIdAction = (id) =>
+    handleWcifChange({ ...wcif, id: id });
 
   return (
     <Grid container spacing={3}>

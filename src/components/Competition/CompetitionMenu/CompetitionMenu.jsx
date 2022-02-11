@@ -17,7 +17,7 @@ import {
 import { eventNameById, roundTypeIdForRound } from '../../../logic/events';
 import { roundTypeById } from '../../../logic/roundtypes';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   nestedItem: {
     paddingLeft: theme.spacing(4),
   },
@@ -40,11 +40,11 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
         </ListItemIcon>
         <ListItemText primary="Information" />
       </ListItem>
-      {events.map(event => (
+      {events.map((event) => (
         <Fragment key={event.id}>
           <ListItem
             button
-            onClick={e => {
+            onClick={(e) => {
               setSelectedEvent(selectedEvent === event.id ? null : event.id);
               e.stopPropagation();
             }}
@@ -65,7 +65,7 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
             unmountOnExit
           >
             <List dense={true}>
-              {event.rounds.map(round => (
+              {event.rounds.map((round) => (
                 <ListItem
                   key={round.id}
                   button

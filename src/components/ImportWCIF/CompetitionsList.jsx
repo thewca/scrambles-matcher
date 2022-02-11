@@ -12,7 +12,7 @@ export const CompetitionsList = ({ competitions, importFromCompetition }) => (
         <ListItemText>You have no upcoming competitions to manage</ListItemText>
       </ListItem>
     ) : (
-      competitions.map(competition => (
+      competitions.map((competition) => (
         <ListItem
           key={competition.id}
           button

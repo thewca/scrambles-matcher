@@ -9,7 +9,7 @@ import { groupBy, flatMap } from '../../../logic/utils';
 import { roundName } from '../../../logic/events';
 import { formatById } from '../../../logic/formats';
 
-const attemptFromDroppable = elem => parseInt(elem.droppableId.split('-')[1]);
+const attemptFromDroppable = (elem) => parseInt(elem.droppableId.split('-')[1]);
 
 const ListForGenericRound = ({ round }) => (
   <Paper style={{ padding: 16 }}>
@@ -20,16 +20,16 @@ const ListForGenericRound = ({ round }) => (
 
 const ListForAttemptBasedRound = ({ round }) => {
   const nAttempts = formatById(round.format).solveCount;
-  let attempts = [...Array(nAttempts).keys()].map(i => ++i);
+  let attempts = [...Array(nAttempts).keys()].map((i) => ++i);
   return (
     <Grid container spacing={3}>
-      {attempts.map(index => (
+      {attempts.map((index) => (
         <Grid item xs={12} key={index}>
           <Paper style={{ padding: 16 }}>
             <Typography variant="h5">Used for attempt {index}</Typography>
             <ScrambleList
               scrambles={round.scrambleSets.filter(
-                s => s.attemptNumber === index
+                (s) => s.attemptNumber === index
               )}
               holds={`round-${index}`}
               round={round}
@@ -50,8 +50,8 @@ export default class RoundPanel extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    let prevIds = this.state.availableScrambles.map(s => s.id).sort();
-    let newIds = this.props.availableScrambles.map(s => s.id).sort();
+    let prevIds = this.state.availableScrambles.map((s) => s.id).sort();
+    let newIds = this.props.availableScrambles.map((s) => s.id).sort();
 
     if (newIds.join('') !== prevIds.join('')) {
       this.setState({
@@ -96,7 +96,7 @@ export default class RoundPanel extends Component {
     // Again we just need to update the parent state
     let scrambles = round.scrambleSets;
     // Group round's scrambles based on attempt number
-    let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
+    let scramblesByAttempt = groupBy(scrambles, (s) => s.attemptNumber);
     let scramble = null;
     scramble =
       source.droppableId === 'available'
@@ -119,12 +119,12 @@ export default class RoundPanel extends Component {
     // Concatenate everything for the update
     scrambles = flatMap(
       Object.keys(scramblesByAttempt),
-      k => scramblesByAttempt[k]
+      (k) => scramblesByAttempt[k]
     );
     attachScramblesToRound(scrambles, round);
   };
 
-  handleScrambleMovement = result => {
+  handleScrambleMovement = (result) => {
     const { source, destination } = result;
 
     // dropped outside the list

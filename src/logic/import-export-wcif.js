@@ -14,10 +14,10 @@ let uniqueScrambleUploadedId = 1;
 export const getUniqueScrambleSetId = () => uniqueScrambleSetId++;
 export const getUniqueScrambleUploadedId = () => uniqueScrambleUploadedId++;
 
-const personIdsWithResults = events => [
+const personIdsWithResults = (events) => [
   ...new Set(
-    flatMap(events, e =>
-      flatMap(e.rounds, r => r.results.map(res => res.personId))
+    flatMap(events, (e) =>
+      flatMap(e.rounds, (r) => r.results.map((res) => res.personId))
     )
   ),
 ];
@@ -28,8 +28,8 @@ export const internalWcifToResultsJson = (wcif, version) => {
     formatVersion: 'WCA Competition 0.3',
     competitionId: wcif.id,
     persons: wcif.persons
-      .filter(p => personsToExport.includes(p.registrantId))
-      .map(p => ({
+      .filter((p) => personsToExport.includes(p.registrantId))
+      .map((p) => ({
         id: p.registrantId,
         name: p.name,
         wcaId: p.wcaId || '',
@@ -37,15 +37,15 @@ export const internalWcifToResultsJson = (wcif, version) => {
         gender: p.gender || '',
         dob: p.birthdate,
       })),
-    events: wcif.events.map(e => ({
+    events: wcif.events.map((e) => ({
       eventId: e.id,
-      rounds: e.rounds.map(r => ({
+      rounds: e.rounds.map((r) => ({
         roundId: roundTypeIdForRound(e.rounds.length, r),
         formatId: r.format,
-        results: r.results.map(res => ({
+        results: r.results.map((res) => ({
           personId: res.personId,
           position: res.ranking,
-          results: res.attempts.map(a => a.result),
+          results: res.attempts.map((a) => a.result),
           best: res.best,
           average: res.average,
         })),
@@ -60,19 +60,19 @@ export const internalWcifToResultsJson = (wcif, version) => {
   };
 };
 
-export const internalWcifToWcif = wcif => ({
+export const internalWcifToWcif = (wcif) => ({
   // We only alter the scrambles, so make them right wrt the WCIF.
   ...wcif,
-  events: wcif.events.map(e => ({
+  events: wcif.events.map((e) => ({
     ...e,
-    rounds: e.rounds.map(r => ({
+    rounds: e.rounds.map((r) => ({
       ...r,
       scrambleSets: internalScramblesToWcifScrambles(e.id, r.scrambleSets),
     })),
   })),
 });
 
-export const importWcif = wcif => {
+export const importWcif = (wcif) => {
   // Perform a few changes such as sorting the events, and extracting scrambles
   // sheets.
 
@@ -89,9 +89,9 @@ export const importWcif = wcif => {
 
   wcif = {
     ...wcif,
-    events: wcif.events.map(e => ({
+    events: wcif.events.map((e) => ({
       ...e,
-      rounds: e.rounds.map(r => {
+      rounds: e.rounds.map((r) => {
         let sheets = (r.scrambleSets || []).map((set, index) => {
           let internalSet = wcifScrambleToInternal(
             e.id,
@@ -110,7 +110,7 @@ export const importWcif = wcif => {
         });
         return {
           ...r,
-          scrambleSets: flatMap(sheets, s => s),
+          scrambleSets: flatMap(sheets, (s) => s),
         };
       }),
     })),

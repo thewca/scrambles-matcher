@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Collapse from '@material-ui/core/Collapse';
 import clsx from 'clsx';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   expand: {
     transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
@@ -73,7 +73,7 @@ const ScrambleFileInfo = ({ scramble }) => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <List dense className={classes.list}>
-            {scramble.sheets.map(sheet => (
+            {scramble.sheets.map((sheet) => (
               <ListItem key={sheet.id}>
                 <ListItemText primary={sheet.title} />
               </ListItem>

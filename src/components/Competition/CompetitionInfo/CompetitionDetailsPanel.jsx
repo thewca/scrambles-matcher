@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 
 import { competitionLink } from '../../../logic/wcif';
 
-const LinkToNewPage = props => {
+const LinkToNewPage = (props) => {
   const { block, ...extraProps } = props;
   return (
     <Link {...extraProps} target="_blank" rel="noreferrer">
@@ -25,7 +25,7 @@ const HelperWithLink = ({ id }) => (
   </span>
 );
 
-const CompetitionDetailsPanel = props => {
+const CompetitionDetailsPanel = (props) => {
   const {
     wcif,
     downloadWcifAction,
@@ -38,7 +38,7 @@ const CompetitionDetailsPanel = props => {
   // For now allow export even if missing scrambles.
   // && competitionHasValidScrambles(wcif);
 
-  const handleNameChange = ev => uploadCompetitionIdAction(ev.target.value);
+  const handleNameChange = (ev) => uploadCompetitionIdAction(ev.target.value);
   return (
     <Paper className={classes.paper}>
       <Typography variant="h5" gutterBottom>

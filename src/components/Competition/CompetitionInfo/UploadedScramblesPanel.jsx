@@ -8,7 +8,7 @@ const UploadedScramblesPanel = ({ uploadedScrambles, classes }) => {
       <Typography variant="h5" gutterBottom>
         Uploaded JSON files: {uploadedScrambles.length}
       </Typography>
-      {uploadedScrambles.map(s => (
+      {uploadedScrambles.map((s) => (
         <ScrambleFileInfo scramble={s} key={s.competitionName} />
       ))}
     </div>

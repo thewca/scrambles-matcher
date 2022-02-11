@@ -41,4 +41,4 @@ const formats = [
   },
 ];
 
-export const formatById = id => formats.find(format => format.id === id);
+export const formatById = (id) => formats.find((format) => format.id === id);

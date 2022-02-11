@@ -14,7 +14,7 @@ import { eventNameById } from './events';
 // This will let us easily (automatically) match and display scrambles in the WCIF.
 // Keeping in mind we'll need to support loading scrambles from the uploaded WCIF!
 const tnoodleSheetsToInternal = (filename, sheets) =>
-  sheets.map(sheet => ({
+  sheets.map((sheet) => ({
     id: getUniqueScrambleSetId(),
     scrambles: sheet.scrambles || [],
     extraScrambles: sheet.extraScrambles || [],
@@ -43,10 +43,10 @@ export const wcifScrambleToInternal = (
   roundNumber: roundNumber,
 });
 
-export const splitMultiFmAsWcif = set => {
+export const splitMultiFmAsWcif = (set) => {
   let attemptNumber = 1;
   // Split the scramble to have one object per attempt (will be useful later ;))
-  return set.scrambles.map(sequence => ({
+  return set.scrambles.map((sequence) => ({
     ...set,
     id: getUniqueScrambleSetId(),
     scrambles: [sequence],
@@ -56,10 +56,10 @@ export const splitMultiFmAsWcif = set => {
   }));
 };
 
-const splitMultiFm = scramble => {
+const splitMultiFm = (scramble) => {
   let attemptNumber = 1;
   // Split the scramble to have one object per attempt (will be useful later ;))
-  return scramble.scrambles.map(sequence => ({
+  return scramble.scrambles.map((sequence) => ({
     ...scramble,
     scrambles: [sequence],
     title: `${scramble.title} Attempt ${attemptNumber}`,
@@ -80,9 +80,9 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
   // from a React state.
   const { eventId, roundNumber } = parseActivityCode(round.id);
   let firstMatchingSheets = [];
-  uploadedScrambles.find(up => {
+  uploadedScrambles.find((up) => {
     firstMatchingSheets = up.sheets.filter(
-      s =>
+      (s) =>
         !usedScramblesId.includes(s.id) &&
         s.eventId === eventId &&
         s.roundNumber === roundNumber
@@ -97,8 +97,8 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
     // and assign the attemptNumber from the generated number
     let numberOfAttempts = formatById(round.format).solveCount;
     return firstMatchingSheets
-      .filter(s => s.generatedAttemptNumber <= numberOfAttempts)
-      .map(s => ({
+      .filter((s) => s.generatedAttemptNumber <= numberOfAttempts)
+      .map((s) => ({
         ...s,
         attemptNumber: s.generatedAttemptNumber,
       }));
@@ -108,27 +108,27 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
 };
 
 export const allScramblesForEvent = (scrambles, eventId, usedIds) =>
-  flatMap(scrambles, scramble =>
+  flatMap(scrambles, (scramble) =>
     scramble.sheets.filter(
-      s => s.eventId === eventId && !usedIds.includes(s.id)
+      (s) => s.eventId === eventId && !usedIds.includes(s.id)
     )
   );
 
 export const usedScramblesIdsForEvent = (events, eventId) =>
   flatMap(
     flatMap(
-      events.filter(e => e.id === eventId),
-      e => flatMap(e.rounds, r => r.scrambleSets)
+      events.filter((e) => e.id === eventId),
+      (e) => flatMap(e.rounds, (r) => r.scrambleSets)
     ),
-    s => s.id
+    (s) => s.id
   );
 
-export const updateMultiAndFm = scrambles =>
-  flatMap(scrambles, s =>
+export const updateMultiAndFm = (scrambles) =>
+  flatMap(scrambles, (s) =>
     s.event === '333fm' || s.event === '333mbf' ? splitMultiFm(s) : s
   );
 
-export const transformUploadedScrambles = uploadedJson => {
+export const transformUploadedScrambles = (uploadedJson) => {
   // Newer versions of TNoodle provide a pre-compiled WCIF that we can read here.
   // Retain old version (`else` branch) as well to have a "grace period" in transitioning
   if ('wcif' in uploadedJson) {
@@ -136,11 +136,11 @@ export const transformUploadedScrambles = uploadedJson => {
     const [, extractedScrambles] = importWcif(tnoodleWcif);
     delete uploadedJson['wcif']; // avoid confusion with the other WCIF that gets merged in
     uploadedJson['sheets'] = extractedScrambles.flatMap(
-      sheetExt => sheetExt['sheets']
+      (sheetExt) => sheetExt['sheets']
     );
     return uploadedJson;
   } else {
-    const updater = sheets =>
+    const updater = (sheets) =>
       tnoodleSheetsToInternal(
         uploadedJson.competitionName,
         updateMultiAndFm(sheets)
@@ -150,18 +150,18 @@ export const transformUploadedScrambles = uploadedJson => {
 };
 
 // 65 is the char code for 'A'
-export const prefixForIndex = index => String.fromCharCode(65 + index);
+export const prefixForIndex = (index) => String.fromCharCode(65 + index);
 
 export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
   if (scrambles.length === 0) return scrambles;
   if (eventId === '333mbf') {
     // For all attempts, we want to push each of the scramble sequences to
     // their corresponding groups.
-    let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
+    let scramblesByAttempt = groupBy(scrambles, (s) => s.attemptNumber);
     let sheets = [];
     Object.keys(scramblesByAttempt)
       .sort()
-      .forEach(number =>
+      .forEach((number) =>
         scramblesByAttempt[number].forEach((sheet, groupIndex) => {
           if (groupIndex >= sheets.length) {
             // Create a sheet for group
@@ -188,14 +188,14 @@ export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
       {
         id: scrambles[0].id,
         scrambles: flatMap(
-          sortBy(scrambles, s => s.attemptNumber),
-          s => s.scrambles
+          sortBy(scrambles, (s) => s.attemptNumber),
+          (s) => s.scrambles
         ),
         extraScrambles: [],
       },
     ];
   }
-  return scrambles.map(set => ({
+  return scrambles.map((set) => ({
     id: set.id,
     scrambles: set.scrambles,
     extraScrambles: set.extraScrambles,
@@ -204,14 +204,14 @@ export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
 
 export const autoAssignScrambles = (wcif, uploadedScrambles) => {
   let usedScrambleIdsByEvent = {};
-  wcif.events.forEach(e => {
+  wcif.events.forEach((e) => {
     usedScrambleIdsByEvent[e.id] = usedScramblesIdsForEvent(wcif.events, e.id);
   });
   return {
     ...wcif,
-    events: wcif.events.map(e => ({
+    events: wcif.events.map((e) => ({
       ...e,
-      rounds: e.rounds.map(r => ({
+      rounds: e.rounds.map((r) => ({
         ...r,
         scrambleSets:
           r.scrambleSets.length === 0
@@ -226,18 +226,18 @@ export const autoAssignScrambles = (wcif, uploadedScrambles) => {
   };
 };
 
-export const clearScrambles = wcif => ({
+export const clearScrambles = (wcif) => ({
   ...wcif,
-  events: wcif.events.map(e => ({
+  events: wcif.events.map((e) => ({
     ...e,
-    rounds: e.rounds.map(r => ({
+    rounds: e.rounds.map((r) => ({
       ...r,
       scrambleSets: [],
     })),
   })),
 });
 
-export const scramblesToResultsGroups = scrambles =>
+export const scramblesToResultsGroups = (scrambles) =>
   scrambles.map((sheet, index) => ({
     group: prefixForIndex(index),
     scrambles: sheet.scrambles,

@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CubingIconUnofficial } from '../CubingIcon/CubingIcon';
 import { signIn } from '../../logic/auth';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
