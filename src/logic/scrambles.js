@@ -154,7 +154,7 @@ export const prefixForIndex = index => String.fromCharCode(65 + index);
 
 export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
   if (scrambles.length === 0) return scrambles;
-  if (eventId === '333mbf') {
+  if (eventId === '333mbf' || eventId === '333fm') {
     // For all attempts, we want to push each of the scramble sequences to
     // their corresponding groups.
     let scramblesByAttempt = groupBy(scrambles, s => s.attemptNumber);
@@ -177,23 +177,6 @@ export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
         })
       );
     return sheets;
-  } else if (eventId === '333fm') {
-    // We can't track yet in the WCIF which scramble was for witch attempt,
-    // so let's just sort them by attempt id and combine them in one
-    // scramble sheet.
-    // There is usually only one group for FM, the only case where we would
-    // like more scramble than expected is when something terrible happened
-    // and an extra was needed.
-    return [
-      {
-        id: scrambles[0].id,
-        scrambles: flatMap(
-          sortBy(scrambles, s => s.attemptNumber),
-          s => s.scrambles
-        ),
-        extraScrambles: [],
-      },
-    ];
   }
   return scrambles.map(set => ({
     id: set.id,
