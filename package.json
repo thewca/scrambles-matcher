@@ -35,7 +35,7 @@
     "gh-pages": "^3.2.3",
     "react": "^16.14.0",
     "react-beautiful-dnd": "^13.1.0",
-    "react-dom": "^16.13.0",
+    "react-dom": "^16.14.0",
     "react-scripts": "^5.0.0",
     "smoothscroll-polyfill": "^0.4.4",
     "typeface-roboto": "1.1.13",
