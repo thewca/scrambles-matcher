@@ -51,7 +51,7 @@ const ScrambleItem = ({ title, subtitle }) => (
 );
 
 const DraggableScramble = ({ s, index, showPrefix }) => (
-  <Draggable draggableId={s.id} index={index}>
+  <Draggable draggableId={s.id.toString()} index={index}>
     {(provided, snapshot) => (
       <ListItem
         button
