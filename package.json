@@ -39,7 +39,7 @@
     "react-scripts": "^5.0.1",
     "smoothscroll-polyfill": "^0.4.4",
     "typeface-roboto": "1.1.13",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "xlsx": "^0.18.5"
   },
   "browserslist": [
