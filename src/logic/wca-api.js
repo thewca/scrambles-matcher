@@ -1,10 +1,11 @@
-import { WCA_ORIGIN } from './wca-env';
+import { WCA_ORIGIN } from "./wca-env";
 
 export const getUpcomingManageableCompetitions = (userToken) => {
   const oneMonthAgo = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000);
   const params = new URLSearchParams({
     managed_by_me: true,
     start: oneMonthAgo.toISOString(),
+    sort: "start_date",
   });
   return wcaApiFetch(userToken, `/competitions?${params.toString()}`);
 };
@@ -22,7 +23,7 @@ const wcaApiFetch = (userToken, path, fetchOptions = {}) => {
     Object.assign({}, fetchOptions, {
       headers: new Headers({
         Authorization: `Bearer ${userToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       }),
     })
   )
