@@ -1,10 +1,10 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 import { competitionLink } from '../../../logic/wcif';
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import FreeBreakfastIcon from '@mui/icons-material/FreeBreakfast';
+import DeleteIcon from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 
 const MatchingScramblesPanel = ({

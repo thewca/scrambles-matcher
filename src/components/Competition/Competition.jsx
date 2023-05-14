@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Typography from '@material-ui/core/Typography';
-import Drawer from '@material-ui/core/Drawer';
-import Grid from '@material-ui/core/Grid';
+import Typography from '@mui/material/Typography';
+import Drawer from '@mui/material/Drawer';
+import Grid from '@mui/material/Grid';
 import CompetitionMenu from './CompetitionMenu/CompetitionMenu';
 import RoundPanel from './RoundPanel/RoundPanel';
 import CompetitionInfo from './CompetitionInfo/CompetitionInfo';

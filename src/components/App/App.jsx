@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 import Competition from '../Competition/Competition';
 import ImportWCIF from '../ImportWCIF/ImportWCIF';
 import Header from './Header';
@@ -10,6 +10,11 @@ import {
   getUpcomingManageableCompetitions,
   getWcif,
 } from '../../logic/wca-api';
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from '@mui/material';
 
 export default class App extends Component {
   constructor(props) {
@@ -70,34 +75,45 @@ export default class App extends Component {
   render() {
     const { wcif, uploadedScrambles, error, user, competitions, loading } =
       this.state;
+
+    const theme = createTheme();
+
     return (
-      <div
-        style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}
-      >
-        <CssBaseline />
-        <Header user={user} />
-        {error && (
-          <ErrorBar
-            message={error}
-            clear={() => this.setState({ error: null })}
-          />
-        )}
-        {wcif ? (
-          <Competition
-            handleWcifUpdate={this.handleWcifUpdate}
-            wcif={wcif}
-            uploadedScrambles={uploadedScrambles}
-          />
-        ) : (
-          <ImportWCIF
-            handleWcifJSONLoad={this.handleWcifJSONLoad}
-            importFromCompetition={this.importFromCompetition}
-            competitions={competitions}
-            loading={loading}
-            signedIn={!!this.state.userToken}
-          />
-        )}
-      </div>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <div
+            style={{
+              display: 'flex',
+              minHeight: '100vh',
+              flexDirection: 'column',
+            }}
+          >
+            <CssBaseline />
+            <Header user={user} />
+            {error && (
+              <ErrorBar
+                message={error}
+                clear={() => this.setState({ error: null })}
+              />
+            )}
+            {wcif ? (
+              <Competition
+                handleWcifUpdate={this.handleWcifUpdate}
+                wcif={wcif}
+                uploadedScrambles={uploadedScrambles}
+              />
+            ) : (
+              <ImportWCIF
+                handleWcifJSONLoad={this.handleWcifJSONLoad}
+                importFromCompetition={this.importFromCompetition}
+                competitions={competitions}
+                loading={loading}
+                signedIn={!!this.state.userToken}
+              />
+            )}
+          </div>
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
   }
 }

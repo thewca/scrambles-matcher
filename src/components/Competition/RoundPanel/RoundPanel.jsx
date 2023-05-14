@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import ScrambleList from '../../Scrambles/ScrambleList';
@@ -149,7 +149,7 @@ export default class RoundPanel extends Component {
           {roundName(event.rounds.length, round)}
         </Typography>
         <div style={{ padding: 16 }}>
-          <Grid container spacing={2} justify="center">
+          <Grid container spacing={2} justifyContent="center">
             <Grid item xs={6} align="center">
               {['333mbf', '333fm'].includes(event.id) ? (
                 <ListForAttemptBasedRound round={round} />
