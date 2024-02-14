@@ -103,7 +103,8 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
         attemptNumber: s.generatedAttemptNumber,
       }));
   } else {
-    return firstMatchingSheets;
+    // Only auto-assign up to scrambleSetCount sets of scrambles.
+    return firstMatchingSheets.slice(0, round.scrambleSetCount);
   }
 };
 

@@ -20,10 +20,12 @@ const MatchingScramblesPanel = ({
       </Typography>
       <Typography paragraph align="justify">
         Clicking "Automatically assign scrambles" will attempt to automatically
-        detect which scrambles sets belongs to which round. Unlike the workbook
-        assistant, this will attempt to assign unused scrambles only to rounds{' '}
-        <b>without</b> scrambles! Which means that clicking several times the
-        button with the same uploaded scrambles will have no effect.
+        detect which scrambles sets belongs to which round, assigning up to the
+        number of scramble sets listed on the "Manage events" page on the WCA
+        website. Unlike the workbook assistant, this will attempt to assign
+        unused scrambles only to rounds <b>without</b> scrambles! Which means
+        that clicking several times the button with the same uploaded scrambles
+        will have no effect.
         <br />
         You can check scrambles assignments by browsing through the rounds in
         the menu. For each round (or each attempt for Multiple Blindfolded and
