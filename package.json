@@ -28,19 +28,27 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.3",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.0",
+    "@mui/system": "^5.15.9",
     "classnames": "^2.5.1",
     "core-js": "^3.36.0",
     "gh-pages": "^6.1.1",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "smoothscroll-polyfill": "^0.4.4",
     "typeface-roboto": "1.1.13",
     "typescript": "^5.3.3",
     "xlsx": "^0.18.5"
+  },
+  "overrides": {
+    "react-scripts": {
+      "typescript": ">3.2.1"
+    }
   },
   "browserslist": [
     ">0.2%",

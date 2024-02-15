@@ -1,13 +1,12 @@
 import React, { Fragment, useState } from 'react';
-import Collapse from '@material-ui/core/Collapse';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Tooltip from '@material-ui/core/Tooltip';
-import { makeStyles } from '@material-ui/core/styles';
-import InfoIcon from '@material-ui/icons/Info';
-import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 import { CubingIcon } from '../../CubingIcon/CubingIcon';
 import {
@@ -17,15 +16,9 @@ import {
 import { eventNameById, roundTypeIdForRound } from '../../../logic/events';
 import { roundTypeById } from '../../../logic/roundtypes';
 
-const useStyles = makeStyles((theme) => ({
-  nestedItem: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
-
 const CompetitionMenu = ({ events, setSelectedRound }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const classes = useStyles();
+
   return (
     <List dense={true}>
       <ListItem
@@ -69,7 +62,7 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                 <ListItem
                   key={round.id}
                   button
-                  className={classes.nestedItem}
+                  sx={{ paddingLeft: 4 }}
                   onClick={() => setSelectedRound(round.id)}
                 >
                   <ListItemText

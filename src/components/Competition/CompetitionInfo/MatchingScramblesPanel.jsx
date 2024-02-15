@@ -1,20 +1,19 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import FreeBreakfastIcon from '@mui/icons-material/FreeBreakfast';
+import DeleteIcon from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 
 const MatchingScramblesPanel = ({
   assignAction,
   clearAction,
   uploadAction,
-  classes,
 }) => {
   return (
-    <Paper className={classes.paper}>
+    <Paper sx={{ padding: 2 }}>
       <Typography variant="h5" gutterBottom>
         Matching scrambles to rounds
       </Typography>
@@ -41,7 +40,7 @@ const MatchingScramblesPanel = ({
         <Grid item xs={12}>
           <input
             accept=".json"
-            className={classes.input}
+            style={{ display: 'none' }}
             id="add-scramble-json"
             multiple
             type="file"
@@ -53,7 +52,7 @@ const MatchingScramblesPanel = ({
               component="span"
               color="primary"
               fullWidth
-              className={classnames(classes.addJsonButton)}
+              sx={{ marginTop: 2 }}
             >
               Upload scrambles json from TNoodle
             </Button>
@@ -64,10 +63,10 @@ const MatchingScramblesPanel = ({
             variant="outlined"
             color="primary"
             fullWidth
-            className={classes.button}
+            sx={{ marginRight: 3 }}
             onClick={assignAction}
           >
-            <FreeBreakfastIcon className={classes.extendedIcon} />
+            <FreeBreakfastIcon sx={{ marginRight: 1 }} />
             Automatically assign scrambles
           </Button>
         </Grid>
@@ -76,10 +75,10 @@ const MatchingScramblesPanel = ({
             variant="outlined"
             color="secondary"
             fullWidth
-            className={classes.button}
+            sx={{ marginRight: 3 }}
             onClick={clearAction}
           >
-            <DeleteIcon className={classes.extendedIcon} />
+            <DeleteIcon sx={{ marginRight: 1 }} />
             Clear scrambles assignments
           </Button>
         </Grid>

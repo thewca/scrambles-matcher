@@ -1,25 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    fontSize: 20,
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark,
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-}));
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function ErrorBar({ message, clear }) {
-  const classes = useStyles();
   return (
     <Snackbar
       anchorOrigin={{
@@ -29,17 +14,24 @@ export default function ErrorBar({ message, clear }) {
       open={true}
     >
       <SnackbarContent
-        className={classes.error}
+        sx={{
+          backgroundColor: (theme) => theme.palette.error.dark,
+        }}
         aria-describedby="client-snackbar"
-        message={<span className={classes.message}>{message}</span>}
+        message={
+          <span style={{ display: 'flex', alignItems: 'center' }}>
+            {message}
+          </span>
+        }
         action={[
           <IconButton
             key="close"
             aria-label="close"
             color="inherit"
             onClick={clear}
+            size="large"
           >
-            <CloseIcon className={classes.icon} />
+            <CloseIcon sx={{ fontSize: 20 }} />
           </IconButton>,
         ]}
       />
