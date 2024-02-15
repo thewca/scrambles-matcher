@@ -1,5 +1,4 @@
-import React, { useState, Fragment } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import React, { useState, Fragment, useMemo } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -11,44 +10,28 @@ import ListItemText from '@mui/material/ListItemText';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Collapse from '@mui/material/Collapse';
-import clsx from 'clsx';
-
-const useStyles = makeStyles((theme) => ({
-  expand: {
-    transform: 'rotate(0deg)',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  card: {
-    marginBottom: theme.spacing(2),
-  },
-  list: {
-    maxHeight: 200,
-    overflowY: 'auto',
-  },
-}));
 
 const ScrambleFileInfo = ({ scramble }) => {
-  const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  const expandOpenDeg = useMemo(() => (expanded ? 180 : 0), [expanded]);
 
   function handleExpandClick() {
     setExpanded(!expanded);
   }
 
   return (
-    <Card className={classes.card}>
+    <Card sx={{ marginBottom: 2 }}>
       <CardActionArea component="span" onClick={handleExpandClick}>
         <CardHeader
           action={
             <IconButton
-              className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
+              sx={{
+                transform: `rotate(${expandOpenDeg}deg)`,
+                transition: (theme) =>
+                  theme.transitions.create('transform', {
+                    duration: theme.transitions.duration.shortest,
+                  }),
+              }}
               onClick={handleExpandClick}
               aria-expanded={expanded}
               aria-label="show more"
@@ -73,7 +56,7 @@ const ScrambleFileInfo = ({ scramble }) => {
       </CardActionArea>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <List dense className={classes.list}>
+          <List dense sx={{ maxHeight: '200px', overflowY: 'auto' }}>
             {scramble.sheets.map((sheet) => (
               <ListItem key={sheet.id}>
                 <ListItemText primary={sheet.title} />

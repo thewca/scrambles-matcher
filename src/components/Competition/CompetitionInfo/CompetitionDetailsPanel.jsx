@@ -1,5 +1,6 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Link from '@mui/material/Link';
@@ -30,7 +31,6 @@ const CompetitionDetailsPanel = (props) => {
     wcif,
     downloadWcifAction,
     downloadResultsJsonAction,
-    classes,
     uploadCompetitionIdAction,
   } = props;
 
@@ -40,21 +40,23 @@ const CompetitionDetailsPanel = (props) => {
 
   const handleNameChange = (ev) => uploadCompetitionIdAction(ev.target.value);
   return (
-    <Paper className={classes.paper}>
+    <Paper sx={{ padding: 2 }}>
       <Typography variant="h5" gutterBottom>
         Competition details
       </Typography>
-      <form className={classes.mb3} noValidate autoComplete="off">
-        <TextField
-          id="outlined-name"
-          label="Competition ID"
-          value={wcif.id || ''}
-          onChange={handleNameChange}
-          helperText={<HelperWithLink id={wcif.id} />}
-          margin="normal"
-          variant="outlined"
-        />
-      </form>
+      <Box sx={{ marginBottom: 3 }}>
+        <form noValidate autoComplete="off">
+          <TextField
+            id="outlined-name"
+            label="Competition ID"
+            value={wcif.id || ''}
+            onChange={handleNameChange}
+            helperText={<HelperWithLink id={wcif.id} />}
+            margin="normal"
+            variant="outlined"
+          />
+        </form>
+      </Box>
       <Typography paragraph>
         When you have made sure your competition ID is correct and all your
         rounds have the correct scrambles, you can get the export you want

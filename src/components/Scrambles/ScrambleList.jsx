@@ -5,13 +5,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import { styled } from '@mui/styles';
 
 import { prefixForIndex } from '../../logic/scrambles';
-
-const DNDList = styled(List)({
-  minHeight: '100px',
-});
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
@@ -79,7 +74,11 @@ const ScrambleList = ({ scrambles, holds, round }) => {
   return (
     <Droppable droppableId={holds}>
       {(provided, snapshot) => (
-        <DNDList {...provided.droppableProps} ref={provided.innerRef}>
+        <List
+          sx={{ minHeight: '100px' }}
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+        >
           {showPrefix && <ScrambleListHeader />}
           {scrambles.map((s, index) => (
             <DraggableScramble
@@ -93,7 +92,7 @@ const ScrambleList = ({ scrambles, holds, round }) => {
             <ListItem key={0}>No scrambles</ListItem>
           )}
           {provided.placeholder}
-        </DNDList>
+        </List>
       )}
     </Droppable>
   );

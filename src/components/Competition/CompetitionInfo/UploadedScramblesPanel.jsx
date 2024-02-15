@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import ScrambleFileInfo from '../../Scrambles/ScrambleFileInfo';
 
-const UploadedScramblesPanel = ({ uploadedScrambles, classes }) => {
+const UploadedScramblesPanel = ({ uploadedScrambles }) => {
   return (
     <div>
       <Typography variant="h5" gutterBottom>

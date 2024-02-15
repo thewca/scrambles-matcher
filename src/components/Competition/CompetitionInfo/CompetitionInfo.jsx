@@ -1,5 +1,4 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import Grid from '@mui/material/Grid';
 import {
   internalWcifToWcif,
@@ -23,27 +22,6 @@ const downloadFile = (wcif, exporter, filename = 'wcif.json') => {
   tmp.click();
 };
 
-const useStyles = makeStyles((theme) => ({
-  input: {
-    display: 'none',
-  },
-  addJsonButton: {
-    marginTop: theme.spacing(2),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-  mb3: {
-    marginBottom: theme.spacing(3),
-  },
-  button: {
-    marginRight: theme.spacing(3),
-  },
-  paper: {
-    padding: theme.spacing(2),
-  },
-}));
-
 const CompetitionInfo = ({
   wcif,
   uploadedScrambles,
@@ -51,8 +29,6 @@ const CompetitionInfo = ({
   handleWcifChange,
   version,
 }) => {
-  const classes = useStyles();
-
   const actionDownloadWcif = () =>
     downloadFile(wcif, internalWcifToWcif, `WCIF for ${wcif.id}.json`);
 
@@ -78,7 +54,6 @@ const CompetitionInfo = ({
           downloadWcifAction={actionDownloadWcif}
           downloadResultsJsonAction={actionDownloadResultsJson}
           uploadCompetitionIdAction={uploadCompetitionIdAction}
-          classes={classes}
           wcif={wcif}
         />
       </Grid>
@@ -87,14 +62,10 @@ const CompetitionInfo = ({
           assignAction={actionAssignScrambles}
           uploadAction={uploadAction}
           clearAction={actionClearScrambles}
-          classes={classes}
         />
       </Grid>
       <Grid item xs={12}>
-        <UploadedScramblesPanel
-          uploadedScrambles={uploadedScrambles}
-          classes={classes}
-        />
+        <UploadedScramblesPanel uploadedScrambles={uploadedScrambles} />
       </Grid>
     </Grid>
   );

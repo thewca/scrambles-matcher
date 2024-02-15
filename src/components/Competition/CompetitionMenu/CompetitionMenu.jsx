@@ -5,7 +5,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
-import makeStyles from '@mui/styles/makeStyles';
 import InfoIcon from '@mui/icons-material/Info';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
@@ -17,15 +16,9 @@ import {
 import { eventNameById, roundTypeIdForRound } from '../../../logic/events';
 import { roundTypeById } from '../../../logic/roundtypes';
 
-const useStyles = makeStyles((theme) => ({
-  nestedItem: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
-
 const CompetitionMenu = ({ events, setSelectedRound }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const classes = useStyles();
+
   return (
     <List dense={true}>
       <ListItem
@@ -69,7 +62,7 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
                 <ListItem
                   key={round.id}
                   button
-                  className={classes.nestedItem}
+                  sx={{ paddingLeft: 4 }}
                   onClick={() => setSelectedRound(round.id)}
                 >
                   <ListItemText

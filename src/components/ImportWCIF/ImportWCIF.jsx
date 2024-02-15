@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,18 +18,6 @@ import {
 import { CompetitionsSection } from './CompetitionsList';
 
 //import tmpWcif from '../../wcifresults.json';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(4),
-  },
-  input: {
-    display: 'none',
-  },
-  tabContent: {
-    padding: theme.spacing(2),
-  },
-}));
 
 const loadSheetIntoWcif = (wcif, name, jsonSheet) => {
   // This function strongly assumes that 'Registration' is the first sheet...
@@ -115,14 +103,13 @@ const ImportWCIF = ({
   loading,
   signedIn,
 }) => {
-  const classes = useStyles();
   const [tabValue, setTabValue] = useState('wca');
 
   // Dirty hack to preload given WCIF
   //handleWcifJSONLoad(tmpWcif);
   return (
     <Grid container justifyContent="center">
-      <Grid item xs={12} md={8} lg={7} xl={6} className={classes.root}>
+      <Grid item xs={12} md={8} lg={7} xl={6} sx={{ padding: 4 }}>
         <Grid container direction="column" spacing={3}>
           <Grid item>
             <Typography variant="h2" component="h1" align="center">
@@ -149,7 +136,7 @@ const ImportWCIF = ({
                 <Tab label="WCIF file" value="wcif" />
                 <Tab label="XLSX file" value="xlsx" />
               </Tabs>
-              <div className={classes.tabContent}>
+              <Box sx={{ padding: 2 }}>
                 {tabValue === 'wca' && (
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
@@ -185,7 +172,7 @@ const ImportWCIF = ({
                     <Grid item align="center">
                       <input
                         accept=".json"
-                        className={classes.input}
+                        style={{ display: 'none' }}
                         id="button-wcif"
                         multiple
                         type="file"
@@ -198,7 +185,6 @@ const ImportWCIF = ({
                           component="span"
                           variant="outlined"
                           color="primary"
-                          className={classes.button}
                         >
                           Upload WCIF
                         </Button>
@@ -217,7 +203,7 @@ const ImportWCIF = ({
                     <Grid item align="center">
                       <input
                         accept=".xlsx"
-                        className={classes.input}
+                        style={{ display: 'none' }}
                         id="button-xlsx"
                         multiple
                         type="file"
@@ -230,7 +216,6 @@ const ImportWCIF = ({
                           component="span"
                           variant="outlined"
                           color="primary"
-                          className={classes.button}
                         >
                           Upload XLSX
                         </Button>
@@ -238,7 +223,7 @@ const ImportWCIF = ({
                     </Grid>
                   </Grid>
                 )}
-              </div>
+              </Box>
             </Paper>
           </Grid>
           <Grid item>

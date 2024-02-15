@@ -11,10 +11,9 @@ const MatchingScramblesPanel = ({
   assignAction,
   clearAction,
   uploadAction,
-  classes,
 }) => {
   return (
-    <Paper className={classes.paper}>
+    <Paper sx={{ padding: 2 }}>
       <Typography variant="h5" gutterBottom>
         Matching scrambles to rounds
       </Typography>
@@ -41,7 +40,7 @@ const MatchingScramblesPanel = ({
         <Grid item xs={12}>
           <input
             accept=".json"
-            className={classes.input}
+            style={{ display: 'none' }}
             id="add-scramble-json"
             multiple
             type="file"
@@ -53,7 +52,7 @@ const MatchingScramblesPanel = ({
               component="span"
               color="primary"
               fullWidth
-              className={classnames(classes.addJsonButton)}
+              sx={{ marginTop: 2 }}
             >
               Upload scrambles json from TNoodle
             </Button>
@@ -64,10 +63,10 @@ const MatchingScramblesPanel = ({
             variant="outlined"
             color="primary"
             fullWidth
-            className={classes.button}
+            sx={{ marginRight: 3 }}
             onClick={assignAction}
           >
-            <FreeBreakfastIcon className={classes.extendedIcon} />
+            <FreeBreakfastIcon sx={{ marginRight: 1 }} />
             Automatically assign scrambles
           </Button>
         </Grid>
@@ -76,10 +75,10 @@ const MatchingScramblesPanel = ({
             variant="outlined"
             color="secondary"
             fullWidth
-            className={classes.button}
+            sx={{ marginRight: 3 }}
             onClick={clearAction}
           >
-            <DeleteIcon className={classes.extendedIcon} />
+            <DeleteIcon sx={{ marginRight: 1 }} />
             Clear scrambles assignments
           </Button>
         </Grid>
