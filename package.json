@@ -21,10 +21,10 @@
     "*.{js,css,md}": "prettier --write"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "next dev",
+    "build": "next build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d out",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -36,19 +36,14 @@
     "classnames": "^2.5.1",
     "core-js": "^3.36.0",
     "gh-pages": "^6.1.1",
+    "next": "^14.1.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
     "smoothscroll-polyfill": "^0.4.4",
     "typeface-roboto": "1.1.13",
     "typescript": "^5.3.3",
     "xlsx": "^0.18.5"
-  },
-  "overrides": {
-    "react-scripts": {
-      "typescript": ">3.2.1"
-    }
   },
   "browserslist": [
     ">0.2%",
