@@ -24,7 +24,7 @@
     "start": "next dev",
     "build": "next build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d out",
     "prepare": "husky install"
   },
   "dependencies": {
