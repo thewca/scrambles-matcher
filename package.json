@@ -32,7 +32,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.0",
-    "@mui/system": "^5.15.9",
+    "@mui/system": "^5.15.15",
     "classnames": "^2.5.1",
     "core-js": "^3.36.0",
     "gh-pages": "^6.1.1",
