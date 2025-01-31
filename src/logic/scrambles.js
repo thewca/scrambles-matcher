@@ -1,8 +1,8 @@
-import { flatMap, updateIn, groupBy, sortBy } from "./utils";
-import { parseActivityCode } from "./wcif";
-import { getUniqueScrambleSetId, importWcif } from "./import-export-wcif";
-import { formatById } from "./formats";
-import { eventNameById } from "./events";
+import { flatMap, updateIn, groupBy, sortBy } from './utils';
+import { parseActivityCode } from './wcif';
+import { getUniqueScrambleSetId, importWcif } from './import-export-wcif';
+import { formatById } from './formats';
+import { eventNameById } from './events';
 
 // The WCIF defines the following fields:
 // { id, scrambles: [], extraScrambles: [] }
@@ -92,7 +92,7 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
   // We don't actually need to update the usedScramblesId, because we never try to
   // get the same eventId/roundNumber again, so usedScramblesId only need to
   // contain the scrambles in use before the autoAssign thing.
-  if (["333fm", "333mbf"].includes(eventId)) {
+  if (['333fm', '333mbf'].includes(eventId)) {
     // Select scrambles which match the attempt number(s) expected,
     // and assign the attemptNumber from the generated number
     let numberOfAttempts = formatById(round.format).solveCount;
@@ -126,18 +126,18 @@ export const usedScramblesIdsForEvent = (events, eventId) =>
 
 export const updateMultiAndFm = (scrambles) =>
   flatMap(scrambles, (s) =>
-    s.event === "333fm" || s.event === "333mbf" ? splitMultiFm(s) : s
+    s.event === '333fm' || s.event === '333mbf' ? splitMultiFm(s) : s
   );
 
 export const transformUploadedScrambles = (uploadedJson) => {
   // Newer versions of TNoodle provide a pre-compiled WCIF that we can read here.
   // Retain old version (`else` branch) as well to have a "grace period" in transitioning
-  if ("wcif" in uploadedJson) {
-    const tnoodleWcif = uploadedJson["wcif"];
+  if ('wcif' in uploadedJson) {
+    const tnoodleWcif = uploadedJson['wcif'];
     const [, extractedScrambles] = importWcif(tnoodleWcif);
-    delete uploadedJson["wcif"]; // avoid confusion with the other WCIF that gets merged in
-    uploadedJson["sheets"] = extractedScrambles.flatMap(
-      (sheetExt) => sheetExt["sheets"]
+    delete uploadedJson['wcif']; // avoid confusion with the other WCIF that gets merged in
+    uploadedJson['sheets'] = extractedScrambles.flatMap(
+      (sheetExt) => sheetExt['sheets']
     );
     return uploadedJson;
   } else {
@@ -146,7 +146,7 @@ export const transformUploadedScrambles = (uploadedJson) => {
         uploadedJson.competitionName,
         updateMultiAndFm(sheets)
       );
-    return updateIn(uploadedJson, ["sheets"], updater);
+    return updateIn(uploadedJson, ['sheets'], updater);
   }
 };
 
@@ -165,7 +165,7 @@ export const prefixForIndex = (index) => {
 
 export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
   if (scrambles.length === 0) return scrambles;
-  if (eventId === "333mbf") {
+  if (eventId === '333mbf') {
     // For all attempts, we want to push each of the scramble sequences to
     // their corresponding groups.
     let scramblesByAttempt = groupBy(scrambles, (s) => s.attemptNumber);
@@ -188,7 +188,7 @@ export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
         })
       );
     return sheets;
-  } else if (eventId === "333fm") {
+  } else if (eventId === '333fm') {
     // We can't track yet in the WCIF which scramble was for witch attempt,
     // so let's just sort them by attempt id and combine them in one
     // scramble sheet.
