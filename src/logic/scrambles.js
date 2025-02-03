@@ -151,7 +151,15 @@ export const transformUploadedScrambles = (uploadedJson) => {
 };
 
 // 65 is the char code for 'A'
-export const prefixForIndex = (index) => String.fromCharCode(65 + index);
+export const prefixForIndex = (index) => {
+  if (index < 26) {
+    return String.fromCharCode(65 + index);
+  }
+  return (
+    prefixForIndex(Math.floor(index / 26) - 1) +
+    String.fromCharCode(65 + (index % 26))
+  );
+};
 
 export const internalScramblesToWcifScrambles = (eventId, scrambles) => {
   if (scrambles.length === 0) return scrambles;
