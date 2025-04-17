@@ -98,6 +98,7 @@ const scrambleSetsForRound = (usedScramblesId, round, uploadedScrambles) => {
     let numberOfAttempts = formatById(round.format).solveCount;
     return firstMatchingSheets
       .filter((s) => s.generatedAttemptNumber <= numberOfAttempts)
+      .slice(0, round.scrambleSetCount * numberOfAttempts)
       .map((s) => ({
         ...s,
         attemptNumber: s.generatedAttemptNumber,
