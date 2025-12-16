@@ -24,6 +24,14 @@ const formats = [
     sortBy: 'best',
   },
   {
+    id: '5',
+    name: 'Best of 5',
+    shortName: 'Bo5',
+    solveCount: 5,
+    cutoffFormats: [],
+    sortBy: 'best',
+  },
+  {
     id: 'm',
     name: 'Mean of 3',
     shortName: 'Mo3',
