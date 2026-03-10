@@ -58,27 +58,29 @@ const CompetitionMenu = ({ events, setSelectedRound }) => {
             unmountOnExit
           >
             <List dense={true}>
-              {event.rounds.map((round) => (
-                <ListItem
-                  key={round.id}
-                  button
-                  sx={{ paddingLeft: 4 }}
-                  onClick={() => setSelectedRound(round.id)}
-                >
-                  <ListItemText
-                    primary={
-                      roundTypeById(
-                        roundTypeIdForRound(event.rounds.length, round)
-                      ).name
-                    }
-                  />
-                  {!roundHasValidScrambles(event.id, round) && (
-                    <Tooltip title="Missing scrambles">
-                      <ReportProblemIcon color="error" />
-                    </Tooltip>
-                  )}
-                </ListItem>
-              ))}
+              {event.rounds
+                .filter((round) => round.format !== 'h')
+                .map((round) => (
+                  <ListItem
+                    key={round.id}
+                    button
+                    sx={{ paddingLeft: 4 }}
+                    onClick={() => setSelectedRound(round.id)}
+                  >
+                    <ListItemText
+                      primary={
+                        roundTypeById(
+                          roundTypeIdForRound(event.rounds.length, round)
+                        ).name
+                      }
+                    />
+                    {!roundHasValidScrambles(event.id, round) && (
+                      <Tooltip title="Missing scrambles">
+                        <ReportProblemIcon color="error" />
+                      </Tooltip>
+                    )}
+                  </ListItem>
+                ))}
             </List>
           </Collapse>
         </Fragment>
