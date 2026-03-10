@@ -39,20 +39,22 @@ export const internalWcifToResultsJson = (wcif, version) => {
       })),
     events: wcif.events.map((e) => ({
       eventId: e.id,
-      rounds: e.rounds.map((r) => ({
-        roundId: roundTypeIdForRound(e.rounds.length, r),
-        formatId: r.format,
-        results: r.results.map((res) => ({
-          personId: res.personId,
-          position: res.ranking,
-          results: res.attempts.map((a) => a.result),
-          best: res.best,
-          average: res.average,
+      rounds: e.rounds
+        .filter((r) => r.format !== 'h')
+        .map((r) => ({
+          roundId: roundTypeIdForRound(e.rounds.length, r),
+          formatId: r.format,
+          results: r.results.map((res) => ({
+            personId: res.personId,
+            position: res.ranking,
+            results: res.attempts.map((a) => a.result),
+            best: res.best,
+            average: res.average,
+          })),
+          groups: scramblesToResultsGroups(
+            internalScramblesToWcifScrambles(e.id, r.scrambleSets)
+          ),
         })),
-        groups: scramblesToResultsGroups(
-          internalScramblesToWcifScrambles(e.id, r.scrambleSets)
-        ),
-      })),
     })),
     // TODO: make sure that only one tnoodle was used, then add an explicit field for that?
     scrambleProgram: wcif.scrambleProgram,
